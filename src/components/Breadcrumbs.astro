@@ -17,7 +17,7 @@ interface Props {
 	items: Crumb[];
 }
 
-const trail: Crumb[] = [{ label: "ホーム", href: "/" }, ...Astro.props.items];
+const trail: Crumb[] = [{ label: "ホーム", href: "/business/" }, ...Astro.props.items];
 
 const jsonLd = {
 	"@context": "https://schema.org",

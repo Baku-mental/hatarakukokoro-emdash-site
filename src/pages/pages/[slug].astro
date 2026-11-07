@@ -17,6 +17,12 @@ if (!slug) {
 	return Astro.rewrite("/404");
 }
 
+// 固定ページの表のアドレスは /business/<slug>/。/pages/<slug> を直接開いたときはそちらへ移動
+// （/business/<slug>/ からの rewrite のときは originPathname が /business/ のまま）
+if (!Astro.originPathname.startsWith("/business/")) {
+	return Astro.redirect(`/business/${encodeURIComponent(slug)}/`, 301);
+}
+
 const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
 
 if (!page) {
@@ -28,7 +34,7 @@ const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
 const seo = getSeoMeta(page, {
 	siteTitle,
 	siteUrl: Astro.url.origin,
-	path: Astro.url.pathname.replace(/\/$/, ""),
+	path: `/business/${slug}/`,
 });
 ---
 

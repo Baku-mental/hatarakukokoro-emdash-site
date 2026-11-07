@@ -23,7 +23,7 @@ const {
 } = Astro.props;
 
 const Heading = `h${headingLevel}` as const;
-const href = `/posts/${post.id}`;
+const href = `/business/${post.id}/`;
 const titleId = `post-${variant}-${post.id}`;
 const title = post.data.title || "無題";
 const publishedAt = post.data.publishedAt ?? null;
@@ -108,7 +108,7 @@ const sizes = {
 						<ul class="chips post__tags" aria-label="タグ">
 							{visibleTags.map((tag) => (
 								<li>
-									<a href={`/tag/${tag.slug}`} class="chip">
+									<a href={`/business/tag/${tag.slug}/`} class="chip">
 										{tag.label}
 									</a>
 								</li>

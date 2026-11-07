@@ -1,0 +1,139 @@
+---
+import {
+	getTaxonomyTermsWithCacheHint,
+	getEmDashCollection,
+	decodeSlug,
+} from "emdash";
+import Base from "../../../layouts/Base.astro";
+import PostCard from "../../../components/PostCard.astro";
+import Pagination from "../../../components/Pagination.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import { CATEGORIES } from "../../../site-config";
+
+const slug = decodeSlug(Astro.params.slug);
+const termsResult = await getTaxonomyTermsWithCacheHint("category", {
+	includeCounts: false,
+});
+const term = slug ? termsResult.data.find((item) => item.slug === slug) : null;
+
+if (!term) {
+	return Astro.rewrite("/404");
+}
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const {
+	entries: posts,
+	cacheHint,
+	nextCursor,
+} = await getEmDashCollection("posts", {
+	where: { category: term.slug },
+	orderBy: { published_at: "desc" },
+	limit: 20,
+	cursor,
+});
+
+if (Astro.cache?.enabled) {
+	Astro.cache.set(termsResult.cacheHint);
+	Astro.cache.set(cacheHint);
+}
+
+// Tags are already hydrated onto each entry by getEmDashCollection.
+const filteredPosts = posts.map((post) => ({
+	post,
+	tags: post.data.terms?.tag ?? [],
+}));
+
+const category = CATEGORIES.find((item) => item.slug === term.slug);
+const description =
+	term.description ||
+	category?.description ||
+	`「${term.label}」に関する、企業のメンタルヘルス実務の記事一覧です。`;
+---
+
+<Base title={`${term.label}の記事一覧`} description={description}>
+	<header class="band intro">
+		<div class="frame archive-intro">
+			<div class="archive-intro__text">
+				<Breadcrumbs items={[{ label: term.label }]} />
+				<p class="eyebrow">カテゴリ</p>
+				<h1 class="intro__title">{term.label}</h1>
+				<p class="intro__lead">
+					{description}
+				</p>
+			</div>
+			<a href="/business/posts/" class="arrow-link">
+				記事一覧
+				<svg
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.75"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M5 12h14"></path>
+					<path d="m12 5 7 7-7 7"></path>
+				</svg>
+			</a>
+		</div>
+	</header>
+
+	<section class="band section">
+		<div class="frame">
+			{
+				filteredPosts.length > 0 ? (
+					<>
+						<div class="post-grid">
+							{filteredPosts.map(({ post, tags }) => (
+								<PostCard
+									post={post}
+									tags={tags.map((t) => ({ slug: t.slug, label: t.label }))}
+								/>
+							))}
+						</div>
+						<Pagination
+							basePath={`/business/category/${term.slug}/`}
+							cursor={cursor}
+							nextCursor={nextCursor}
+						/>
+					</>
+				) : (
+					<div class="empty-state">
+						<h2 class="empty-state__title">
+							{cursor ? "これより前の記事はありません" : "記事を準備しています"}
+						</h2>
+						<p class="empty-state__text">
+							{cursor
+								? "このページより前の記事はありません。"
+								: `「${term.label}」の記事は、いま準備しています。`}
+						</p>
+						<div class="empty-state__actions">
+							<a
+								href={cursor ? `/business/category/${term.slug}/` : "/business/posts/"}
+								class="btn btn--ghost"
+							>
+								{cursor ? "最初のページへ" : "記事一覧を見る"}
+							</a>
+						</div>
+					</div>
+				)
+			}
+		</div>
+	</section>
+</Base>
+
+<style>
+	.archive-intro {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		align-items: last baseline;
+		justify-content: space-between;
+		gap: var(--spacing-5) var(--spacing-10);
+	}
+
+	.archive-intro__text {
+		min-width: 0;
+	}
+</style>

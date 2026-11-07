@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { getEmDashCollection, getSiteSettings } from "emdash";
 
-import { resolveBlogSiteIdentity } from "../utils/site-identity";
+import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 
 export const GET: APIRoute = async ({ site, url }) => {
 	const siteUrl = site ?? new URL(url.origin);
@@ -17,7 +17,7 @@ export const GET: APIRoute = async ({ site, url }) => {
 			if (!post.data.publishedAt) return null;
 			const pubDate = post.data.publishedAt.toUTCString();
 
-			const postUrl = new URL(`/posts/${post.id}`, siteUrl).href;
+			const postUrl = new URL(`/business/${post.id}/`, siteUrl).href;
 			const title = escapeXml(post.data.title || "無題");
 			const description = escapeXml(post.data.excerpt || "");
 
@@ -38,7 +38,7 @@ export const GET: APIRoute = async ({ site, url }) => {
     <title>${escapeXml(siteTitle)}</title>
     <description>${escapeXml(siteTagline)}</description>
 	<link>${siteUrl.href}</link>
-	<atom:link href="${new URL("/rss.xml", siteUrl).href}" rel="self" type="application/rss+xml"/>
+	<atom:link href="${new URL("/business/rss.xml", siteUrl).href}" rel="self" type="application/rss+xml"/>
     <language>ja</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 ${items}
