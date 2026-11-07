@@ -2,12 +2,12 @@
 import {
 	getTaxonomyTermsWithCacheHint,
 	getEmDashCollection,
-	getTermsForEntries,
 	decodeSlug,
 } from "emdash";
 import Base from "../../layouts/Base.astro";
 import PostCard from "../../components/PostCard.astro";
 import Pagination from "../../components/Pagination.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 
 const slug = decodeSlug(Astro.params.slug);
 const termsResult = await getTaxonomyTermsWithCacheHint("tag", {
@@ -36,36 +36,29 @@ if (Astro.cache?.enabled) {
 	Astro.cache.set(cacheHint);
 }
 
-// Single batched query for tags on every post tagged with this term,
-// rather than calling getEntryTerms() per post.
-const tagsByEntry = await getTermsForEntries(
-	"posts",
-	posts.map((p) => p.data.id),
-	"tag",
-);
+// Tags are already hydrated onto each entry by getEmDashCollection.
 const filteredPosts = posts.map((post) => ({
 	post,
-	tags: (tagsByEntry.get(post.data.id) ?? []).filter(
-		(t) => t.slug !== term.slug,
-	),
+	tags: (post.data.terms?.tag ?? []).filter((t) => t.slug !== term.slug),
 }));
 ---
 
 <Base
-	title={`Posts tagged "${term.label}"`}
-	description={`All posts tagged with ${term.label}`}
+	title={`「${term.label}」の記事`}
+	description={`「${term.label}」に関する記事の一覧です。`}
 >
 	<header class="band intro">
 		<div class="frame archive-intro">
 			<div class="archive-intro__text">
-				<p class="eyebrow">Tag</p>
+				<Breadcrumbs items={[{ label: "記事一覧", href: "/posts" }, { label: `タグ：${term.label}` }]} />
+				<p class="eyebrow">タグ</p>
 				<h1 class="intro__title">{term.label}</h1>
 				<p class="intro__lead">
-					{term.description || `Posts tagged ${term.label}, newest first.`}
+					{term.description || `「${term.label}」に関する記事を新しい順に並べています。`}
 				</p>
 			</div>
 			<a href="/posts" class="arrow-link">
-				All posts
+				記事一覧
 				<svg
 					viewBox="0 0 24 24"
 					fill="none"
@@ -104,19 +97,19 @@ const filteredPosts = posts.map((post) => ({
 				) : (
 					<div class="empty-state">
 						<h2 class="empty-state__title">
-							{cursor ? "No more posts" : "Nothing here yet"}
+							{cursor ? "これより前の記事はありません" : "記事を準備しています"}
 						</h2>
 						<p class="empty-state__text">
 							{cursor
-								? "This page is past the last post."
-								: `No posts have been tagged ${term.label} so far.`}
+								? "このページより前の記事はありません。"
+								: `「${term.label}」に関する記事は、いま準備しています。`}
 						</p>
 						<div class="empty-state__actions">
 							<a
 								href={cursor ? `/tag/${term.slug}` : "/posts"}
 								class="btn btn--ghost"
 							>
-								{cursor ? "Back to the first page" : "Browse all posts"}
+								{cursor ? "最初のページへ" : "記事一覧を見る"}
 							</a>
 						</div>
 					</div>

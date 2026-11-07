@@ -2,8 +2,7 @@
 import type { ContentEntry, InferCollectionData } from "emdash";
 import { Image } from "emdash/ui";
 import Byline from "./Byline.astro";
-import { formatDate } from "../utils/locale";
-import { formatReadingTime, getReadingTime } from "../utils/reading-time";
+import { formatShortDate } from "../utils/locale";
 
 interface Props {
 	post: ContentEntry<InferCollectionData<"posts">>;
@@ -26,9 +25,10 @@ const {
 const Heading = `h${headingLevel}` as const;
 const href = `/posts/${post.id}`;
 const titleId = `post-${variant}-${post.id}`;
-const title = post.data.title || "Untitled";
+const title = post.data.title || "無題";
 const publishedAt = post.data.publishedAt ?? null;
-const readingTime = formatReadingTime(getReadingTime(post.data.content));
+// First category, already hydrated by the collection query (no extra query).
+const category = post.data.terms?.category?.[0] ?? null;
 const bylines = post.data.bylines ?? [];
 const visibleTags = tags.slice(0, variant === "card" ? 2 : 3);
 
@@ -61,11 +61,11 @@ const sizes = {
 				{
 					publishedAt && (
 						<time datetime={publishedAt.toISOString()}>
-							{formatDate(publishedAt, "short")}
+							{formatShortDate(publishedAt)}
 						</time>
 					)
 				}
-				<span>{readingTime}</span>
+				{category && <span class="post__category">{category.label}</span>}
 			</span>
 			<Heading class="post__title" id={titleId} {...post.edit.title}>
 				{title}
@@ -80,7 +80,7 @@ const sizes = {
 			{
 				variant === "feature" && (
 					<span class="post__cta arrow-link" aria-hidden="true">
-						Read article
+						記事を読む
 						<svg
 							viewBox="0 0 24 24"
 							fill="none"
@@ -105,7 +105,7 @@ const sizes = {
 						size={variant === "feature" ? "sm" : "xs"}
 					/>
 					{visibleTags.length > 0 && (
-						<ul class="chips post__tags" aria-label="Tags">
+						<ul class="chips post__tags" aria-label="タグ">
 							{visibleTags.map((tag) => (
 								<li>
 									<a href={`/tag/${tag.slug}`} class="chip">
@@ -148,7 +148,7 @@ const sizes = {
 		position: relative;
 		display: block;
 		overflow: hidden;
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 1200 / 630; /* アイキャッチ（1200x630）が切れないように */
 		border-radius: var(--radius-lg);
 		background: var(--color-fill);
 	}
@@ -225,8 +225,13 @@ const sizes = {
 		margin-inline-start: var(--spacing-2);
 	}
 
+	.post__category {
+		color: var(--color-brand);
+		font-weight: 600;
+	}
+
 	.post__title {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-base);
 		line-height: var(--leading-snug);
 		color: var(--color-text);
 		text-decoration-line: underline;
@@ -318,7 +323,7 @@ const sizes = {
 	}
 
 	.post--feature .post__media {
-		aspect-ratio: 4 / 3;
+		aspect-ratio: 1200 / 630;
 	}
 
 	.post--feature .post__body {
@@ -412,7 +417,7 @@ const sizes = {
 		}
 
 		.post--feature .post__media {
-			aspect-ratio: 16 / 9;
+			aspect-ratio: 1200 / 630;
 		}
 
 		.post--feature .post__body {
@@ -428,7 +433,7 @@ const sizes = {
 		}
 
 		.post--row .post__media {
-			aspect-ratio: 1;
+			aspect-ratio: 1200 / 630;
 		}
 
 		.post--row .post__title {

@@ -30,5 +30,108 @@
   }
 */
 
+/*
+  はたらくこころ研究所: ティール×ネイビーの、明るく清潔なメディア（心理師の道具箱と同じ配色）。
+  白い紙面、ティールの差し色、ネイビーの文字。見出し・本文とも日本語ゴシック体（Web フォントは読み込まない）。
+*/
 :root {
+	/* 固定色（ヒーローやフッターなど、モードで変えない場所に使う） */
+	--color-teal: #3d9ca3;
+	--color-teal-dark: #2f8389;
+	--color-teal-pale: #dceff0;
+	--color-teal-bg: #ecf6f7;
+	--color-offwhite: #f9fbfc;
+	--color-navy: #002f57;
+
+	/* 紙とインク */
+	--color-bg: #ffffff;
+	--color-surface: #ffffff;
+	--color-fill: #f1f8f8;
+	--color-fill-strong: #e3f0f1;
+	--color-text: #002f57;
+	--color-text-secondary: #4a6680;
+	--color-muted: #7e8c99;
+	--color-border: #dde7ea;
+	--color-border-subtle: #e8eff1;
+	--color-border-strong: #c4d5da;
+	--color-ring: rgb(0 47 87 / 0.08);
+	--color-media-outline: rgb(0 47 87 / 0.08);
+	--color-shadow: rgb(0 47 87 / 0.06);
+	--color-shadow-strong: rgb(0 47 87 / 0.14);
+
+	/* 差し色: ティール（文字に使うので白地で読める濃さ） */
+	--color-brand: #2f8389;
+	--color-brand-hover: #246a6f;
+	--color-on-brand: #ffffff;
+	--emdash-search-highlight: var(--color-brand);
+
+	/* 文字 */
+	--font-body:
+		"Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI",
+		YuGothic, Meiryo, sans-serif;
+	--font-heading: var(--font-body);
+	--font-weight-heading: 700;
+	--font-weight-display: 700;
+	--font-size-display: clamp(1.6rem, 1.25rem + 1.6vw, 2.25rem);
+
+	/* 日本語は字間を詰めず、行間を広めに */
+	--leading-tight: 1.45;
+	--leading-snug: 1.55;
+	--leading-normal: 1.8;
+	--leading-relaxed: 1.95;
+	--tracking-tight: 0.03em;
+	--tracking-snug: 0.03em;
+	--tracking-wide: 0.08em;
+	--tracking-wider: 0.12em;
+
+	/* 角はやや丸く */
+	--radius-sm: 6px;
+	--radius: 8px;
+	--radius-lg: 12px;
+	--radius-xl: 16px;
+	--card-padding: 4px;
+
+	/* ヘッダーの検索欄 */
+	--search-input-width: 220px;
+}
+
+/* 白い背景に固定（端末のダークモードに合わせない。心理師の道具箱と同じ） */
+:root,
+:root.dark {
+	color-scheme: light;
+}
+
+body {
+	background: var(--color-bg);
+	font-feature-settings: "palt" 0;
+	line-break: strict;
+	overflow-wrap: anywhere;
+}
+
+/* 枠線のレールと十字の飾りは使わない */
+body::before,
+.band::before,
+.band::after {
+	display: none;
+}
+
+/* 小見出しラベル: 本文の書体で字間を広げる */
+.eyebrow {
+	font-family: var(--font-body);
+	font-weight: 600;
+	letter-spacing: var(--tracking-wider);
+	text-transform: none;
+	color: var(--color-brand);
+}
+
+/* 「記事一覧へ」などの矢印リンク: ティール */
+.arrow-link {
+	color: var(--color-brand);
+	font-weight: 700;
+}
+
+/* 大きな見出しは日本語向けに行間を広げる（テンプレートは 1.05） */
+.intro__title,
+.intro__subtitle {
+	line-height: var(--leading-tight);
 }

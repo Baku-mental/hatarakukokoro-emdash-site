@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import {
 	getEmDashEntry,
 	getSeoMeta,
@@ -42,6 +43,7 @@ const seo = getSeoMeta(page, {
 	<article class="band page">
 		<div class="frame page__layout">
 			<header class="page__header">
+				<Breadcrumbs items={[{ label: page.data.title }]} />
 				<h1 class="page__title" {...page.edit.title}>{page.data.title}</h1>
 			</header>
 
@@ -65,7 +67,7 @@ const seo = getSeoMeta(page, {
 
 	.page__title {
 		font-size: var(--font-size-display);
-		line-height: 1.05;
+		line-height: var(--leading-tight);
 		max-width: 22ch;
 	}
 
