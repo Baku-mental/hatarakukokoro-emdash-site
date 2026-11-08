@@ -1,20 +1,22 @@
 ---
-/** 記事ページの「人気記事」。並びは site-config.ts の POPULAR_SLUGS */
+/** 記事ページの右の列などの記事リスト（人気記事・おすすめ記事）。ranked で順位の番号を付ける */
 import type { ContentEntry, InferCollectionData } from "emdash";
 import { Image } from "emdash/ui";
 
 interface Props {
 	posts: ContentEntry<InferCollectionData<"posts">>[];
 	class?: string;
+	title?: string;
+	ranked?: boolean;
 }
 
-const { posts, class: className } = Astro.props;
+const { posts, class: className, title = "人気記事", ranked = true } = Astro.props;
 ---
 
 {
 	posts.length > 0 && (
 		<section class:list={["popular", className]}>
-			<h2 class="popular__title">人気記事</h2>
+			<h2 class="popular__title">{title}</h2>
 			<ol class="popular__list">
 				{posts.map((p, i) => {
 					const category = p.data.terms?.category?.[0] ?? null;
@@ -25,7 +27,9 @@ const { posts, class: className } = Astro.props;
 									{p.data.featured_image && (
 										<Image image={p.data.featured_image} sizes="120px" />
 									)}
-									<span class:list={["popular__rank", `popular__rank--${i + 1}`]}>{i + 1}</span>
+									{ranked && (
+										<span class:list={["popular__rank", `popular__rank--${i + 1}`]}>{i + 1}</span>
+									)}
 								</span>
 								<span class="popular__body">
 									<span class="popular__name">{p.data.title}</span>

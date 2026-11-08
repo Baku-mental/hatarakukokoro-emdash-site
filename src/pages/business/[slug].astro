@@ -19,7 +19,7 @@ import PostBlock from "../../components/PostBlock.astro";
 import PopularPosts from "../../components/PopularPosts.astro";
 import { POPULAR_SLUGS } from "../../site-config";
 import { groupWpBlocks } from "../../utils/wp-groups";
-import { buildToc, splitAtFirstH2 } from "../../utils/toc";
+import { buildToc, linkedSlugs, splitAtFirstH2 } from "../../utils/toc";
 import { formatDate } from "../../utils/locale";
 import { getReadingTime } from "../../utils/reading-time";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
@@ -98,16 +98,38 @@ const parentCrumb = category
 	: { label: "記事一覧", href: "/business/posts/" };
 
 // 関連記事: 同じカテゴリの新しい順に4本（カテゴリがなければ新着）。
-// この記事自身が入ることがあるので1本多めに取る。
+// おすすめ記事の穴埋めにも使うので多めに取る。
 const RELATED_COUNT = 4;
+const RECOMMEND_COUNT = 5;
 const { entries: relatedPool, cacheHint: relatedCacheHint } =
 	await getEmDashCollection("posts", {
 		...(category ? { where: { category: category.slug } } : {}),
 		orderBy: { published_at: "desc" },
-		limit: RELATED_COUNT + 1,
+		limit: RELATED_COUNT + RECOMMEND_COUNT + 1,
 	});
 if (Astro.cache?.enabled) Astro.cache.set(relatedCacheHint);
-const otherPosts = relatedPool.filter((p) => p.id !== post.id).slice(0, RELATED_COUNT);
+const sameCategory = relatedPool.filter((p) => p.id !== post.id);
+const otherPosts = sameCategory.slice(0, RELATED_COUNT);
+const relatedIds = new Set(otherPosts.map((p) => p.id));
+
+// おすすめ記事（パソコンの右の列）: 本文からリンクしている記事を出てくる順に。
+// 下の関連記事と重なるものは除き、足りなければ同じカテゴリの記事で埋める。
+const linked = linkedSlugs(post.data.content, [slug]).filter((s) => !relatedIds.has(s));
+let linkedPosts: typeof sameCategory = [];
+if (linked.length > 0) {
+	const { entries: linkedPool, cacheHint: linkedCacheHint } = await getEmDashCollection("posts", {
+		where: { slug: linked.slice(0, 20) },
+		limit: 20,
+	});
+	if (Astro.cache?.enabled) Astro.cache.set(linkedCacheHint);
+	linkedPosts = linked
+		.map((s) => linkedPool.find((p) => p.id === s || p.slug === s))
+		.filter((p): p is NonNullable<typeof p> => !!p);
+}
+const recommendedPosts = [
+	...linkedPosts,
+	...sameCategory.slice(RELATED_COUNT).filter((p) => !linkedPosts.some((l) => l.id === p.id)),
+].slice(0, RECOMMEND_COUNT);
 
 // 人気記事（site-config.ts の POPULAR_SLUGS の順。1回の問い合わせでまとめて取る）
 const { entries: popularPool, cacheHint: popularCacheHint } = await getEmDashCollection("posts", {
@@ -310,21 +332,12 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 				<div class="post-rail">
 					<SideBanner class="banner--rail" />
 
-					<nav
-						class="toc"
-						aria-labelledby="toc-title"
-						hidden={toc.length === 0}
-						data-toc
-					>
-						<h2 id="toc-title" class="eyebrow">目次</h2>
-						<ol class="toc__list">
-							{toc.map((item) => (
-								<li class:list={["toc__item", { "toc__item--nested": item.level === 3 }]}>
-									<a href={`#${item.id}`} class="toc__link">{item.text}</a>
-								</li>
-							))}
-						</ol>
-					</nav>
+					<PopularPosts
+						posts={recommendedPosts}
+						title="おすすめ記事"
+						ranked={false}
+						class="popular--rail"
+					/>
 
 					<PopularPosts posts={popularPosts} class="popular--rail" />
 
@@ -377,37 +390,7 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 	}
 
 	<script>
-		// 右の列の目次で、いま読んでいる見出しに印を付ける（目次そのものは HTML に入っている）
-		function trackToc() {
-			const links = [
-				...document.querySelectorAll<HTMLAnchorElement>("[data-toc] .toc__link"),
-			];
-			if (links.length === 0) return;
-			const byId = new Map<string, HTMLAnchorElement>();
-			for (const link of links) byId.set(decodeURIComponent(link.hash.slice(1)), link);
 
-			const setCurrent = (link: HTMLAnchorElement) => {
-				for (const other of links) other.removeAttribute("aria-current");
-				link.setAttribute("aria-current", "true");
-			};
-			setCurrent(links[0]);
-
-			const observer = new IntersectionObserver(
-				(entries) => {
-					for (const entry of entries) {
-						const link = byId.get(entry.target.id);
-						if (link && entry.isIntersecting) setCurrent(link);
-					}
-				},
-				{ rootMargin: "-80px 0px -80% 0px" },
-			);
-			for (const id of byId.keys()) {
-				const heading = document.getElementById(id);
-				if (heading) observer.observe(heading);
-			}
-		}
-
-		trackToc();
 
 		// 本文の目次の「もっと見る / 閉じる」
 		for (const button of document.querySelectorAll<HTMLButtonElement>("[data-intoc-toggle]")) {

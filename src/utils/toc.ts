@@ -34,3 +34,20 @@ export function splitAtFirstH2<T>(content: T[]): [T[], T[]] {
 	if (i <= 0) return [[], content];
 	return [content.slice(0, i), content.slice(i)];
 }
+
+/** 本文の中で、ほかの記事（/business/<slug>/）へのリンク先の slug を出てくる順に返す */
+export function linkedSlugs(content: unknown, exclude: string[] = []): string[] {
+	const out: string[] = [];
+	const walk = (node: unknown) => {
+		if (Array.isArray(node)) return node.forEach(walk);
+		if (!node || typeof node !== "object") return;
+		const o = node as Record<string, unknown>;
+		if (typeof o.href === "string") {
+			const m = o.href.match(/^(?:https?:\/\/[^/]+)?\/business\/([a-z0-9-]+)\/?(?:[?#].*)?$/);
+			if (m && !exclude.includes(m[1]) && !out.includes(m[1])) out.push(m[1]);
+		}
+		for (const v of Object.values(o)) if (v && typeof v === "object") walk(v);
+	};
+	walk(content);
+	return out;
+}
