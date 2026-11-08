@@ -5,12 +5,17 @@ import {
 	getSeoMeta,
 	decodeSlug,
 	getSiteSettings,
+	getEditMeta,
 } from "emdash";
 import { Image, PortableText, WidgetArea } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Byline from "../../components/Byline.astro";
 import PostCard from "../../components/PostCard.astro";
+import WpGroup from "../../components/WpGroup.astro";
+import AuthorBox from "../../components/AuthorBox.astro";
+import SideBanner from "../../components/SideBanner.astro";
+import { groupWpBlocks } from "../../utils/wp-groups";
 import { formatDate } from "../../utils/locale";
 import { getReadingTime } from "../../utils/reading-time";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
@@ -88,14 +93,23 @@ const parentCrumb = category
 	? { label: category.label, href: `/business/category/${category.slug}/` }
 	: { label: "記事一覧", href: "/business/posts/" };
 
-// Fetch a few extra recent posts in case the current post is among them.
-const { entries: recentPosts, cacheHint: recentPostsCacheHint } =
+// 関連記事: 同じカテゴリの新しい順に4本（カテゴリがなければ新着）。
+// この記事自身が入ることがあるので1本多めに取る。
+const RELATED_COUNT = 4;
+const { entries: relatedPool, cacheHint: relatedCacheHint } =
 	await getEmDashCollection("posts", {
+		...(category ? { where: { category: category.slug } } : {}),
 		orderBy: { published_at: "desc" },
-		limit: 4,
+		limit: RELATED_COUNT + 1,
 	});
-if (Astro.cache?.enabled) Astro.cache.set(recentPostsCacheHint);
-const otherPosts = recentPosts.filter((p) => p.id !== post.id).slice(0, 3);
+if (Astro.cache?.enabled) Astro.cache.set(relatedCacheHint);
+const otherPosts = relatedPool.filter((p) => p.id !== post.id).slice(0, RELATED_COUNT);
+
+// 本文: WordPress の枠（わかること・CTA）を囲み直す。管理画面の編集モードではそのまま渡す
+const content = getEditMeta(post.data.content)
+	? post.data.content
+	: groupWpBlocks(post.data.content);
+const contentComponents = { type: { kGroup: WpGroup } };
 
 // Related cards show no tags, so no term query is needed.
 const otherPostsWithTags = otherPosts.map((p) => ({ post: p, tags: [] }));
@@ -178,7 +192,7 @@ const hasHeadings = (post.data.content ?? []).some(
 						{
 							bylines.length > 0 && (
 								<div class="post-header__byline">
-									<span class="post-header__label">執筆・監修</span>
+									<span class="post-header__label">執筆</span>
 									<Byline bylines={bylines} layout="inline" max={2} size="md" />
 								</div>
 							)
@@ -210,11 +224,15 @@ const hasHeadings = (post.data.content ?? []).some(
 			<div class="frame post-layout">
 				<div class="post-main">
 					<div class="prose" data-post-content>
-						<PortableText value={post.data.content} />
+						<PortableText value={content} components={contentComponents} />
 					</div>
+					<SideBanner class="banner--inline" />
+					<AuthorBox />
 				</div>
 
 				<div class="post-rail">
+					<SideBanner class="banner--rail" />
+
 					<nav
 						class="toc"
 						aria-labelledby="toc-title"
@@ -240,7 +258,7 @@ const hasHeadings = (post.data.content ?? []).some(
 				<div class="frame related">
 					<div class="section-head">
 						<h2 id="continue-reading" class="section-head__title">
-							あわせて読みたい
+							関連記事
 						</h2>
 						<a href="/business/posts/" class="arrow-link">
 							記事一覧
@@ -502,7 +520,7 @@ const hasHeadings = (post.data.content ?? []).some(
 		.post-layout {
 			grid-template-columns:
 				minmax(36rem, var(--content-width))
-				minmax(10rem, var(--gutter-width));
+				minmax(10rem, 260px);
 			align-items: start;
 			justify-content: space-between;
 			gap: var(--spacing-10) clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
@@ -546,7 +564,7 @@ const hasHeadings = (post.data.content ?? []).some(
 	}
 
 	@media (max-width: 1099.98px) {
-		:global(.post-rail:not(:has(.widget))) {
+		:global(.post-rail) {
 			display: none;
 		}
 	}
@@ -783,10 +801,23 @@ const hasHeadings = (post.data.content ?? []).some(
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
 	}
 
-	/* At two columns the third card would sit alone on its own row */
-	@container (min-width: 31.5rem) and (max-width: 47.99rem) {
-		.related .post-grid > :global(:nth-child(3)) {
-			display: none;
+	/* バナー: パソコンは右の列、スマホ・タブレットは本文の下 */
+	:global(.banner--inline) {
+		max-width: 22rem;
+		margin: 3rem auto 0;
+	}
+
+	:global(.banner--rail) {
+		display: none !important;
+	}
+
+	@media (min-width: 1100px) {
+		:global(.banner--inline) {
+			display: none !important;
+		}
+
+		:global(.banner--rail) {
+			display: block !important;
 		}
 	}
 

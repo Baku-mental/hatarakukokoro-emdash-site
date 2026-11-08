@@ -1,0 +1,158 @@
+---
+/**
+ * 本文の枠（utils/wp-groups.ts で囲み直したもの）。
+ * WordPress の k-summary / k-cta-mid / k-cta-foot と同じ見た目にする。
+ */
+import { PortableText } from "emdash/ui";
+import type { WpGroupNode } from "../utils/wp-groups";
+
+interface Props {
+	node: WpGroupNode;
+}
+
+const { node } = Astro.props;
+---
+
+<div class:list={["k-group", `k-${node.variant}`]}>
+	<PortableText value={node.content} />
+</div>
+
+<style>
+	.k-group {
+		margin-block: 2rem;
+		border-radius: 12px;
+	}
+
+	.k-group :global(> :first-child) {
+		margin-block-start: 0;
+	}
+
+	.k-group :global(> :last-child) {
+		margin-block-end: 0;
+	}
+
+	/* この記事でわかること */
+	.k-summary {
+		padding: 20px 22px;
+		border: 1.5px solid var(--color-navy);
+	}
+
+	.k-summary :global(> p:first-child) {
+		margin-block-end: 10px;
+		font-size: 15px;
+		font-weight: 700;
+	}
+
+	.k-summary :global(ul) {
+		margin: 0;
+		padding-inline-start: 1.1em;
+		font-size: 14.5px;
+		line-height: 1.9;
+	}
+
+	.k-summary :global(li) {
+		margin: 0;
+	}
+
+	/* 文中の資料請求 */
+	.k-cta-mid {
+		padding: 20px 22px;
+		background: var(--color-teal-bg);
+	}
+
+	.k-cta-mid :global(> p:nth-child(1)) {
+		margin: 0;
+		font-size: 13px;
+		color: var(--color-muted);
+	}
+
+	.k-cta-mid :global(> p:nth-child(2)) {
+		margin: 3px 0 12px;
+		font-size: 16.5px;
+		font-weight: 700;
+		line-height: 1.5;
+	}
+
+	/* 記事の終わりの組織診断・資料 */
+	.k-cta-foot {
+		margin-block-start: 2.75rem;
+		padding: 34px 32px;
+		border-radius: 16px;
+		background: var(--color-navy);
+		color: #fff;
+		text-align: center;
+	}
+
+	.k-cta-foot :global(p) {
+		color: #fff;
+	}
+
+	.k-cta-foot :global(> p:nth-child(1)) {
+		margin: 0;
+		font-size: 22px;
+		font-weight: 700;
+		line-height: 1.5;
+	}
+
+	.k-cta-foot :global(> p:nth-child(2)) {
+		max-width: 34em;
+		margin: 12px auto 20px;
+		font-size: 14.5px;
+		line-height: 1.8;
+	}
+
+	/* ボタン（EmDash の部品の見た目を上書き） */
+	.k-group :global(.emdash-buttons) {
+		margin: 0 !important;
+		gap: 12px !important;
+	}
+
+	.k-cta-foot :global(.emdash-buttons) {
+		flex-direction: row !important;
+		flex-wrap: wrap;
+		justify-content: center !important;
+		align-items: center !important;
+	}
+
+	.k-group :global(.emdash-button) {
+		padding: 13px 28px !important;
+		border: 1.5px solid var(--color-teal) !important;
+		border-radius: 8px !important;
+		background: var(--color-teal) !important;
+		color: #fff !important;
+		font-size: 15px;
+		font-weight: 700;
+		line-height: 1.4;
+		text-decoration: none !important;
+	}
+
+	.k-group :global(.emdash-button:hover) {
+		border-color: var(--color-teal-dark) !important;
+		background: var(--color-teal-dark) !important;
+	}
+
+	.k-cta-mid :global(.emdash-button) {
+		padding: 8px 15px !important;
+		font-size: 13.5px;
+	}
+
+	.k-cta-foot :global(.emdash-button + .emdash-button) {
+		border-color: #fff !important;
+		background: transparent !important;
+	}
+
+	.k-cta-foot :global(.emdash-button + .emdash-button:hover) {
+		background: #fff !important;
+		color: var(--color-navy) !important;
+	}
+
+	@media (max-width: 720px) {
+		.k-cta-foot {
+			padding: 28px 20px;
+		}
+
+		.k-cta-foot :global(> p:nth-child(1)) {
+			font-size: 19px;
+		}
+	}
+</style>

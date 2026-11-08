@@ -1,0 +1,50 @@
+---
+/** ココロチェックの資料請求バナー。中身は site-config.ts の SIDE_BANNER */
+import { SIDE_BANNER } from "../site-config";
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<a
+	href={SIDE_BANNER.href}
+	target="_blank"
+	rel="noopener"
+	class:list={["side-banner", className]}
+>
+	<img
+		src={SIDE_BANNER.src}
+		alt={SIDE_BANNER.alt}
+		width="800"
+		height="800"
+		loading="lazy"
+		decoding="async"
+	/>
+</a>
+
+<style>
+	.side-banner {
+		display: block;
+		overflow: hidden;
+		border-radius: 12px;
+		box-shadow: 0 2px 10px rgb(0 47 87 / 0.1);
+		transition:
+			transform 0.2s,
+			box-shadow 0.2s;
+	}
+
+	.side-banner:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 18px rgb(0 47 87 / 0.16);
+	}
+
+	.side-banner img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 1 / 1;
+	}
+</style>

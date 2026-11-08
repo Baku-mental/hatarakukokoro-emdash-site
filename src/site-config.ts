@@ -15,6 +15,25 @@ export const LINKS = {
 	download: "https://www.jicoo.com/t/remental/f/37kJrBL59zGV",
 };
 
+/** 記事の下の「この記事を書いた人」（WordPress の著者欄と同じ内容） */
+export const EDITORIAL = {
+	name: "はたらくこころ研究所 編集部",
+	position: "運営：株式会社remental",
+	avatar: "/business/images/hataraku-editorial-avatar-300x300.png",
+	url: "/business/",
+	description: [
+		"はたらくこころ研究所は、株式会社remental が運営する、職場のメンタルヘルスの情報メディアです。編集部では、産業医や保健師などの産業保健の担当者がいない会社で人事・総務・経営を担う方に向けて、ストレスチェック、休職・復職、ハラスメント対策、管理職のラインケアなどの実務をまとめています。",
+		"法令や制度に関する記事は、厚生労働省など公的機関が公表している情報をもとに作成し、制度の改正にあわせて見直しています。",
+	],
+};
+
+/** 記事ページのバナー（パソコンは右の列、スマホは本文の下） */
+export const SIDE_BANNER = {
+	src: "/business/images/kokorocheck-shiryo-banner.jpg",
+	alt: "ココロチェック。ストレスチェックも、相談窓口も、こころに関する研修も、これひとつで。資料を無料でダウンロード",
+	href: LINKS.download,
+};
+
 export interface Category {
 	slug: string;
 	label: string;
@@ -73,8 +92,8 @@ export const CATEGORIES: Category[] = [
 export const NAV_CATEGORIES = CATEGORIES.filter((category) => category.nav);
 
 export const FOOTER_LINKS: Array<{ label: string; href: string; external?: boolean }> = [
-	{ label: "無料チェックツール", href: "/pages/tools" },
-	{ label: "メディア方針", href: "/pages/media-policy" },
-	{ label: "プライバシーポリシー", href: "/pages/privacy-policy" },
+	{ label: "無料チェックツール", href: "/business/tools/" },
+	{ label: "メディア方針", href: "/business/media-policy/" },
+	{ label: "プライバシーポリシー", href: "/business/privacy-policy/" },
 	{ label: "運営会社", href: "https://remental.co.jp/", external: true },
 ];
