@@ -612,7 +612,7 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 		.post-layout {
 			grid-template-columns:
 				minmax(36rem, var(--content-width))
-				minmax(10rem, 260px);
+				minmax(10rem, 300px);
 			align-items: start;
 			justify-content: space-between;
 			gap: var(--spacing-10) clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
@@ -1026,6 +1026,16 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 	/* 人気記事: パソコンは右の列（目次の下）、スマホ・タブレットは執筆者欄の下 */
 	:global(.popular--inline) {
 		margin-block-start: 2.5rem;
+	}
+
+	/* スマホ・タブレットの人気記事は2列 */
+	:global(.popular--inline .popular__list) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.25rem 1rem;
+	}
+
+	:global(.popular--inline .popular__name) {
+		font-size: 0.8125rem;
 	}
 
 	:global(.popular--rail) {

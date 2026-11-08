@@ -25,7 +25,7 @@ const { posts, class: className, title = "人気記事", ranked = true } = Astro
 							<a href={`/business/${p.id}/`} class="popular__link">
 								<span class="popular__thumb">
 									{p.data.featured_image && (
-										<Image image={p.data.featured_image} sizes="120px" />
+										<Image image={p.data.featured_image} sizes="(min-width: 1100px) 300px, 92vw" />
 									)}
 									{ranked && (
 										<span class:list={["popular__rank", `popular__rank--${i + 1}`]}>{i + 1}</span>
@@ -45,23 +45,20 @@ const { posts, class: className, title = "人気記事", ranked = true } = Astro
 }
 
 <style>
-	.popular {
-		padding: 1.25rem 1.125rem;
-		border: 1.5px solid var(--color-border);
-		border-radius: 14px;
-		background: var(--color-surface);
-	}
-
+	/* 枠なし。画像を列の幅いっぱいに、その下にタイトル */
 	.popular__title {
 		margin: 0 0 1rem;
-		font-size: 1rem;
+		padding-inline-start: 0.625rem;
+		border-inline-start: 4px solid var(--color-teal);
+		font-size: 1.0625rem;
 		font-weight: 700;
+		line-height: 1.4;
 		color: var(--color-navy);
 	}
 
 	.popular__list {
 		display: grid;
-		gap: 1rem;
+		gap: 1.375rem;
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -69,9 +66,7 @@ const { posts, class: className, title = "人気記事", ranked = true } = Astro
 
 	.popular__link {
 		display: grid;
-		grid-template-columns: 96px minmax(0, 1fr);
-		gap: 0.75rem;
-		align-items: start;
+		gap: 0.625rem;
 		color: inherit;
 		text-decoration: none;
 	}
@@ -81,15 +76,20 @@ const { posts, class: className, title = "人気記事", ranked = true } = Astro
 		display: block;
 		overflow: hidden;
 		aspect-ratio: 1200 / 630;
-		border-radius: 6px;
+		border-radius: 8px;
 		background: var(--color-fill);
-		box-shadow: 0 1px 4px rgb(0 47 87 / 0.12);
+		box-shadow: 0 1px 6px rgb(0 47 87 / 0.12);
 	}
 
 	.popular__thumb :global(img) {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		transition: transform 0.25s;
+	}
+
+	.popular__link:hover .popular__thumb :global(img) {
+		transform: scale(1.03);
 	}
 
 	.popular__rank {
@@ -98,11 +98,11 @@ const { posts, class: className, title = "人気記事", ranked = true } = Astro
 		left: 0;
 		display: grid;
 		place-items: center;
-		width: 22px;
-		height: 22px;
+		width: 30px;
+		height: 30px;
 		background: #8a99a6;
 		color: #fff;
-		font-size: 12px;
+		font-size: 14px;
 		font-weight: 700;
 		line-height: 1;
 	}
@@ -125,19 +125,18 @@ const { posts, class: className, title = "人気記事", ranked = true } = Astro
 	}
 
 	.popular__name {
-		font-size: 0.8125rem;
+		font-size: 0.9375rem;
 		font-weight: 700;
-		line-height: 1.5;
+		line-height: 1.55;
 		color: var(--color-navy);
 	}
 
 	.popular__link:hover .popular__name {
 		color: var(--color-teal-dark);
-		text-decoration: underline;
 	}
 
 	.popular__cat {
-		font-size: 0.6875rem;
+		font-size: 0.75rem;
 		color: var(--color-muted);
 	}
 </style>
