@@ -212,7 +212,7 @@ const hasHeadings = (post.data.content ?? []).some(
 								<div class="post-hero__media" {...post.edit.featured_image}>
 									<Image
 										image={post.data.featured_image}
-										sizes="(min-width: 1100px) 1020px, (min-width: 760px) 680px, 92vw"
+										sizes="(min-width: 1100px) 760px, (min-width: 760px) 680px, 92vw"
 										priority
 									/>
 								</div>
@@ -558,7 +558,7 @@ const hasHeadings = (post.data.content ?? []).some(
 		}
 
 		.post-hero__media {
-			max-width: none;
+			max-width: 760px;
 		}
 
 		.post-header__lead {
