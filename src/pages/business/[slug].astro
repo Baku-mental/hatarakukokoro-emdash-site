@@ -212,7 +212,7 @@ const hasHeadings = (post.data.content ?? []).some(
 								<div class="post-hero__media" {...post.edit.featured_image}>
 									<Image
 										image={post.data.featured_image}
-										sizes="(min-width: 1100px) 440px, (min-width: 760px) 680px, 92vw"
+										sizes="(min-width: 1100px) 1020px, (min-width: 760px) 680px, 92vw"
 										priority
 									/>
 								</div>
@@ -547,32 +547,22 @@ const hasHeadings = (post.data.content ?? []).some(
 	}
 
 	@media (min-width: 1100px) {
-		/* パソコン: 冒頭は2列。左にタイトル・リード文・執筆者、右にアイキャッチ */
+		/* パソコン: 冒頭は横幅いっぱいに、タイトル（1行）→ 画像 → 導入文 → 執筆者 */
 		.post-header__inner {
 			max-width: none;
 		}
 
-		.post-header__body {
-			display: grid;
-			grid-template-columns: minmax(0, 1fr) 440px;
-			align-items: center;
-			gap: 3rem;
-		}
-
-		.post-header__text {
-			display: block;
+		.post-header__title {
+			max-width: none;
+			font-size: clamp(1.6rem, 0.9rem + 1.1vw, 1.95rem);
 		}
 
 		.post-hero__media {
-			margin: 0;
+			max-width: none;
 		}
 
 		.post-header__lead {
-			margin-block-start: var(--spacing-5);
-			font-size: var(--font-size-lg);
-		}
-
-		.post-header__meta {
+			max-width: none;
 			margin-block-start: var(--spacing-6);
 		}
 
