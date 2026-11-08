@@ -154,66 +154,70 @@ const hasHeadings = (post.data.content ?? []).some(
 					<div class="post-header__crumbs">
 						<Breadcrumbs items={[parentCrumb, { label: post.data.title || "無題" }]} />
 					</div>
-					{
-						tags.length > 0 && (
-							<ul class="chips post-header__tags" aria-label="タグ">
-								{tags.map((t) => (
-									<li>
-										<a href={`/business/tag/${t.slug}/`} class="chip">
-											{t.label}
-										</a>
-									</li>
-								))}
-							</ul>
-						)
-					}
-					<h1 class="intro__title post-header__title" {...post.edit.title}>
-						{post.data.title}
-					</h1>
-					{
-						post.data.featured_image && (
-							<div class="post-hero__media" {...post.edit.featured_image}>
-								<Image
-									image={post.data.featured_image}
-									sizes="(min-width: 760px) 680px, 92vw"
-									priority
-								/>
+					<div class="post-header__body">
+						<div class="post-header__text">
+							{
+								tags.length > 0 && (
+									<ul class="chips post-header__tags" aria-label="タグ">
+										{tags.map((t) => (
+											<li>
+												<a href={`/business/tag/${t.slug}/`} class="chip">
+													{t.label}
+												</a>
+											</li>
+										))}
+									</ul>
+								)
+							}
+							<h1 class="intro__title post-header__title" {...post.edit.title}>
+								{post.data.title}
+							</h1>
+							{
+								post.data.excerpt && (
+									<p class="intro__lead post-header__lead" {...post.edit.excerpt}>
+										{post.data.excerpt}
+									</p>
+								)
+							}
+							<div class="post-header__meta">
+								{
+									bylines.length > 0 && (
+										<div class="post-header__byline">
+											<span class="post-header__label">執筆</span>
+											<Byline bylines={bylines} layout="inline" max={2} size="md" />
+										</div>
+									)
+								}
+								<p class="post-header__dateline">
+									{
+										publishedAt && (
+											<span>
+												公開日 <time datetime={publishedAt.toISOString()}>{publishDate}</time>
+											</span>
+										)
+									}
+									{
+										showUpdated && (
+											<span>
+												更新日 <time datetime={updatedAt.toISOString()}>{updateDate}</time>
+											</span>
+										)
+									}
+									<span>{readingTime}分で読めます</span>
+								</p>
 							</div>
-						)
-					}
-					{
-						post.data.excerpt && (
-							<p class="intro__lead post-header__lead" {...post.edit.excerpt}>
-								{post.data.excerpt}
-							</p>
-						)
-					}
-					<div class="post-header__meta">
+						</div>
 						{
-							bylines.length > 0 && (
-								<div class="post-header__byline">
-									<span class="post-header__label">執筆</span>
-									<Byline bylines={bylines} layout="inline" max={2} size="md" />
+							post.data.featured_image && (
+								<div class="post-hero__media" {...post.edit.featured_image}>
+									<Image
+										image={post.data.featured_image}
+										sizes="(min-width: 1100px) 440px, (min-width: 760px) 680px, 92vw"
+										priority
+									/>
 								</div>
 							)
 						}
-						<p class="post-header__dateline">
-							{
-								publishedAt && (
-									<span>
-										公開日 <time datetime={publishedAt.toISOString()}>{publishDate}</time>
-									</span>
-								)
-							}
-							{
-								showUpdated && (
-									<span>
-										更新日 <time datetime={updatedAt.toISOString()}>{updateDate}</time>
-									</span>
-								)
-							}
-							<span>{readingTime}分で読めます</span>
-						</p>
 					</div>
 				</div>
 			</div>
@@ -512,10 +516,64 @@ const hasHeadings = (post.data.content ?? []).some(
 		color: var(--color-text);
 	}
 
+	/* スマホ・タブレット: タイトル → 画像 → リード文 → 執筆者の順に縦に並べる */
+	.post-header__body {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.post-header__text {
+		display: contents;
+	}
+
+	.post-header__tags {
+		order: 1;
+	}
+
+	.post-header__title {
+		order: 2;
+	}
+
+	.post-hero__media {
+		order: 3;
+	}
+
+	.post-header__lead {
+		order: 4;
+	}
+
+	.post-header__meta {
+		order: 5;
+	}
+
 	@media (min-width: 1100px) {
-		/* 冒頭（タイトル・画像・リード文）は本文と同じ幅で、左端をそろえる */
+		/* パソコン: 冒頭は2列。左にタイトル・リード文・執筆者、右にアイキャッチ */
 		.post-header__inner {
-			margin-inline: 0;
+			max-width: none;
+		}
+
+		.post-header__body {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 440px;
+			align-items: center;
+			gap: 3rem;
+		}
+
+		.post-header__text {
+			display: block;
+		}
+
+		.post-hero__media {
+			margin: 0;
+		}
+
+		.post-header__lead {
+			margin-block-start: var(--spacing-5);
+			font-size: var(--font-size-lg);
+		}
+
+		.post-header__meta {
+			margin-block-start: var(--spacing-6);
 		}
 
 		.post-layout {
