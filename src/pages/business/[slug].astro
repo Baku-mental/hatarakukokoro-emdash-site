@@ -19,6 +19,7 @@ import PostBlock from "../../components/PostBlock.astro";
 import PopularPosts from "../../components/PopularPosts.astro";
 import { POPULAR_SLUGS } from "../../site-config";
 import { groupWpBlocks } from "../../utils/wp-groups";
+import { legacyWpPath } from "../../utils/wp-legacy";
 import { buildToc, linkedSlugs, splitAtFirstH2 } from "../../utils/toc";
 import { formatDate } from "../../utils/locale";
 import { getReadingTime } from "../../utils/reading-time";
@@ -33,6 +34,13 @@ if (!slug) {
 
 // 取り込んだ WordPress のトップ（固定ページ top）は新しいトップへ
 if (slug === "top") return Astro.redirect("/business/", 301);
+
+// WordPress の古い住所: /business/index.php?p=… や /business/feed/ など
+if (slug === "index.php") {
+	return Astro.redirect(legacyWpPath(Astro.url.searchParams) ?? "/business/", 301);
+}
+if (slug === "feed" || slug === "comments") return Astro.redirect("/business/rss.xml", 301);
+if (slug === "wp-sitemap.xml") return Astro.redirect("/business/sitemap.xml", 301);
 
 // 記事も固定ページも /business/<slug>/ で開く。末尾の「/」がなければ付けて移動
 if (!Astro.url.pathname.endsWith("/")) {

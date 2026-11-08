@@ -76,6 +76,20 @@ function buildTitle(raw: string): string {
 }
 const fullTitle = buildTitle(title);
 
+// 本番（remental.co.jp）以外（試験用の workers.dev）は検索エンジンに載せない。
+// canonical は常に本番の住所で書く
+const isProduction = Astro.url.hostname === new URL(SITE.origin).hostname;
+const canonicalUrl = (() => {
+	const raw = canonical ?? Astro.url.pathname;
+	try {
+		const u = new URL(raw, Astro.url.origin);
+		return `${SITE.origin}${u.pathname}`;
+	} catch {
+		return null;
+	}
+})();
+const robotsMeta = isProduction ? robots : "noindex, nofollow";
+
 // Build public page context for plugin contributions
 // SEO data is passed here and rendered securely by EmDashHead
 const pageCtx = createPublicPageContext({
@@ -85,10 +99,10 @@ const pageCtx = createPublicPageContext({
 	title: fullTitle,
 	pageTitle: pageTitle ?? title,
 	description,
-	canonical,
+	canonical: canonicalUrl,
 	image,
 	content,
-	seo: { ogImage: image, robots },
+	seo: { ogImage: image, robots: robotsMeta },
 	articleMeta: { publishedTime, modifiedTime, author },
 	siteName: siteTitle,
 });

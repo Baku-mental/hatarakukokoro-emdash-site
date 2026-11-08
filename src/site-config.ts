@@ -4,6 +4,8 @@
  */
 
 export const SITE = {
+	/** 本番の住所。canonical とサイトマップはこちらで書く。これ以外のホスト（workers.dev）は noindex */
+	origin: "https://remental.co.jp",
 	operator: "株式会社remental",
 	operatorUrl: "https://remental.co.jp/",
 	tagline: "ストレスチェックから休職・復職まで。企業のメンタルヘルス実務メディア",

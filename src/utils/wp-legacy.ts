@@ -125,10 +125,17 @@ export const WP_CATEGORIES: Record<string, string> = {
 
 /** 古い URL のクエリから新しいパスを返す。対応がなければ null */
 export function legacyWpPath(params: URLSearchParams): string | null {
+	// WordPress のサイトマップ（index.php?xml_sitemap=...）とフィード（?feed=rss2）
+	if (params.has("xml_sitemap")) return "/business/sitemap.xml";
+	if (params.has("feed")) return "/business/rss.xml";
 	const id = params.get("p") ?? params.get("page_id");
 	// WordPress のトップ（固定ページ top）は新しいトップへ
 	if (id && WP_POSTS[id]) return WP_POSTS[id] === "top" ? "/business/" : `/business/${WP_POSTS[id]}/`;
 	const cat = params.get("cat");
 	if (cat && WP_CATEGORIES[cat]) return `/business/category/${WP_CATEGORIES[cat]}/`;
+	// 検索・著者・タグ・月別・添付ファイルなど、移していないページはトップへ
+	for (const key of ["s", "author", "tag", "m", "attachment_id", "paged", "p", "page_id", "cat"]) {
+		if (params.has(key)) return "/business/";
+	}
 	return null;
 }
