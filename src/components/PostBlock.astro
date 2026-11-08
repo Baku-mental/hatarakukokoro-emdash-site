@@ -1,0 +1,61 @@
+---
+/**
+ * 本文の段落・見出しの表示（EmDash の Block と同じ HTML）。
+ * H2・H3 には目次から飛べるように id（h-<ブロックのキー>）を付ける。
+ * id の作り方は utils/toc.ts の headingId と同じにすること。
+ */
+import type { BlockProps } from "astro-portabletext/types";
+import { headingId } from "../utils/toc";
+
+type Node = BlockProps["node"] & { textAlign?: string };
+type Props = Omit<BlockProps, "node"> & { node: Node };
+
+const props = Astro.props as Props;
+const { node, index: _index, isInline: _isInline, ...attrs } = props;
+
+const ALIGN: Record<string, string> = {
+	center: "has-text-align-center",
+	right: "has-text-align-right",
+	justify: "has-text-align-justify",
+};
+const alignClass =
+	node.textAlign && Object.hasOwn(ALIGN, node.textAlign) ? ALIGN[node.textAlign] : undefined;
+const style = node.style ?? "normal";
+const id = style === "h2" || style === "h3" ? headingId(node._key) : undefined;
+---
+
+{
+	style === "h1" ? (
+		<h1 class={alignClass} {...attrs}><slot /></h1>
+	) : style === "h2" ? (
+		<h2 class={alignClass} id={id} {...attrs}><slot /></h2>
+	) : style === "h3" ? (
+		<h3 class={alignClass} id={id} {...attrs}><slot /></h3>
+	) : style === "h4" ? (
+		<h4 class={alignClass} {...attrs}><slot /></h4>
+	) : style === "h5" ? (
+		<h5 class={alignClass} {...attrs}><slot /></h5>
+	) : style === "h6" ? (
+		<h6 class={alignClass} {...attrs}><slot /></h6>
+	) : style === "blockquote" ? (
+		<blockquote class={alignClass} {...attrs}><slot /></blockquote>
+	) : (
+		<p class={alignClass} {...attrs}><slot /></p>
+	)
+}
+
+<style>
+	.has-text-align-center {
+		text-align: center;
+	}
+	.has-text-align-right {
+		text-align: right;
+	}
+	.has-text-align-justify {
+		text-align: justify;
+	}
+	h2,
+	h3 {
+		scroll-margin-top: calc(var(--nav-height, 4rem) + 1.5rem);
+	}
+</style>

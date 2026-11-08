@@ -15,7 +15,9 @@ import PostCard from "../../components/PostCard.astro";
 import WpGroup from "../../components/WpGroup.astro";
 import AuthorBox from "../../components/AuthorBox.astro";
 import SideBanner from "../../components/SideBanner.astro";
+import PostBlock from "../../components/PostBlock.astro";
 import { groupWpBlocks } from "../../utils/wp-groups";
+import { buildToc, splitAtFirstH2 } from "../../utils/toc";
 import { formatDate } from "../../utils/locale";
 import { getReadingTime } from "../../utils/reading-time";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
@@ -106,10 +108,15 @@ if (Astro.cache?.enabled) Astro.cache.set(relatedCacheHint);
 const otherPosts = relatedPool.filter((p) => p.id !== post.id).slice(0, RELATED_COUNT);
 
 // 本文: WordPress の枠（わかること・CTA）を囲み直す。管理画面の編集モードではそのまま渡す
-const content = getEditMeta(post.data.content)
-	? post.data.content
-	: groupWpBlocks(post.data.content);
-const contentComponents = { type: { kGroup: WpGroup } };
+const isEditing = !!getEditMeta(post.data.content);
+const content = isEditing ? post.data.content : groupWpBlocks(post.data.content);
+const contentComponents = { type: { kGroup: WpGroup }, block: PostBlock };
+
+// 目次（H2・H3）。本文の中（最初の H2 の前）と、パソコンの右の列に出す
+const toc = buildToc(post.data.content);
+const [contentIntro, contentBody] = isEditing
+	? [[], content]
+	: splitAtFirstH2(content as unknown[]);
 
 // Related cards show no tags, so no term query is needed.
 const otherPostsWithTags = otherPosts.map((p) => ({ post: p, tags: [] }));
@@ -124,14 +131,6 @@ const showUpdated =
 	!!publishedAt && updatedAt.getTime() - publishedAt.getTime() > ONE_DAY_MS;
 const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 
-// The script below builds the table of contents and has the final say; this
-// guess keeps the sidebar from shifting when the page loads.
-const hasHeadings = (post.data.content ?? []).some(
-	(block) =>
-		block._type === "block" &&
-		"style" in block &&
-		(block.style === "h2" || block.style === "h3"),
-);
 ---
 
 <Base
@@ -228,7 +227,30 @@ const hasHeadings = (post.data.content ?? []).some(
 			<div class="frame post-layout">
 				<div class="post-main">
 					<div class="prose" data-post-content>
-						<PortableText value={content} components={contentComponents} />
+						{
+							isEditing ? (
+								<PortableText value={content} components={contentComponents} />
+							) : (
+								<>
+									{contentIntro.length > 0 && (
+										<PortableText value={contentIntro} components={contentComponents} />
+									)}
+									{toc.length > 0 && (
+										<nav class="intoc" aria-labelledby="intoc-title">
+											<p id="intoc-title" class="intoc__title">目次</p>
+											<ol class="intoc__list">
+												{toc.map((item) => (
+													<li class:list={["intoc__item", { "intoc__item--sub": item.level === 3 }]}>
+														<a href={`#${item.id}`}>{item.text}</a>
+													</li>
+												))}
+											</ol>
+										</nav>
+									)}
+									<PortableText value={contentBody} components={contentComponents} />
+								</>
+							)
+						}
 					</div>
 					<SideBanner class="banner--inline" />
 					<AuthorBox />
@@ -240,11 +262,17 @@ const hasHeadings = (post.data.content ?? []).some(
 					<nav
 						class="toc"
 						aria-labelledby="toc-title"
-						hidden={!hasHeadings}
+						hidden={toc.length === 0}
 						data-toc
 					>
 						<h2 id="toc-title" class="eyebrow">目次</h2>
-						<ol class="toc__list" data-toc-list></ol>
+						<ol class="toc__list">
+							{toc.map((item) => (
+								<li class:list={["toc__item", { "toc__item--nested": item.level === 3 }]}>
+									<a href={`#${item.id}`} class="toc__link">{item.text}</a>
+								</li>
+							))}
+						</ol>
 					</nav>
 
 					<aside class="post-widgets" aria-labelledby="widgets-title">
@@ -296,65 +324,37 @@ const hasHeadings = (post.data.content ?? []).some(
 	}
 
 	<script>
-		// Build the table of contents from the body's h2/h3 headings
-		function buildToc() {
-			const content = document.querySelector("[data-post-content]");
-			const toc = document.querySelector<HTMLElement>("[data-toc]");
-			const list = document.querySelector("[data-toc-list]");
-			if (!content || !toc || !list) return;
-
-			const headings = [
-				...content.querySelectorAll<HTMLHeadingElement>("h2, h3"),
+		// 右の列の目次で、いま読んでいる見出しに印を付ける（目次そのものは HTML に入っている）
+		function trackToc() {
+			const links = [
+				...document.querySelectorAll<HTMLAnchorElement>("[data-toc] .toc__link"),
 			];
-			toc.hidden = headings.length === 0;
-			if (headings.length === 0) return;
+			if (links.length === 0) return;
+			const byId = new Map<string, HTMLAnchorElement>();
+			for (const link of links) byId.set(decodeURIComponent(link.hash.slice(1)), link);
 
-			const links = new Map<Element, HTMLAnchorElement>();
-			headings.forEach((heading, index) => {
-				if (!heading.id) {
-					heading.id = `heading-${index}`;
-				}
-
-				const item = document.createElement("li");
-				item.className =
-					heading.tagName === "H3"
-						? "toc__item toc__item--nested"
-						: "toc__item";
-
-				const link = document.createElement("a");
-				link.href = `#${heading.id}`;
-				link.className = "toc__link";
-				link.textContent = heading.textContent;
-
-				item.appendChild(link);
-				list.appendChild(item);
-				links.set(heading, link);
-			});
-
-			// Mark the section currently in view
 			const setCurrent = (link: HTMLAnchorElement) => {
-				for (const other of links.values()) {
-					other.removeAttribute("aria-current");
-				}
+				for (const other of links) other.removeAttribute("aria-current");
 				link.setAttribute("aria-current", "true");
 			};
-			const first = links.values().next().value;
-			if (first) setCurrent(first);
+			setCurrent(links[0]);
 
 			const observer = new IntersectionObserver(
 				(entries) => {
 					for (const entry of entries) {
-						const link = links.get(entry.target);
+						const link = byId.get(entry.target.id);
 						if (link && entry.isIntersecting) setCurrent(link);
 					}
 				},
 				{ rootMargin: "-80px 0px -80% 0px" },
 			);
-
-			headings.forEach((heading) => observer.observe(heading));
+			for (const id of byId.keys()) {
+				const heading = document.getElementById(id);
+				if (heading) observer.observe(heading);
+			}
 		}
 
-		buildToc();
+		trackToc();
 	</script>
 </Base>
 
@@ -488,7 +488,7 @@ const hasHeadings = (post.data.content ?? []).some(
 		border-inline-start: 1px solid var(--color-border);
 	}
 
-	.toc :global(.toc__link) {
+	.toc .toc__link {
 		display: block;
 		margin-inline-start: -1px;
 		padding-block: 5px;
@@ -503,15 +503,15 @@ const hasHeadings = (post.data.content ?? []).some(
 			border-color var(--transition-fast);
 	}
 
-	.toc :global(.toc__item--nested .toc__link) {
+	.toc .toc__item--nested .toc__link {
 		padding-inline-start: var(--spacing-6);
 	}
 
-	.toc :global(.toc__link:hover) {
+	.toc .toc__link:hover {
 		color: var(--color-text);
 	}
 
-	.toc :global(.toc__link[aria-current="true"]) {
+	.toc .toc__link[aria-current="true"] {
 		border-inline-start-color: var(--color-text);
 		color: var(--color-text);
 	}
@@ -848,6 +848,66 @@ const hasHeadings = (post.data.content ?? []).some(
 
 	.related .post-grid {
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+	}
+
+	/* 本文の中の目次（最初の H2 の前） */
+	.intoc {
+		margin-block: 2rem 2.5rem;
+		padding: 1.25rem 1.5rem;
+		border-radius: 12px;
+		background: var(--color-fill);
+	}
+
+	.intoc__title {
+		margin: 0 0 0.75rem !important;
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--color-navy);
+	}
+
+	.intoc__list {
+		margin: 0 !important;
+		padding: 0 !important;
+		list-style: none !important;
+		counter-reset: intoc;
+	}
+
+	.intoc__item {
+		margin: 0 !important;
+		padding-block: 0.3rem;
+		font-size: 0.9375rem;
+		font-weight: 600;
+		line-height: 1.6;
+	}
+
+	.intoc__item:not(.intoc__item--sub) {
+		counter-increment: intoc;
+	}
+
+	.intoc__item:not(.intoc__item--sub)::before {
+		content: counter(intoc) ". ";
+		color: var(--color-teal-dark);
+	}
+
+	.intoc__item--sub {
+		padding-inline-start: 1.5rem;
+		font-size: 0.875rem;
+		font-weight: 400;
+	}
+
+	.intoc__item--sub::before {
+		content: "- ";
+		color: var(--color-muted);
+	}
+
+	.intoc a {
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	.intoc a:hover {
+		color: var(--color-teal-dark);
+		text-decoration: underline;
 	}
 
 	/* バナー: パソコンは右の列、スマホ・タブレットは本文の下 */
