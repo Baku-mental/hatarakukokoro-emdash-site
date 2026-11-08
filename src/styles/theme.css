@@ -138,3 +138,34 @@ body::before,
 .intro__subtitle {
 	line-height: var(--leading-tight);
 }
+
+/* 記事本文の見出し（WordPress 版と同じ見た目）。H2: ティールの左線／H3: 点線の下線 */
+.prose h2 {
+	padding-inline-start: 14px;
+	border-inline-start: 5px solid var(--color-teal);
+	color: var(--color-navy);
+	font-size: 23px;
+	font-weight: 700;
+	line-height: 1.45;
+	text-wrap: wrap;
+}
+
+.prose h3 {
+	padding-block-end: 7px;
+	border-block-end: 1px dashed var(--color-border-strong);
+	color: var(--color-navy);
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 1.5;
+	text-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+	.prose h2 {
+		font-size: 20px;
+	}
+
+	.prose h3 {
+		font-size: 17px;
+	}
+}
