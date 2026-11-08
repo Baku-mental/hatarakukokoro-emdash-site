@@ -513,8 +513,9 @@ const hasHeadings = (post.data.content ?? []).some(
 	}
 
 	@media (min-width: 1100px) {
+		/* 冒頭（タイトル・画像・リード文）は本文と同じ幅で、左端をそろえる */
 		.post-header__inner {
-			max-width: none;
+			margin-inline: 0;
 		}
 
 		.post-layout {
