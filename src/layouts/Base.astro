@@ -133,6 +133,21 @@ const year = new Date().getFullYear();
 		<Font cssVariable="--font-mono" />
 		<title>{fullTitle}</title>
 		<EmDashHead page={pageCtx} />
+		{
+			isProduction && SITE.ga4 && (
+				<>
+					<script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.ga4}`} />
+					<script is:inline define:vars={{ id: SITE.ga4 }}>
+						window.dataLayer = window.dataLayer || [];
+						function gtag() {
+							dataLayer.push(arguments);
+						}
+						gtag("js", new Date());
+						gtag("config", id);
+					</script>
+				</>
+			)
+		}
 		<link
 			rel="alternate"
 			type="application/rss+xml"

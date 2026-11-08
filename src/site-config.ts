@@ -6,6 +6,8 @@
 export const SITE = {
 	/** 本番の住所。canonical とサイトマップはこちらで書く。これ以外のホスト（workers.dev）は noindex */
 	origin: "https://remental.co.jp",
+	/** GA4 の測定 ID（WordPress 版と同じ）。本番の住所のときだけ読み込む */
+	ga4: "G-6D5X78FP1M",
 	operator: "株式会社remental",
 	operatorUrl: "https://remental.co.jp/",
 	tagline: "ストレスチェックから休職・復職まで。企業のメンタルヘルス実務メディア",
