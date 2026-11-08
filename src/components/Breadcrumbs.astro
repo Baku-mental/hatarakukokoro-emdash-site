@@ -15,9 +15,13 @@ interface Crumb {
 
 interface Props {
 	items: Crumb[];
+	/** 現在地（最後の項目）を画面に出さない。構造化データには残す（記事ページ用） */
+	hideCurrent?: boolean;
 }
 
+const { hideCurrent = false } = Astro.props;
 const trail: Crumb[] = [{ label: "ホーム", href: "/business/" }, ...Astro.props.items];
+const visible = hideCurrent ? trail.slice(0, -1) : trail;
 
 const jsonLd = {
 	"@context": "https://schema.org",
@@ -34,14 +38,18 @@ const jsonLd = {
 <nav class="crumbs" aria-label="パンくずリスト">
 	<ol>
 		{
-			trail.map((crumb, index) => (
+			visible.map((crumb, index) => (
 				<li>
-					{index > 0 && <span class="crumbs__sep" aria-hidden="true">&gt;</span>}
-					{crumb.href && index < trail.length - 1 ? (
-						<a href={crumb.href}>{crumb.label}</a>
+					{index > 0 && <svg class="crumbs__sep" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>}
+					{crumb.href && (hideCurrent || index < trail.length - 1) ? (
+						<a href={crumb.href}>
+							{index === 0 && <svg class="crumbs__home" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 11.2h2.8V21h5.2v-6h3v6h5.2v-9.8h2.8z" fill="currentColor" /></svg>}
+							{crumb.label}
+						</a>
 					) : (
 						<span aria-current="page">{crumb.label}</span>
 					)}
+					{hideCurrent && index === visible.length - 1 && <svg class="crumbs__sep" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>}
 				</li>
 			))
 		}
@@ -57,7 +65,7 @@ const jsonLd = {
 	.crumbs ol {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: baseline;
+		align-items: center;
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -67,7 +75,8 @@ const jsonLd = {
 	}
 
 	.crumbs li {
-		display: inline;
+		display: inline-flex;
+		align-items: center;
 	}
 
 	.crumbs a {
@@ -80,8 +89,22 @@ const jsonLd = {
 		text-decoration: underline;
 	}
 
+	.crumbs a {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.crumbs__home {
+		width: 14px;
+		height: 14px;
+	}
+
 	.crumbs__sep {
-		margin-inline: 10px;
+		width: 13px;
+		height: 13px;
+		margin-inline: 8px;
+		vertical-align: -2px;
 		color: var(--crumb-sep, var(--color-muted));
 	}
 
@@ -101,7 +124,7 @@ const jsonLd = {
 		}
 
 		.crumbs__sep {
-			margin-inline: 6px;
+			margin-inline: 4px;
 		}
 
 		.crumbs [aria-current="page"] {

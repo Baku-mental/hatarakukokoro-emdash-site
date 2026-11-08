@@ -34,6 +34,18 @@ export const SIDE_BANNER = {
 	href: LINKS.download,
 };
 
+/**
+ * 記事ページの「人気記事」（上から1位〜）。EmDash には閲覧数がないので手で選ぶ。
+ * 最初は WordPress の人気記事ウィジェット（閲覧数順、2026-11-08 時点）と同じ5本
+ */
+export const POPULAR_SLUGS = [
+	"kasuhara-poster",
+	"fukushoku-aisatsu",
+	"mental-yowai-buka",
+	"anzen-eisei-iinkai-neta",
+	"shobyo-teatekin-kaisha",
+];
+
 export interface Category {
 	slug: string;
 	label: string;

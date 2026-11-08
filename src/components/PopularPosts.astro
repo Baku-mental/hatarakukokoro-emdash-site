@@ -1,0 +1,139 @@
+---
+/** 記事ページの「人気記事」。並びは site-config.ts の POPULAR_SLUGS */
+import type { ContentEntry, InferCollectionData } from "emdash";
+import { Image } from "emdash/ui";
+
+interface Props {
+	posts: ContentEntry<InferCollectionData<"posts">>[];
+	class?: string;
+}
+
+const { posts, class: className } = Astro.props;
+---
+
+{
+	posts.length > 0 && (
+		<section class:list={["popular", className]}>
+			<h2 class="popular__title">人気記事</h2>
+			<ol class="popular__list">
+				{posts.map((p, i) => {
+					const category = p.data.terms?.category?.[0] ?? null;
+					return (
+						<li class="popular__item">
+							<a href={`/business/${p.id}/`} class="popular__link">
+								<span class="popular__thumb">
+									{p.data.featured_image && (
+										<Image image={p.data.featured_image} sizes="120px" />
+									)}
+									<span class:list={["popular__rank", `popular__rank--${i + 1}`]}>{i + 1}</span>
+								</span>
+								<span class="popular__body">
+									<span class="popular__name">{p.data.title}</span>
+									{category && <span class="popular__cat">{category.label}</span>}
+								</span>
+							</a>
+						</li>
+					);
+				})}
+			</ol>
+		</section>
+	)
+}
+
+<style>
+	.popular {
+		padding: 1.25rem 1.125rem;
+		border: 1.5px solid var(--color-border);
+		border-radius: 14px;
+		background: var(--color-surface);
+	}
+
+	.popular__title {
+		margin: 0 0 1rem;
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--color-navy);
+	}
+
+	.popular__list {
+		display: grid;
+		gap: 1rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.popular__link {
+		display: grid;
+		grid-template-columns: 96px minmax(0, 1fr);
+		gap: 0.75rem;
+		align-items: start;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.popular__thumb {
+		position: relative;
+		display: block;
+		overflow: hidden;
+		aspect-ratio: 1200 / 630;
+		border-radius: 6px;
+		background: var(--color-fill);
+		box-shadow: 0 1px 4px rgb(0 47 87 / 0.12);
+	}
+
+	.popular__thumb :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.popular__rank {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: grid;
+		place-items: center;
+		width: 22px;
+		height: 22px;
+		background: #8a99a6;
+		color: #fff;
+		font-size: 12px;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.popular__rank--1 {
+		background: linear-gradient(135deg, #e6b422, #f7d55c);
+	}
+
+	.popular__rank--2 {
+		background: linear-gradient(135deg, #9aa3ab, #c9d0d6);
+	}
+
+	.popular__rank--3 {
+		background: linear-gradient(135deg, #b2702f, #d89a5a);
+	}
+
+	.popular__body {
+		display: grid;
+		gap: 0.25rem;
+	}
+
+	.popular__name {
+		font-size: 0.8125rem;
+		font-weight: 700;
+		line-height: 1.5;
+		color: var(--color-navy);
+	}
+
+	.popular__link:hover .popular__name {
+		color: var(--color-teal-dark);
+		text-decoration: underline;
+	}
+
+	.popular__cat {
+		font-size: 0.6875rem;
+		color: var(--color-muted);
+	}
+</style>

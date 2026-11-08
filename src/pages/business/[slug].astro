@@ -16,6 +16,8 @@ import WpGroup from "../../components/WpGroup.astro";
 import AuthorBox from "../../components/AuthorBox.astro";
 import SideBanner from "../../components/SideBanner.astro";
 import PostBlock from "../../components/PostBlock.astro";
+import PopularPosts from "../../components/PopularPosts.astro";
+import { POPULAR_SLUGS } from "../../site-config";
 import { groupWpBlocks } from "../../utils/wp-groups";
 import { buildToc, splitAtFirstH2 } from "../../utils/toc";
 import { formatDate } from "../../utils/locale";
@@ -107,6 +109,16 @@ const { entries: relatedPool, cacheHint: relatedCacheHint } =
 if (Astro.cache?.enabled) Astro.cache.set(relatedCacheHint);
 const otherPosts = relatedPool.filter((p) => p.id !== post.id).slice(0, RELATED_COUNT);
 
+// 人気記事（site-config.ts の POPULAR_SLUGS の順。1回の問い合わせでまとめて取る）
+const { entries: popularPool, cacheHint: popularCacheHint } = await getEmDashCollection("posts", {
+	where: { slug: POPULAR_SLUGS },
+	limit: POPULAR_SLUGS.length,
+});
+if (Astro.cache?.enabled) Astro.cache.set(popularCacheHint);
+const popularPosts = POPULAR_SLUGS.map((s) => popularPool.find((p) => p.id === s || p.slug === s)).filter(
+	(p): p is NonNullable<typeof p> => !!p,
+);
+
 // 本文: WordPress の枠（わかること・CTA）を囲み直す。管理画面の編集モードではそのまま渡す
 const isEditing = !!getEditMeta(post.data.content);
 const content = isEditing ? post.data.content : groupWpBlocks(post.data.content);
@@ -114,6 +126,19 @@ const contentComponents = { type: { kGroup: WpGroup }, block: PostBlock };
 
 // 目次（H2・H3）。本文の中（最初の H2 の前）と、パソコンの右の列に出す
 const toc = buildToc(post.data.content);
+// 番号は「1」「1-1」の形（WordPress の SWELL と同じ）。長い目次は最初は畳んでおく
+const TOC_FOLD_AT = 12;
+let h2n = 0;
+let h3n = 0;
+const tocNumbered = toc.map((item) => {
+	if (item.level === 2) {
+		h2n++;
+		h3n = 0;
+		return { ...item, num: `${h2n}` };
+	}
+	h3n++;
+	return { ...item, num: h2n > 0 ? `${h2n}-${h3n}` : `${h3n}` };
+});
 const [contentIntro, contentBody] = isEditing
 	? [[], content]
 	: splitAtFirstH2(content as unknown[]);
@@ -146,15 +171,25 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 	author={bylines[0]?.byline.displayName ?? null}
 	content={{ collection: "posts", id: post.data.id, slug }}
 >
+	<div class="crumb-band">
+		<div class="frame">
+			<Breadcrumbs items={[parentCrumb, { label: post.data.title || "無題" }]} hideCurrent />
+		</div>
+	</div>
+
 	<article class="post">
 		<header class="intro post-header">
 			<div class="frame">
 				<div class="post-header__inner">
-					<div class="post-header__crumbs">
-						<Breadcrumbs items={[parentCrumb, { label: post.data.title || "無題" }]} />
-					</div>
 					<div class="post-header__body">
 						<div class="post-header__text">
+							{
+								category && (
+									<a href={`/business/category/${category.slug}/`} class="post-header__cat">
+										{category.label}
+									</a>
+								)
+							}
 							{
 								tags.length > 0 && (
 									<ul class="chips post-header__tags" aria-label="タグ">
@@ -236,15 +271,30 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 										<PortableText value={contentIntro} components={contentComponents} />
 									)}
 									{toc.length > 0 && (
-										<nav class="intoc" aria-labelledby="intoc-title">
-											<p id="intoc-title" class="intoc__title">目次</p>
+										<nav
+											class:list={["intoc", { "is-folded": toc.length > TOC_FOLD_AT }]}
+											aria-labelledby="intoc-title"
+											data-intoc
+										>
+											<p id="intoc-title" class="intoc__title">
+												<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+												目次
+											</p>
 											<ol class="intoc__list">
-												{toc.map((item) => (
+												{tocNumbered.map((item) => (
 													<li class:list={["intoc__item", { "intoc__item--sub": item.level === 3 }]}>
-														<a href={`#${item.id}`}>{item.text}</a>
+														<a href={`#${item.id}`}>
+															<span class="intoc__num">{item.num}</span>
+															<span>{item.text}</span>
+														</a>
 													</li>
 												))}
 											</ol>
+											{toc.length > TOC_FOLD_AT && (
+												<button type="button" class="intoc__more" data-intoc-toggle aria-expanded="false">
+													もっと見る
+												</button>
+											)}
 										</nav>
 									)}
 									<PortableText value={contentBody} components={contentComponents} />
@@ -254,6 +304,7 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 					</div>
 					<SideBanner class="banner--inline" />
 					<AuthorBox />
+					<PopularPosts posts={popularPosts} class="popular--inline" />
 				</div>
 
 				<div class="post-rail">
@@ -274,6 +325,8 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 							))}
 						</ol>
 					</nav>
+
+					<PopularPosts posts={popularPosts} class="popular--rail" />
 
 					<aside class="post-widgets" aria-labelledby="widgets-title">
 						<h2 id="widgets-title" class="sr-only">関連情報</h2>
@@ -355,14 +408,25 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 		}
 
 		trackToc();
+
+		// 本文の目次の「もっと見る / 閉じる」
+		for (const button of document.querySelectorAll<HTMLButtonElement>("[data-intoc-toggle]")) {
+			button.addEventListener("click", () => {
+				const nav = button.closest("[data-intoc]");
+				if (!nav) return;
+				const folded = nav.classList.toggle("is-folded");
+				button.textContent = folded ? "もっと見る" : "閉じる";
+				button.setAttribute("aria-expanded", String(!folded));
+			});
+		}
 	</script>
 </Base>
 
 <style>
 	/* Header */
 	.post-header {
-		padding-block: clamp(2rem, 1.25rem + 3vw, 4rem)
-			clamp(2.5rem, 1.75rem + 2.5vw, 3.5rem);
+		padding-block: clamp(1.25rem, 1rem + 1vw, 2rem)
+			clamp(2rem, 1.5rem + 2vw, 3rem);
 	}
 
 	.post-header__inner {
@@ -370,10 +434,6 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 		margin-inline: auto;
 	}
 
-	.post-header__crumbs {
-		--crumb-gap: 0;
-		margin-block-end: clamp(2rem, 1.5rem + 2vw, 3rem);
-	}
 
 	.post-header__tags {
 		margin-block-end: var(--spacing-5);
@@ -850,64 +910,164 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
 	}
 
-	/* 本文の中の目次（最初の H2 の前） */
+	/* 本文の中の目次（最初の H2 の前）。WordPress の SWELL に近い形 */
 	.intoc {
+		position: relative;
 		margin-block: 2rem 2.5rem;
-		padding: 1.25rem 1.5rem;
+		padding: 1.25rem 1.5rem 1rem;
+		border: 1px solid var(--color-border);
 		border-radius: 12px;
-		background: var(--color-fill);
+		background: #f7fbfb;
 	}
 
 	.intoc__title {
-		margin: 0 0 0.75rem !important;
-		font-size: 1rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.375rem;
+		margin: 0 0 0.875rem !important;
+		font-size: 0.9375rem;
 		font-weight: 700;
 		color: var(--color-navy);
+	}
+
+	.intoc__title svg {
+		width: 16px;
+		height: 16px;
+		color: var(--color-teal);
 	}
 
 	.intoc__list {
 		margin: 0 !important;
 		padding: 0 !important;
 		list-style: none !important;
-		counter-reset: intoc;
+	}
+
+	.intoc.is-folded .intoc__list {
+		max-height: 19rem;
+		overflow: hidden;
+		mask-image: linear-gradient(to bottom, #000 70%, transparent);
 	}
 
 	.intoc__item {
 		margin: 0 !important;
-		padding-block: 0.3rem;
-		font-size: 0.9375rem;
-		font-weight: 600;
+		padding: 0 !important;
+		font-size: 0.875rem;
 		line-height: 1.6;
 	}
 
-	.intoc__item:not(.intoc__item--sub) {
-		counter-increment: intoc;
+	.intoc__item::before {
+		content: none !important;
 	}
 
-	.intoc__item:not(.intoc__item--sub)::before {
-		content: counter(intoc) ". ";
-		color: var(--color-teal-dark);
+	.intoc__item + .intoc__item:not(.intoc__item--sub) {
+		margin-block-start: 0.5rem !important;
 	}
 
 	.intoc__item--sub {
-		padding-inline-start: 1.5rem;
-		font-size: 0.875rem;
-		font-weight: 400;
-	}
-
-	.intoc__item--sub::before {
-		content: "- ";
-		color: var(--color-muted);
+		padding-inline-start: 1.25rem !important;
+		font-size: 0.8125rem;
 	}
 
 	.intoc a {
-		color: var(--color-text);
-		text-decoration: none;
+		display: flex;
+		gap: 0.5rem;
+		padding-block: 0.15rem;
+		color: var(--color-teal-dark);
+		text-decoration: underline;
+		text-decoration-color: rgb(47 131 137 / 0.35);
+		text-underline-offset: 3px;
 	}
 
 	.intoc a:hover {
+		text-decoration-color: currentColor;
+	}
+
+	.intoc__num {
+		flex: none;
+		padding-inline-end: 0.5rem;
+		border-inline-end: 2px solid var(--color-teal);
+		color: var(--color-navy);
+		font-weight: 700;
+		line-height: 1.3;
+		align-self: center;
+		text-decoration: none;
+	}
+
+	.intoc__item--sub .intoc__num {
+		font-weight: 500;
+		font-size: 0.75rem;
+	}
+
+	.intoc__more {
+		display: block;
+		margin: 0.75rem auto 0;
+		padding: 0.375rem 1.25rem;
+		border: 1px solid var(--color-border-strong);
+		border-radius: 999px;
+		background: #fff;
+		color: var(--color-text-secondary);
+		font: inherit;
+		font-size: 0.8125rem;
+		cursor: pointer;
+	}
+
+	.intoc__more:hover {
+		border-color: var(--color-teal);
 		color: var(--color-teal-dark);
-		text-decoration: underline;
+	}
+
+	/* パンくずの帯（ヘッダーのすぐ下） */
+	.crumb-band {
+		padding-block: 0.625rem;
+		border-block: 1px solid var(--color-border-subtle);
+		background: #f6f8f8;
+	}
+
+	.crumb-band :global(.crumbs) {
+		margin: 0;
+	}
+
+	.crumb-band :global(.crumbs ol) {
+		font-size: 12px;
+	}
+
+	/* カテゴリのラベル（タイトルの上） */
+	.post-header__cat {
+		order: 0;
+		align-self: flex-start;
+		margin-block-end: 0.75rem;
+		padding: 0.25rem 0.875rem;
+		border-radius: 999px;
+		background: var(--color-teal);
+		color: #fff;
+		font-size: 0.75rem;
+		font-weight: 700;
+		line-height: 1.5;
+		text-decoration: none;
+	}
+
+	.post-header__cat:hover {
+		background: var(--color-teal-dark);
+	}
+
+	/* 人気記事: パソコンは右の列（目次の下）、スマホ・タブレットは執筆者欄の下 */
+	:global(.popular--inline) {
+		margin-block-start: 2.5rem;
+	}
+
+	:global(.popular--rail) {
+		display: none !important;
+	}
+
+	@media (min-width: 1100px) {
+		:global(.popular--inline) {
+			display: none !important;
+		}
+
+		:global(.popular--rail) {
+			display: block !important;
+		}
 	}
 
 	/* バナー: パソコンは右の列、スマホ・タブレットは本文の下 */
