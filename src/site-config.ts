@@ -109,12 +109,12 @@ export const NAV_CATEGORIES = CATEGORIES.filter((category) => category.nav);
 
 /**
  * こころ研修ナビ（/business/kenshu/）。研修の一覧は CMS の「研修」（trainings）。
- * 相談・講師掲載の申し込みは Google フォームへ。formUrl が空のあいだはボタンを「準備中」にする。
- * prefillEntry に研修名の欄の entry 番号（例: "entry.123456789"）を入れると、研修名を入れた状態で開く
+ * 相談・講師掲載の申し込みは Jicoo のフォームへ（2026-11-09 Rioto 作成）。formUrl が空のあいだはボタンを「準備中」にする。
+ * prefillEntry は Google フォームを使うときの研修名の欄の entry 番号（Jicoo では使わないので空）
  */
 export const KENSHU = {
 	path: "/business/kenshu/",
-	formUrl: "",
+	formUrl: "https://www.jicoo.com/t/remental/f/LeMBxTC8QLak",
 	prefillEntry: "",
 };
 

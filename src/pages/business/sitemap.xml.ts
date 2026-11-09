@@ -30,6 +30,7 @@ export const GET: APIRoute = async () => {
 	const latest = toIso(posts[0]?.data.updatedAt);
 	urls.push({ loc: `${SITE.origin}/business/`, lastmod: latest });
 	urls.push({ loc: `${SITE.origin}/business/posts/`, lastmod: latest });
+	urls.push({ loc: `${SITE.origin}/business/kenshu/`, lastmod: null });
 	for (const c of CATEGORIES) {
 		urls.push({ loc: `${SITE.origin}/business/category/${c.slug}/`, lastmod: null });
 	}
