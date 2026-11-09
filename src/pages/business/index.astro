@@ -220,8 +220,13 @@ function imageAlt(image: unknown): string {
 		gap: var(--spacing-10);
 	}
 
+	.home-hero__text {
+		container-type: inline-size;
+	}
+
+	/* 見出しは2行に収める: 2行目（18字）が列の幅に入る大きさまで文字を縮める */
 	.home-hero__title {
-		font-size: clamp(1.45rem, 1.05rem + 1.8vw, 2.25rem);
+		font-size: max(1.25rem, min(2.25rem, 100cqi / 19.2));
 		line-height: 1.5;
 		letter-spacing: 0.04em;
 		color: var(--color-navy);
@@ -230,6 +235,12 @@ function imageAlt(image: unknown): string {
 
 	.home-hero__title span {
 		display: block;
+	}
+
+	@media (min-width: 420px) {
+		.home-hero__title span {
+			white-space: nowrap;
+		}
 	}
 
 	.home-hero__lead {
