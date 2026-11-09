@@ -56,9 +56,25 @@ const trainings = entries.map((e, i) => {
 		summary: String(d.summary ?? ""),
 		themes,
 		sample: !!d.is_sample,
+		// 内容と流れ: 1行に1つ「分|内容」（分がなければ内容だけ）
+		program: String(d.program ?? "")
+			.split(/\r?\n/)
+			.map((line) => line.trim())
+			.filter(Boolean)
+			.map((line) => {
+				const m = line.match(/^(\d+)\s*[|｜]\s*(.+)$/);
+				return m ? { min: Number(m[1]), text: m[2] } : { min: null, text: line };
+			}),
 	};
 });
-const hasSample = trainings.some((t) => t.sample);
+
+// ご相談から実施までの流れ
+const STEPS = [
+	{ title: "フォームで相談", text: "気になる研修、受講者、時期、課題などをフォームから送ってください。研修が決まっていなくてもかまいません。" },
+	{ title: "打ち合わせ", text: "担当者からご連絡し、オンラインで課題や受講者の状況、日程をうかがいます。" },
+	{ title: "内容と費用の確定", text: "組織の状況にあわせて内容や時間を調整し、費用と実施の形をご提案します。" },
+	{ title: "研修の実施", text: "公認心理師の講師が、対面またはオンラインで研修を行います。" },
+];
 
 const yen = (n: number | null) => (n == null ? "要相談" : `${n.toLocaleString("ja-JP")}円`);
 
@@ -147,7 +163,6 @@ const description =
 					<option value="short">時間が短い順</option>
 				</select>
 			</div>
-			{hasSample && <p class="kn-note">掲載中の研修は表示確認用のサンプルです。内容は順次差し替え予定です。</p>}
 
 			<div class="kn-cards" data-kn-cards>
 				{
@@ -171,6 +186,20 @@ const description =
 								</div>
 								<h2 class="kn-card__title">{t.title}</h2>
 								{t.summary && <p class="kn-card__summary">{t.summary}</p>}
+								{t.program.length > 0 && (
+									<details class="kn-program">
+										<summary>研修の内容と流れ</summary>
+										<ol>
+											{t.program.map((step) => (
+												<li>
+													{step.min != null && <span class="kn-program__min">{step.min}分</span>}
+													<span>{step.text}</span>
+												</li>
+											))}
+										</ol>
+										<p class="kn-program__note">内容と時間は、組織の状況にあわせて調整できます。</p>
+									</details>
+								)}
 								<dl class="kn-meta">
 									<div><dt>時間</dt><dd>{t.minutes}分</dd></div>
 									<div><dt>形式</dt><dd>{t.formats.join("／") || "要相談"}</dd></div>
@@ -196,6 +225,19 @@ const description =
 			</p>
 		</section>
 	</div>
+
+	<section class="frame kn-steps" aria-labelledby="kn-steps-title">
+		<h2 id="kn-steps-title">ご相談から実施までの流れ</h2>
+		<ol>
+			{STEPS.map((step, i) => (
+				<li>
+					<span class="kn-steps__num">{i + 1}</span>
+					<h3>{step.title}</h3>
+					<p>{step.text}</p>
+				</li>
+			))}
+		</ol>
+	</section>
 
 	<section class="frame kn-provider" id="provider">
 		<div>
@@ -488,14 +530,6 @@ const description =
 		font: inherit;
 	}
 
-	.kn-note {
-		padding: 8px 12px;
-		border-radius: 6px;
-		background: var(--color-teal-bg);
-		font-size: 0.75rem;
-		color: var(--color-navy);
-	}
-
 	.kn-cards {
 		display: grid;
 		gap: 14px;
@@ -632,6 +666,106 @@ const description =
 		color: var(--color-text-secondary);
 	}
 
+	/* 研修の内容と流れ（カードの中で開く） */
+	.kn-program {
+		border: 1px solid var(--color-border-subtle);
+		border-radius: 8px;
+		background: #f7fbfb;
+	}
+
+	.kn-program summary {
+		padding: 8px 12px;
+		font-size: 0.8125rem;
+		font-weight: 700;
+		color: var(--color-teal-dark);
+		cursor: pointer;
+	}
+
+	.kn-program ol {
+		display: grid;
+		gap: 6px;
+		margin: 0;
+		padding: 2px 12px 4px;
+		list-style: none;
+		counter-reset: step;
+	}
+
+	.kn-program li {
+		display: grid;
+		grid-template-columns: 3.25rem minmax(0, 1fr);
+		gap: 8px;
+		font-size: 0.8125rem;
+		line-height: 1.6;
+	}
+
+	.kn-program__min {
+		color: var(--color-teal-dark);
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.kn-program__note {
+		padding: 4px 12px 10px;
+		font-size: 0.6875rem;
+		color: var(--color-muted);
+	}
+
+	/* ご相談から実施までの流れ */
+	.kn-steps {
+		margin-block-end: 2rem;
+	}
+
+	.kn-steps h2 {
+		margin: 0 0 1rem;
+		padding-inline-start: 0.75rem;
+		border-inline-start: 4px solid var(--color-teal);
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: var(--color-navy);
+	}
+
+	.kn-steps ol {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 12px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.kn-steps li {
+		position: relative;
+		padding: 18px 16px 16px;
+		border-radius: 10px;
+		background: var(--color-teal-bg);
+	}
+
+	.kn-steps__num {
+		display: grid;
+		place-items: center;
+		width: 28px;
+		height: 28px;
+		margin-block-end: 8px;
+		border-radius: 50%;
+		background: var(--color-teal);
+		color: #fff;
+		font-size: 0.875rem;
+		font-weight: 700;
+	}
+
+	.kn-steps h3 {
+		margin: 0 0 4px;
+		font-size: 0.9375rem;
+		font-weight: 700;
+		color: var(--color-navy);
+	}
+
+	.kn-steps p {
+		font-size: 0.8125rem;
+		line-height: 1.7;
+		color: var(--color-text-secondary);
+	}
+
 	.kn-provider {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto;
@@ -677,6 +811,16 @@ const description =
 		}
 
 		.kn-provider {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.kn-steps ol {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 520px) {
+		.kn-steps ol {
 			grid-template-columns: minmax(0, 1fr);
 		}
 	}
