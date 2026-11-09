@@ -107,7 +107,19 @@ export const CATEGORIES: Category[] = [
 
 export const NAV_CATEGORIES = CATEGORIES.filter((category) => category.nav);
 
+/**
+ * こころ研修ナビ（/business/kenshu/）。研修の一覧は CMS の「研修」（trainings）。
+ * 相談・講師掲載の申し込みは Google フォームへ。formUrl が空のあいだはボタンを「準備中」にする。
+ * prefillEntry に研修名の欄の entry 番号（例: "entry.123456789"）を入れると、研修名を入れた状態で開く
+ */
+export const KENSHU = {
+	path: "/business/kenshu/",
+	formUrl: "",
+	prefillEntry: "",
+};
+
 export const FOOTER_LINKS: Array<{ label: string; href: string; external?: boolean }> = [
+	{ label: "こころ研修ナビ", href: "/business/kenshu/" },
 	{ label: "無料チェックツール", href: "/business/tools/" },
 	{ label: "メディア方針", href: "/business/media-policy/" },
 	{ label: "プライバシーポリシー", href: "/business/privacy-policy/" },

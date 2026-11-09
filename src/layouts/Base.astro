@@ -11,6 +11,7 @@ import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import {
 	CATEGORIES,
 	FOOTER_LINKS,
+	KENSHU,
 	LINKS,
 	NAV_CATEGORIES,
 	SITE,
@@ -198,6 +199,11 @@ const year = new Date().getFullYear();
 							);
 						})
 					}
+					<li class="site-nav__kenshu">
+						<a href={KENSHU.path} aria-current={navCurrent(KENSHU.path)}>
+							研修をさがす
+						</a>
+					</li>
 				</ul>
 			</nav>
 		</header>
@@ -888,6 +894,15 @@ const year = new Date().getFullYear();
 			.site-nav a[aria-current] {
 				color: var(--color-brand);
 				background: var(--color-teal-bg);
+			}
+
+			/* 研修ナビへのリンクはカテゴリと区別して右端に */
+			.site-nav__kenshu {
+				margin-inline-start: auto;
+			}
+
+			.site-nav__kenshu a {
+				color: var(--color-teal-dark);
 			}
 
 			.site-search {
