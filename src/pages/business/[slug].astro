@@ -105,16 +105,26 @@ const parentCrumb = category
 	? { label: category.label, href: `/business/category/${category.slug}/` }
 	: { label: "記事一覧", href: "/business/posts/" };
 
-// 関連記事: 同じカテゴリの新しい順に4本（カテゴリがなければ新着）。
+// 関連記事: 同じカテゴリから4本（カテゴリがなければ全体から）。
+// 新しい順の先頭だけだと、古い記事がどの記事の関連記事にも出なくなるので、
+// 記事ごとに決まった位置（slug から計算）から取る。足りなければ先頭から取り直す。
 // おすすめ記事の穴埋めにも使うので多めに取る。
 const RELATED_COUNT = 4;
 const RECOMMEND_COUNT = 5;
-const { entries: relatedPool, cacheHint: relatedCacheHint } =
-	await getEmDashCollection("posts", {
+const POOL_SIZE = RELATED_COUNT + RECOMMEND_COUNT + 1;
+const relatedOffset = [...slug].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % 20;
+async function relatedFrom(offset: number) {
+	return getEmDashCollection("posts", {
 		...(category ? { where: { category: category.slug } } : {}),
 		orderBy: { published_at: "desc" },
-		limit: RELATED_COUNT + RECOMMEND_COUNT + 1,
+		limit: POOL_SIZE,
+		offset,
 	});
+}
+let { entries: relatedPool, cacheHint: relatedCacheHint } = await relatedFrom(relatedOffset);
+if (relatedPool.filter((p) => p.id !== post.id).length < RELATED_COUNT + 1 && relatedOffset > 0) {
+	({ entries: relatedPool, cacheHint: relatedCacheHint } = await relatedFrom(0));
+}
 if (Astro.cache?.enabled) Astro.cache.set(relatedCacheHint);
 const sameCategory = relatedPool.filter((p) => p.id !== post.id);
 const otherPosts = sameCategory.slice(0, RELATED_COUNT);
