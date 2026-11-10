@@ -68,15 +68,18 @@ const trainings = entries.map((e, i) => {
 	};
 });
 
-// ご相談から実施までの流れ
+// 「この研修を相談する」で開くポップアップに出す、ご相談から実施までの流れ
+// （Jicoo の研修フォームは、回答するとそのまま事前ヒアリングの日程調整に進む）
 const STEPS = [
-	{ title: "フォームで相談", text: "気になる研修、受講者、時期、課題などをフォームから送ってください。研修が決まっていなくてもかまいません。" },
-	{ title: "打ち合わせ", text: "担当者からご連絡し、オンラインで課題や受講者の状況、日程をうかがいます。" },
-	{ title: "内容と費用の確定", text: "組織の状況にあわせて内容や時間を調整し、費用と実施の形をご提案します。" },
+	{ title: "フォームに回答", text: "受講する方、時期、困っていることなどを入力します。研修のテーマが決まっていなくてもかまいません。" },
+	{ title: "事前ヒアリングの日時を選ぶ", text: "回答後、そのまま日程調整の画面に進みます。ヒアリングはオンラインで60分です。" },
+	{ title: "内容と費用のご提案", text: "組織の状況にあわせて研修の内容を調整し、費用と実施の形をご提案します。" },
 	{ title: "研修の実施", text: "公認心理師の講師が、対面またはオンラインで研修を行います。" },
 ];
 
-const yen = (n: number | null) => (n == null ? "要相談" : `${n.toLocaleString("ja-JP")}円`);
+// 費用は目安だけ出す（「〜30万円」。1万円未満は切り上げ）
+const priceLabel = (n: number | null) =>
+	n == null || !n ? "要相談" : `〜${Math.ceil(n / 10000).toLocaleString("ja-JP")}万円`;
 
 function formLink(title: string): string | null {
 	if (!KENSHU.formUrl) return null;
@@ -146,22 +149,12 @@ const description =
 				<label><input type="checkbox" name="format" value="対面" /> 対面</label>
 				<label><input type="checkbox" name="format" value="オンライン" /> オンライン</label>
 			</fieldset>
-			<fieldset>
-				<legend>時間</legend>
-				<label><input type="radio" name="dur" value="0" checked /> 指定なし</label>
-				<label><input type="radio" name="dur" value="60" /> 60分以内</label>
-				<label><input type="radio" name="dur" value="120" /> 120分以内</label>
-			</fieldset>
 			<button type="button" class="kn-reset" data-kn-reset>条件をクリア</button>
 		</aside>
 
 		<section class="kn-results" aria-labelledby="kn-count-label">
 			<div class="kn-bar">
 				<p id="kn-count-label"><strong data-kn-count>{trainings.length}</strong> 件の研修</p>
-				<select aria-label="並び替え" data-kn-sort>
-					<option value="new">新着順</option>
-					<option value="short">時間が短い順</option>
-				</select>
 			</div>
 
 			<div class="kn-cards" data-kn-cards>
@@ -172,7 +165,6 @@ const description =
 							<article
 								class="kn-card"
 								data-order={t.order}
-								data-minutes={t.minutes}
 								data-cat={t.category}
 								data-targets={t.targets.join("|")}
 								data-audience={t.audience.join("|")}
@@ -197,20 +189,26 @@ const description =
 												</li>
 											))}
 										</ol>
-										<p class="kn-program__note">内容と時間は、組織の状況にあわせて調整できます。</p>
+										<p class="kn-program__note">内容は、組織の状況にあわせて調整できます。</p>
 									</details>
 								)}
 								<dl class="kn-meta">
-									<div><dt>時間</dt><dd>{t.minutes}分</dd></div>
 									<div><dt>形式</dt><dd>{t.formats.join("／") || "要相談"}</dd></div>
 									<div><dt>人数目安</dt><dd>{t.people || "要相談"}</dd></div>
-									<div><dt>費用</dt><dd>{yen(t.price)}</dd></div>
+									<div><dt>費用の目安</dt><dd>{priceLabel(t.price)}</dd></div>
 								</dl>
 								<div class="kn-card__foot">
 									{href ? (
-										<a class="kn-btn kn-btn--ghost" href={href} target="_blank" rel="noopener">
+										<button
+											type="button"
+											class="kn-btn kn-btn--ghost"
+											data-kn-consult
+											data-title={t.title}
+											data-price={priceLabel(t.price)}
+											data-href={href}
+										>
 											この研修を相談する
-										</a>
+										</button>
 									) : (
 										<span class="kn-btn kn-btn--off">相談の受付は準備中です</span>
 									)}
@@ -226,18 +224,30 @@ const description =
 		</section>
 	</div>
 
-	<section class="frame kn-steps" aria-labelledby="kn-steps-title">
-		<h2 id="kn-steps-title">ご相談から実施までの流れ</h2>
-		<ol>
-			{STEPS.map((step, i) => (
-				<li>
-					<span class="kn-steps__num">{i + 1}</span>
-					<h3>{step.title}</h3>
-					<p>{step.text}</p>
-				</li>
-			))}
-		</ol>
-	</section>
+	<dialog class="kn-modal" aria-labelledby="kn-modal-title" data-kn-modal>
+		<div class="kn-modal__box">
+			<button type="button" class="kn-modal__close" aria-label="閉じる" data-kn-close>×</button>
+			<p class="kn-modal__label">研修のご相談</p>
+			<h2 id="kn-modal-title" class="kn-modal__title" data-kn-modal-title></h2>
+			<p class="kn-modal__price">費用の目安 <b data-kn-modal-price></b></p>
+			<h3 class="kn-modal__sub">ご相談から実施までの流れ</h3>
+			<ol class="kn-modal__steps">
+				{STEPS.map((step, i) => (
+					<li>
+						<span class="kn-modal__num">{i + 1}</span>
+						<div>
+							<p class="kn-modal__step">{step.title}</p>
+							<p>{step.text}</p>
+						</div>
+					</li>
+				))}
+			</ol>
+			<a class="kn-btn kn-modal__go" href={KENSHU.formUrl} target="_blank" rel="noopener" data-kn-modal-go>
+				申し込みフォームへ進む
+			</a>
+			<p class="kn-modal__note">フォームは新しいタブで開きます。</p>
+		</div>
+	</dialog>
 
 	<section class="frame kn-provider" id="provider">
 		<div>
@@ -262,11 +272,9 @@ const description =
 	// 絞り込み（カードは HTML に入っているので、条件に合わないものを隠すだけ）
 	const root = document;
 	const q = root.querySelector<HTMLInputElement>("[data-kn-q]");
-	const cardsBox = root.querySelector<HTMLElement>("[data-kn-cards]");
 	const cards = [...root.querySelectorAll<HTMLElement>(".kn-card")];
 	const countEl = root.querySelector("[data-kn-count]");
 	const empty = root.querySelector<HTMLElement>("[data-kn-empty]");
-	const sort = root.querySelector<HTMLSelectElement>("[data-kn-sort]");
 	const checked = (name: string) =>
 		[...root.querySelectorAll<HTMLInputElement>(`input[name=${name}]:checked`)].map((i) => i.value);
 	const has = (el: HTMLElement, key: string, wanted: string[]) =>
@@ -275,7 +283,6 @@ const description =
 	function render() {
 		const text = (q?.value ?? "").trim().toLowerCase();
 		const cat = checked("cat");
-		const dur = Number(root.querySelector<HTMLInputElement>("input[name=dur]:checked")?.value ?? 0);
 		let shown = 0;
 		for (const el of cards) {
 			const ok =
@@ -283,15 +290,10 @@ const description =
 				(cat.length === 0 || cat.includes(el.dataset.cat ?? "")) &&
 				has(el, "targets", checked("target")) &&
 				has(el, "audience", checked("audience")) &&
-				has(el, "formats", checked("format")) &&
-				(!dur || Number(el.dataset.minutes) <= dur);
+				has(el, "formats", checked("format"));
 			el.hidden = !ok;
 			if (ok) shown++;
 		}
-		const key = sort?.value === "short" ? "minutes" : "order";
-		[...cards]
-			.sort((a, b) => Number(a.dataset[key]) - Number(b.dataset[key]))
-			.forEach((el) => cardsBox?.appendChild(el));
 		if (countEl) countEl.textContent = String(shown);
 		if (empty) empty.hidden = shown > 0;
 	}
@@ -301,7 +303,6 @@ const description =
 		render();
 	});
 	q?.addEventListener("input", render);
-	sort?.addEventListener("change", render);
 	root.querySelectorAll("[data-kn-filters] input").forEach((i) => i.addEventListener("change", render));
 	root.querySelectorAll<HTMLButtonElement>("[data-kn-quick]").forEach((b) =>
 		b.addEventListener("click", () => {
@@ -312,10 +313,28 @@ const description =
 	);
 	root.querySelector("[data-kn-reset]")?.addEventListener("click", () => {
 		root.querySelectorAll<HTMLInputElement>("[data-kn-filters] input[type=checkbox]").forEach((i) => (i.checked = false));
-		const any = root.querySelector<HTMLInputElement>("input[name=dur][value='0']");
-		if (any) any.checked = true;
 		if (q) q.value = "";
 		render();
+	});
+
+	// 「この研修を相談する」: 流れと申し込みボタンのポップアップを開く
+	const modal = root.querySelector<HTMLDialogElement>("[data-kn-modal]");
+	const go = root.querySelector<HTMLAnchorElement>("[data-kn-modal-go]");
+	root.querySelectorAll<HTMLButtonElement>("[data-kn-consult]").forEach((b) =>
+		b.addEventListener("click", () => {
+			const t = root.querySelector("[data-kn-modal-title]");
+			const pr = root.querySelector("[data-kn-modal-price]");
+			if (t) t.textContent = b.dataset.title ?? "";
+			if (pr) pr.textContent = b.dataset.price ?? "";
+			if (go && b.dataset.href) go.href = b.dataset.href;
+			if (modal?.showModal) modal.showModal();
+			else if (b.dataset.href) window.open(b.dataset.href, "_blank", "noopener");
+		}),
+	);
+	root.querySelector("[data-kn-close]")?.addEventListener("click", () => modal?.close());
+	// 外側（暗いところ）を押しても閉じる
+	modal?.addEventListener("click", (e) => {
+		if (e.target === modal) modal.close();
 	});
 </script>
 
@@ -629,7 +648,15 @@ const description =
 		color: #fff;
 		font-size: 0.875rem;
 		font-weight: 700;
+		font-family: inherit;
+		line-height: 1.6;
 		text-decoration: none;
+		cursor: pointer;
+	}
+
+	.kn-modal__go {
+		padding-block: 12px;
+		font-size: 1rem;
 	}
 
 	.kn-btn:hover {
@@ -721,60 +748,119 @@ const description =
 		color: var(--color-muted);
 	}
 
-	/* ご相談から実施までの流れ */
-	.kn-steps {
-		margin-block-end: 2rem;
+	/* 相談のポップアップ */
+	.kn-modal {
+		width: min(560px, calc(100vw - 32px));
+		max-height: calc(100dvh - 32px);
+		padding: 0;
+		border: none;
+		border-radius: 14px;
+		box-shadow: 0 20px 50px rgb(15 40 60 / 0.25);
 	}
 
-	.kn-steps h2 {
-		margin: 0 0 1rem;
-		padding-inline-start: 0.75rem;
-		border-inline-start: 4px solid var(--color-teal);
-		font-size: 1.25rem;
+	.kn-modal::backdrop {
+		background: rgb(15 30 45 / 0.55);
+	}
+
+	.kn-modal__box {
+		position: relative;
+		padding: 28px 28px 24px;
+	}
+
+	.kn-modal__close {
+		position: absolute;
+		top: 10px;
+		right: 12px;
+		width: 36px;
+		height: 36px;
+		border: none;
+		border-radius: 50%;
+		background: transparent;
+		font-size: 1.5rem;
+		line-height: 1;
+		color: var(--color-muted);
+		cursor: pointer;
+	}
+
+	.kn-modal__close:hover {
+		background: var(--color-teal-bg);
+	}
+
+	.kn-modal__label {
+		font-size: 0.75rem;
 		font-weight: 700;
+		color: var(--color-teal-dark);
+	}
+
+	.kn-modal__title {
+		margin: 4px 36px 6px 0;
+		font-size: 1.1875rem;
+		line-height: 1.5;
 		color: var(--color-navy);
 	}
 
-	.kn-steps ol {
+	.kn-modal__price {
+		font-size: 0.875rem;
+		color: var(--color-text-secondary);
+	}
+
+	.kn-modal__price b {
+		margin-inline-start: 4px;
+		color: var(--color-navy);
+	}
+
+	.kn-modal__sub {
+		margin: 20px 0 10px;
+		font-size: 0.9375rem;
+		color: var(--color-navy);
+	}
+
+	.kn-modal__steps {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
 		gap: 12px;
-		margin: 0;
+		margin: 0 0 22px;
 		padding: 0;
 		list-style: none;
 	}
 
-	.kn-steps li {
-		position: relative;
-		padding: 18px 16px 16px;
-		border-radius: 10px;
-		background: var(--color-teal-bg);
+	.kn-modal__steps li {
+		display: grid;
+		grid-template-columns: 28px minmax(0, 1fr);
+		gap: 10px;
+		font-size: 0.8125rem;
+		line-height: 1.7;
+		color: var(--color-text-secondary);
 	}
 
-	.kn-steps__num {
+	.kn-modal__num {
 		display: grid;
 		place-items: center;
 		width: 28px;
 		height: 28px;
-		margin-block-end: 8px;
 		border-radius: 50%;
 		background: var(--color-teal);
 		color: #fff;
-		font-size: 0.875rem;
+		font-size: 0.8125rem;
 		font-weight: 700;
 	}
 
-	.kn-steps h3 {
-		margin: 0 0 4px;
+	.kn-modal__step {
 		font-size: 0.9375rem;
 		font-weight: 700;
 		color: var(--color-navy);
 	}
 
-	.kn-steps p {
-		font-size: 0.8125rem;
-		line-height: 1.7;
-		color: var(--color-text-secondary);
+	.kn-modal__box .kn-modal__go {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+	}
+
+	.kn-modal__note {
+		margin-top: 8px;
+		text-align: center;
+		font-size: 0.75rem;
+		color: var(--color-muted);
 	}
 
 	.kn-provider {
@@ -824,15 +910,6 @@ const description =
 		.kn-provider {
 			grid-template-columns: minmax(0, 1fr);
 		}
-
-		.kn-steps ol {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
 	}
 
-	@media (max-width: 520px) {
-		.kn-steps ol {
-			grid-template-columns: minmax(0, 1fr);
-		}
-	}
 </style>
