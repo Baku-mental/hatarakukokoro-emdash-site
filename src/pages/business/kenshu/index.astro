@@ -89,7 +89,8 @@ function formLink(title: string): string | null {
 	u.searchParams.set(KENSHU.prefillEntry, title);
 	return u.toString();
 }
-const providerLink = formLink("【講師掲載の相談】");
+// 講師掲載の申し込みは研修の相談とは別の Jicoo の予約ページへ
+const providerLink = KENSHU.providerUrl || null;
 
 const title = "こころ研修ナビ｜公認心理師によるメンタルヘルス研修を探す";
 const description =

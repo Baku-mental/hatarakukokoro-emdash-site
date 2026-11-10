@@ -115,6 +115,8 @@ export const NAV_CATEGORIES = CATEGORIES.filter((category) => category.nav);
 export const KENSHU = {
 	path: "/business/kenshu/",
 	formUrl: "https://www.jicoo.com/t/remental/f/LeMBxTC8QLak",
+	/** 研修講師として掲載したい人の申し込み（Jicoo の予約ページ「研修講師採用（30min）」、2026-11-10 Rioto 指定） */
+	providerUrl: "https://www.jicoo.com/t/remental/e/9PWI47WQnBGw",
 	prefillEntry: "",
 };
 

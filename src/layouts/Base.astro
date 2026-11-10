@@ -147,16 +147,16 @@ const year = new Date().getFullYear();
 						gtag("config", id);
 						// 申し込み・資料フォーム（Jicoo）へのボタンが押されたら、どのフォームを、ページのどこから開いたかを GA4 に送る
 						// （Jicoo 側には GA4 を入れていないので、サイトで分かるのはここまで）
-						var FORMS = { TsIogv9EWwor: "組織診断", "37kJrBL59zGV": "資料請求", LeMBxTC8QLak: "研修相談" };
+						var FORMS = { TsIogv9EWwor: "組織診断", "37kJrBL59zGV": "資料請求", LeMBxTC8QLak: "研修相談", "9PWI47WQnBGw": "講師申し込み" };
 						var PLACES = [
 							[".site-header", "ヘッダー"], [".home-hero", "トップ"], [".k-cta-mid", "記事_文中"],
 							[".k-cta-foot", "記事_記事末"], [".banner--inline", "記事_バナー"], [".banner--rail", "記事_右バナー"],
-							[".kn-modal", "研修ナビ_ポップアップ"], [".kn-card", "研修ナビ_カード"], [".kn-hero", "研修ナビ_上"], [".site-footer", "フッター"],
+							[".kn-modal", "研修ナビ_ポップアップ"], [".kn-provider", "研修ナビ_講師募集"], [".kn-card", "研修ナビ_カード"], [".kn-hero", "研修ナビ_上"], [".site-footer", "フッター"],
 						];
 						document.addEventListener("click", function (e) {
 							var a = e.target.closest && e.target.closest('a[href*="jicoo.com/"]');
 							if (!a) return;
-							var m = a.href.match(/\/f\/([A-Za-z0-9]+)/);
+							var m = a.href.match(/\/[fe]\/([A-Za-z0-9]+)/);
 							var place = "その他";
 							for (var i = 0; i < PLACES.length; i++) {
 								if (a.closest(PLACES[i][0])) { place = PLACES[i][1]; break; }
