@@ -1,5 +1,8 @@
 ---
-// 旧アドレス（EmDash 標準の /category/<slug>）から新しいアドレスへ
+// /category/<slug>: はたらくこころ研究所のカテゴリなら新しいアドレスへ。
+// それ以外（旧 WordPress 会社サイトのカテゴリ /category/news/ など）はお知らせ一覧へ（2026-11-14）
+import { CATEGORIES } from "../../site-config";
 const slug = Astro.params.slug ?? "";
-return Astro.redirect(`/business/category/${encodeURIComponent(slug)}/`, 301);
+if (CATEGORIES.some((c) => c.slug === slug)) return Astro.redirect(`/business/category/${encodeURIComponent(slug)}/`, 301);
+return Astro.redirect("/news/", 301);
 ---

@@ -7,6 +7,11 @@ const MAP: Record<string, string> = {
 	contact: "/contact/",
 	media: "/news/",
 	"ホーム": "/",
+	feed: "/news/",
+	"wp-sitemap.xml": "/sitemap.xml",
+	"sitemap-misc.xml": "/sitemap.xml",
+	"sitemap-pt-post.xml": "/sitemap.xml",
+	news: "/news/",
 };
 const to = MAP[legacy];
 if (to) return Astro.redirect(to, 301);

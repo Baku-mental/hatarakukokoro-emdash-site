@@ -3,7 +3,14 @@
 // （本番の remental.co.jp/ は Cloudflare のルートで切り替えるまで WordPress のまま）
 import { getEmDashCollection } from "emdash";
 import Corp from "../layouts/Corp.astro";
-import { CORP, NEWS_PILL } from "../corp-config";
+import { CORP, NEWS_PILL, LEGACY_NEWS } from "../corp-config";
+
+// 旧 WordPress の番号つき URL（/?p=653、/?page_id=437、/?cat=1、/?feed=rss2）を新しいページへ
+const q = Astro.url.searchParams;
+const LEGACY_PAGE: Record<string, string> = { "437": "/contact/", "21": "/#service", "155": "/news/", "388": "/" };
+if (q.has("p")) return Astro.redirect(LEGACY_NEWS[q.get("p") ?? ""] ? `/news/${LEGACY_NEWS[q.get("p") ?? ""]}/` : "/news/", 301);
+if (q.has("page_id")) return Astro.redirect(LEGACY_PAGE[q.get("page_id") ?? ""] ?? "/", 301);
+if (q.has("cat") || q.has("feed") || q.has("s")) return Astro.redirect("/news/", 301);
 
 // お知らせ（news コレクション）の新しい4件。コレクションがまだ無いときは空
 let news: any[] = [];
