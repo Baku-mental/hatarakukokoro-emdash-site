@@ -1,0 +1,7 @@
+---
+// 旧 WordPress 会社サイトのお知らせ（/archives/<投稿ID>）を新しいお知らせ（/news/<slug>/）へ
+import { LEGACY_NEWS } from "../../corp-config";
+const to = LEGACY_NEWS[Astro.params.id ?? ""];
+if (to) return Astro.redirect(`/news/${to}/`, 301);
+return Astro.redirect("/news/", 301);
+---

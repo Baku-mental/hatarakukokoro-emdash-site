@@ -1,0 +1,197 @@
+---
+// 会社サイト（remental.co.jp/ のトップ・お知らせ・お問い合わせ）の共通の枠。
+// はたらくこころ研究所（/business/）とは別の見た目。デザインの元: Downloads/remental-corporate-v14/index.html（2026-11-14）
+import "../styles/corp.css";
+import { CORP } from "../corp-config";
+
+interface Props {
+	title?: string; // ページ名（トップは空）
+	description?: string;
+	image?: string; // OG 画像（/corp/images/... か絶対 URL）
+	noindex?: boolean;
+}
+const { title, description = CORP.description, image = "/corp/images/hero_sky.jpg", noindex = false } = Astro.props;
+const fullTitle = title ? `${title}｜株式会社remental` : CORP.title;
+// 本番（remental.co.jp）以外（試験用の workers.dev）は検索エンジンに載せない。canonical は本番の住所
+const isProduction = Astro.url.hostname === new URL(CORP.origin).hostname;
+const canonical = `${CORP.origin}${Astro.url.pathname}`;
+const ogImage = new URL(image, CORP.origin).toString();
+const isTop = Astro.url.pathname === "/";
+const a = (hash: string) => (isTop ? hash : `/${hash}`);
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{(noindex || !isProduction) && <meta name="robots" content="noindex, nofollow" />}
+<meta property="og:type" content={isTop ? "website" : "article"} />
+<meta property="og:site_name" content="株式会社remental" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" />
+<slot name="head" />
+<script is:inline>document.documentElement.classList.add('js')</script>
+{
+	isProduction && (
+		<>
+			<script async src={`https://www.googletagmanager.com/gtag/js?id=${CORP.ga4}`} />
+			<script is:inline define:vars={{ id: CORP.ga4 }}>
+				window.dataLayer = window.dataLayer || [];
+				function gtag() { dataLayer.push(arguments); }
+				gtag("js", new Date());
+				gtag("config", id);
+			</script>
+		</>
+	)
+}
+</head>
+<body id="top">
+
+<header class="hd">
+<div class="wrap hd-in">
+<a class="logo" href="/"><img src="/corp/images/logo.png" alt="remental" width="646" height="142" /></a>
+<nav class="gnav" aria-label="グローバルナビゲーション">
+<a href={a("#mission")}>Mission</a>
+<a href={a("#service")}>Service</a>
+<a href="/news/">News</a>
+<a href={a("#message")}>Message</a>
+<a href={a("#company")}>Company</a>
+<a href={CORP.links.recruit}>Recruit</a>
+</nav>
+<a class="btn-contact" href="/contact/">お問い合わせ <svg class="arrow" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+</div>
+</header>
+
+<slot />
+
+<footer class="rm-foot" style="background: #00122A; color: #B8C9D3; padding: 64px clamp(20px, 5vw, 64px) 40px">
+<div style="max-width: 1152px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px; color: #FFFFFF">
+<img src="/corp/images/logo_white.png" alt="remental" width="646" height="142" style="height:34px;width:auto" />
+</div>
+<p style="margin: 0; font-size: 13px">メンタルヘルスによる機会損失をゼロにする。</p>
+</div>
+<nav aria-label="フッターナビゲーション" style="display: grid; grid-template-columns: repeat(2, minmax(140px, 1fr)); gap: 12px 48px; font-size: 14px">
+<a href={a("#mission")}>ミッション</a>
+<a href={a("#service")}>事業内容</a>
+<a href="/news/">お知らせ</a>
+<a href={a("#message")}>代表メッセージ</a>
+<a href={a("#company")}>会社概要</a>
+<a href={CORP.links.recruit}>採用情報</a>
+<a href="/contact/">お問い合わせ</a>
+<a href="/business/">はたらくこころ研究所</a>
+<a href={CORP.links.privacy}>プライバシーポリシー</a>
+</nav>
+</div>
+<p style="margin: 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.12); font-family: 'Space Grotesk', sans-serif; font-size: 12px">© {year} remental, inc.</p>
+</div>
+</footer>
+<script is:inline>
+(function(){
+  // スクロールで出現
+  var els=document.querySelectorAll('.rm-reveal, .vm');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('is-in')});}
+  else{
+    var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});},{threshold:0.15,rootMargin:'0px 0px -60px 0px'});
+    els.forEach(function(e){io.observe(e)});
+  }
+
+
+  // ヘッダーの影
+  (function(){var h=document.querySelector('.hd');if(!h)return;function f(){h.classList.toggle('is-scrolled',window.scrollY>8)}f();window.addEventListener('scroll',f,{passive:true});})();
+  // ハートを描く
+  (function(){
+    var svg=document.querySelector('.hero-svg'); if(!svg) return;
+    // 縦長の画面ではハートが見える位置に寄せる
+    function fit(){
+      var r=svg.getBoundingClientRect(); if(!r.width) return;
+      var H=1164, HC=530, ar=r.width/r.height, vw=H*ar;
+      if(vw<1536){ var x=Math.min(Math.max(1030-vw*0.5,0),1536-vw); svg.setAttribute('viewBox',x.toFixed(0)+' 0 '+vw.toFixed(0)+' '+H); }
+      else { var vh=1536/ar, y=Math.min(Math.max(0,HC-vh*0.5),H-vh); svg.setAttribute('viewBox','0 '+y.toFixed(0)+' 1536 '+vh.toFixed(0)); }
+    }
+    fit(); window.addEventListener('resize',fit);
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ma=svg.querySelector('.hm-a'), mb=svg.querySelector('.hm-b'), mc=svg.querySelector('.hm-c');
+    var pa=document.getElementById('rmPathA'), pb=document.getElementById('rmPathB');
+    var spark=svg.querySelector('.spark'), hero=document.querySelector('.hero');
+    if(reduce){ [ma,mb,mc].forEach(function(m){m.style.strokeDashoffset=0}); hero.classList.add('hero-ready'); return; }
+    var La=pa.getTotalLength(), Lb=pb.getTotalLength();
+    var start=null, delay=500, speed=0.75; // px/ms
+    var Ta=La/speed, Tb=Lb/(speed*0.85), Tc=900;
+    function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+    function frame(now){
+      if(start===null) start=now;
+      var t=now-start-delay;
+      if(t<0){requestAnimationFrame(frame);return;}
+      var fa=Math.min(t/Ta,1), fb=Math.min(Math.max((t-Ta)/Tb,0),1), fc=Math.min(Math.max((t-Ta)/Tc,0),1);
+      ma.style.strokeDashoffset=1-fa;
+      mb.style.strokeDashoffset=1-fb;
+      mc.style.strokeDashoffset=1-ease(fc);
+      var pt, op;
+      if(fa<1){pt=pa.getPointAtLength(La*fa); op=Math.min(fa*6,1);}
+      else {pt=pb.getPointAtLength(Lb*fb); op=fb<1?1:0;}
+      spark.setAttribute('transform','translate('+pt.x.toFixed(1)+' '+pt.y.toFixed(1)+')');
+      spark.setAttribute('opacity',op);
+      if(fb<1||fc<1) requestAnimationFrame(frame);
+      else { spark.setAttribute('opacity',0); hero.classList.add('hero-ready'); }
+    }
+    requestAnimationFrame(frame);
+  })();
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var hero=document.querySelector('.hero');
+  var fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // ヒーロー：マウスとスクロールで奥行き
+  var tx=0,ty=0,cx=0,cy=0,sy=0,csy=0,last=-1e9;
+  if(hero){
+    hero.addEventListener('pointermove',function(e){
+      var r=hero.getBoundingClientRect();
+      tx=((e.clientX-r.left)/r.width-0.5)*2; ty=((e.clientY-r.top)/r.height-0.5)*2; last=performance.now();
+    });
+    window.addEventListener('scroll',function(){sy=Math.min(window.scrollY,hero.offsetHeight);},{passive:true});
+    (function loop(t){
+      if(t-last>2500||!fine){ tx=Math.sin(t/2600)*0.35; ty=Math.cos(t/3400)*0.25; }
+      cx+=(tx-cx)*0.05; cy+=(ty-cy)*0.05; csy+=(sy-csy)*0.12;
+      hero.style.setProperty('--mx',cx.toFixed(4));
+      hero.style.setProperty('--my',cy.toFixed(4));
+      hero.style.setProperty('--sy',csy.toFixed(2));
+      requestAnimationFrame(loop);
+    })(0);
+  }
+  // カード：マウスに合わせて傾く
+  if(!fine) return;
+  document.querySelectorAll('.rm-card').forEach(function(c){
+    var raf=null;
+    c.addEventListener('pointermove',function(e){
+      var r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+      if(raf) cancelAnimationFrame(raf);
+      raf=requestAnimationFrame(function(){
+        c.classList.add('is-tilt');
+        c.style.transition='transform .12s ease-out';
+        c.style.transform='perspective(1100px) rotateX('+((0.5-y)*7).toFixed(2)+'deg) rotateY('+((x-0.5)*9).toFixed(2)+'deg) translateY(-4px)';
+        c.style.setProperty('--gx',(x*100)+'%'); c.style.setProperty('--gy',(y*100)+'%');
+      });
+    });
+    c.addEventListener('pointerleave',function(){
+      if(raf) cancelAnimationFrame(raf);
+      c.classList.remove('is-tilt');
+      c.style.transition='transform .7s cubic-bezier(.16,1,.3,1)';
+      c.style.transform='';
+    });
+  });
+})();
+</script>
+</body>
+</html>

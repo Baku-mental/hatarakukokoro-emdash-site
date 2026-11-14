@@ -1,0 +1,37 @@
+---
+// 会社サイトのお知らせ一覧（/news/）。中身は管理画面の「お知らせ（会社サイト）」
+import { getEmDashCollection } from "emdash";
+import Corp from "../../layouts/Corp.astro";
+import { NEWS_PILL } from "../../corp-config";
+
+if (!Astro.url.pathname.endsWith("/")) return Astro.redirect("/news/", 301);
+let news: any[] = [];
+try {
+	const { entries, cacheHint } = await getEmDashCollection("news", { orderBy: { published_at: "desc" }, limit: 200 });
+	news = entries;
+	if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+} catch {
+	news = [];
+}
+const dot = (d?: Date | null) =>
+	d ? d.toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit" }).replaceAll("/", ".") : "";
+---
+
+<Corp title="お知らせ" description="株式会社rementalからのお知らせ、メディア掲載、リリースの一覧です。">
+	<section class="cp-head"><div class="wrap"><p class="cp-label">NEWS</p><h1>お知らせ</h1></div></section>
+	<main class="cp-main">
+		<div class="wrap"><div class="cp-box">
+			<p class="cp-crumb"><a href="/">ホーム</a> / お知らせ</p>
+			<ul class="cp-list">
+				{news.length === 0 && <li style="padding:24px 0;color:#4A5D6B">お知らせはまだありません。</li>}
+				{news.map((n) => (
+					<li><a href={`/news/${n.id}/`}>
+						<span class="cp-date">{dot(n.data.publishedAt)}</span>
+						<span class="cp-pill" style={NEWS_PILL[n.data.news_category] ?? NEWS_PILL["お知らせ"]}>{n.data.news_category || "お知らせ"}</span>
+						<span class="cp-ttl">{n.data.title}</span>
+					</a></li>
+				))}
+			</ul>
+		</div></div>
+	</main>
+</Corp>

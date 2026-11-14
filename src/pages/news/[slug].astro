@@ -1,0 +1,43 @@
+---
+// 会社サイトのお知らせ記事（/news/<slug>/）
+import { getEmDashEntry, decodeSlug } from "emdash";
+import { PortableText } from "emdash/ui";
+import Corp from "../../layouts/Corp.astro";
+import { NEWS_PILL } from "../../corp-config";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+if (!Astro.url.pathname.endsWith("/")) return Astro.redirect(`/news/${encodeURIComponent(slug)}/`, 301);
+let entry: any = null;
+try {
+	const r = await getEmDashEntry("news", slug);
+	entry = r.entry;
+	if (entry && Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+} catch {
+	entry = null;
+}
+if (!entry) return Astro.rewrite("/404");
+const d = entry.data;
+const dot = (x?: Date | null) =>
+	x ? x.toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit" }).replaceAll("/", ".") : "";
+const desc = d.excerpt || `${d.title}｜株式会社remental のお知らせ`;
+const img = d.featured_image?.meta?.storageKey ? `/_emdash/api/media/file/${d.featured_image.meta.storageKey}` : undefined;
+---
+
+<Corp title={d.title} description={desc} image={img}>
+	<section class="cp-head"><div class="wrap"><p class="cp-label">NEWS</p><p style="margin:10px 0 0;font-size:clamp(22px,2.6vw,32px);letter-spacing:.1em">お知らせ</p></div></section>
+	<main class="cp-main">
+		<div class="wrap"><div class="cp-box">
+			<p class="cp-crumb"><a href="/">ホーム</a> / <a href="/news/">お知らせ</a></p>
+			<article class="cp-article">
+				<p class="cp-meta">
+					<span class="cp-date">{dot(d.publishedAt)}</span>
+					<span class="cp-pill" style={NEWS_PILL[d.news_category] ?? NEWS_PILL["お知らせ"]}>{d.news_category || "お知らせ"}</span>
+				</p>
+				<h1>{d.title}</h1>
+				<div class="cp-body"><PortableText value={d.content} /></div>
+			</article>
+			<a class="cp-back" href="/news/">← お知らせ一覧へ</a>
+		</div></div>
+	</main>
+</Corp>

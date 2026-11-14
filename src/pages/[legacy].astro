@@ -1,0 +1,14 @@
+---
+// 旧 WordPress 会社サイト（2026-11-14 まで）の1段の URL を新しいページへ（/service、/お問い合わせ など）
+const legacy = decodeURIComponent(Astro.params.legacy ?? "");
+const MAP: Record<string, string> = {
+	service: "/#service",
+	"お問い合わせ": "/contact/",
+	contact: "/contact/",
+	media: "/news/",
+	"ホーム": "/",
+};
+const to = MAP[legacy];
+if (to) return Astro.redirect(to, 301);
+return Astro.rewrite("/404");
+---
