@@ -37,6 +37,7 @@ const year = new Date().getFullYear();
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
 <meta name="twitter:card" content="summary_large_image" />
+{isTop && <link rel="preload" as="image" href="/corp/images/hero_sky.jpg" />}
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" />
@@ -128,7 +129,10 @@ const year = new Date().getFullYear();
     var ma=svg.querySelector('.hm-a'), mb=svg.querySelector('.hm-b'), mc=svg.querySelector('.hm-c');
     var pa=document.getElementById('rmPathA'), pb=document.getElementById('rmPathB');
     var spark=svg.querySelector('.spark'), hero=document.querySelector('.hero');
-    if(reduce){ [ma,mb,mc].forEach(function(m){m.style.strokeDashoffset=0}); hero.classList.add('hero-ready'); return; }
+    // 描き終えたら線の画像のマスクを外す（マスクは毎回の描画が重いため）
+    var line=svg.querySelector('.hb-line');
+    function done(){ if(line) line.removeAttribute('mask'); hero.classList.add('hero-ready'); }
+    if(reduce){ done(); return; }
     var La=pa.getTotalLength(), Lb=pb.getTotalLength();
     var start=null, delay=500, speed=0.75; // px/ms
     var Ta=La/speed, Tb=Lb/(speed*0.85), Tc=900;
@@ -147,29 +151,40 @@ const year = new Date().getFullYear();
       spark.setAttribute('transform','translate('+pt.x.toFixed(1)+' '+pt.y.toFixed(1)+')');
       spark.setAttribute('opacity',op);
       if(fb<1||fc<1) requestAnimationFrame(frame);
-      else { spark.setAttribute('opacity',0); hero.classList.add('hero-ready'); }
+      else { spark.setAttribute('opacity',0); done(); }
     }
     requestAnimationFrame(frame);
   })();
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var hero=document.querySelector('.hero');
   var fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  // ヒーロー：マウスとスクロールで奥行き
+  // ヒーローが画面の外に出たら、光の鼓動・粒・奥行きの動きを止める（2026-11-14 軽量化）
+  var heroVisible=true, running=false;
+  if(hero && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(en){
+      heroVisible=en[0].isIntersecting;
+      hero.classList.toggle('hero-off',!heroVisible);
+      if(heroVisible && fine && !running){ running=true; requestAnimationFrame(loop); }
+    }).observe(hero);
+  }
+  // ヒーロー：マウスとスクロールで奥行き（PC だけ。スマホは動かさない）
   var tx=0,ty=0,cx=0,cy=0,sy=0,csy=0,last=-1e9;
-  if(hero){
+  function loop(t){
+    if(!heroVisible){ running=false; return; }
+    if(t-last>2500){ tx=Math.sin(t/2600)*0.35; ty=Math.cos(t/3400)*0.25; }
+    cx+=(tx-cx)*0.05; cy+=(ty-cy)*0.05; csy+=(sy-csy)*0.12;
+    hero.style.setProperty('--mx',cx.toFixed(4));
+    hero.style.setProperty('--my',cy.toFixed(4));
+    hero.style.setProperty('--sy',csy.toFixed(2));
+    requestAnimationFrame(loop);
+  }
+  if(hero && fine){
     hero.addEventListener('pointermove',function(e){
       var r=hero.getBoundingClientRect();
       tx=((e.clientX-r.left)/r.width-0.5)*2; ty=((e.clientY-r.top)/r.height-0.5)*2; last=performance.now();
     });
     window.addEventListener('scroll',function(){sy=Math.min(window.scrollY,hero.offsetHeight);},{passive:true});
-    (function loop(t){
-      if(t-last>2500||!fine){ tx=Math.sin(t/2600)*0.35; ty=Math.cos(t/3400)*0.25; }
-      cx+=(tx-cx)*0.05; cy+=(ty-cy)*0.05; csy+=(sy-csy)*0.12;
-      hero.style.setProperty('--mx',cx.toFixed(4));
-      hero.style.setProperty('--my',cy.toFixed(4));
-      hero.style.setProperty('--sy',csy.toFixed(2));
-      requestAnimationFrame(loop);
-    })(0);
+    running=true; requestAnimationFrame(loop);
   }
   // カード：マウスに合わせて傾く
   if(!fine) return;
