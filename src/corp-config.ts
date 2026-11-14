@@ -11,9 +11,9 @@ export const CORP = {
 	links: {
 		kimochi: "https://kimochi-mental.com/",
 		k4b: "https://kimochi-mental.com/business/", // 旧サイトと同じ（2026-11-14 Rioto OK）
-		kokoshe:
-			"https://apps.apple.com/jp/app/%E3%82%B3%E3%82%B3%E3%82%B7%E3%82%A7-20%E7%A7%92%E3%81%AE%E6%84%9F%E6%83%85%E6%97%A5%E8%A8%98%E3%81%A8%E3%82%B8%E3%83%A3%E3%83%BC%E3%83%8A%E3%83%AA%E3%83%B3%E3%82%B0/id6783313003", // App Store（旧サイトと同じ）
+		kokoshe: "https://kimochi-care.net/kokoshe/", // ココシェのページ（2026-11-14 Rioto 指定）
 		recruit: "https://meety.net/matches/rtEeUtEmzvKt", // カジュアル面談（旧サイトと同じ）
+		kazokuru: "https://kazokuru.com/", // フッター（2026-11-14 Rioto 依頼）
 		privacy: "/privacy/", // 【要確認】旧サイトのプライバシーポリシーは下書きのまま
 	},
 } as const;
