@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>スポットメンタルケア｜1名から使える企業・事務所・団体向けメンタルケア</title>
+<meta name="description" content="気になるメンバーを1名から指定して、公認心理師のオンラインカウンセリングを組織の負担で届けられる、企業・事務所・団体向けのサービス。今なら導入費用0円。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#002F57;
+  --teal:#3D9CA3;
+  --teal-dark:#2C7D84;
+  --teal-pale:#DCEFF0;
+  --teal-bg:#ECF6F7;
+  --tag-bg:#E9F1F1;
+  --off:#F9FBFC;
+  --yellow:#EFB03D;
+  --yellow-pale:#FCE9C2;
+  --sub:#4F6478;
+  --line:#DCEFF0;
+  --radius-s:8px;
+  --radius-m:12px;
+  --radius-l:20px;
+  --shadow:0 10px 32px rgba(0,47,87,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;color:var(--navy);line-height:1.8;background:#fff;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--teal-dark)}
+h1,h2,h3,p{margin:0}
+.en{font-family:Inter,sans-serif}
+.container{max-width:1120px;margin:0 auto;padding:0 24px}
+.section{padding:96px 0}
+.section--pale{background:var(--teal-bg)}
+.section--off{background:var(--off)}
+.sec-head{text-align:center;margin-bottom:48px}
+.sec-head .label{display:block;font-family:Inter,sans-serif;font-size:13px;font-weight:600;letter-spacing:.14em;color:var(--teal-dark);margin-bottom:8px}
+.sec-head h2{font-size:clamp(24px,3vw,32px);line-height:1.5;font-weight:700}
+.sec-head p{margin-top:12px;color:var(--sub)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 32px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.btn svg{width:18px;height:18px;flex:none}
+.btn--primary{background:var(--teal);color:#fff;box-shadow:0 6px 18px rgba(61,156,163,.35)}
+.btn--primary:hover{background:var(--teal-dark);transform:translateY(-1px)}
+.btn--outline{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.btn--outline:hover{background:var(--teal-bg)}
+.btn--white{background:#fff;color:var(--navy)}
+.btn--white:hover{transform:translateY(-1px)}
+.btn--sm{min-height:44px;padding:0 22px;font-size:14px}
+.note{font-size:12px;color:var(--sub)}
+
+/* tags */
+.tag{display:inline-flex;align-items:center;font-size:13px;font-weight:500;color:var(--teal-dark);background:var(--tag-bg);padding:4px 12px;border-radius:6px}
+.badge-campaign{display:inline-flex;align-items:center;gap:2px;font-weight:700;color:var(--navy);background:var(--yellow-pale);border:1.5px solid var(--yellow);padding:6px 16px;border-radius:999px;font-size:15px}
+.badge-campaign b{font-family:Inter,sans-serif;font-size:1.25em;line-height:1}
+.badge-campaign sup{font-size:.7em}
+
+/* header */
+.header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.header__inner{padding:0 max(24px,5.4vw);display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--navy)}
+.brand{font-weight:700;font-size:22px;letter-spacing:.04em;line-height:1;white-space:nowrap}
+.brand span{color:var(--teal)}
+.brand--white{color:#fff;font-size:20px}
+.brand--white span{color:var(--teal-pale)}
+.logo__type{font-family:Inter,sans-serif;font-weight:700;font-size:26px;letter-spacing:-.02em;line-height:1}
+.nav{display:flex;align-items:center;gap:32px}
+.nav a{color:var(--navy);text-decoration:none;font-size:14px;font-weight:500}
+.nav a.btn{color:#fff}
+.nav a.btn--outline{color:var(--navy)}
+.nav a.btn--outline:hover{color:var(--navy)}
+.nav{gap:24px}
+.nav a.btn:hover{color:#fff}
+.nav a:hover{color:var(--teal-dark)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:#F7FAFB;min-height:clamp(480px,calc(100svh - 68px - 96px),620px);display:flex;align-items:center}
+.hero__media{position:absolute;inset:0}
+.hero__bg{width:100%;height:100%;object-fit:cover;object-position:right center}
+.hero__wave{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:clamp(28px,3.5vw,56px);display:block}
+.hero__inner{position:relative;z-index:1;width:100%;padding:28px 24px 52px max(24px,5.4vw)}
+.hero__content{max-width:min(640px,46vw)}
+.member-card{position:absolute;z-index:2;right:max(24px,3.6vw);top:50%;transform:translateY(-54%);width:clamp(280px,25vw,420px);background:#fff;border-radius:24px;padding:clamp(18px,1.6vw,28px);box-shadow:0 18px 48px rgba(0,47,87,.12)}
+.member-card__head{font-weight:700;font-size:clamp(15px,1.25vw,19px);margin-bottom:14px}
+.member-card__head .count{font-family:Inter,sans-serif;font-weight:600;font-size:.9em}
+.member-card__head .count b{font-size:1.9em;line-height:1}
+.member{display:flex;align-items:center;gap:12px;padding:10px 12px;margin-bottom:8px;border-radius:14px;background:#fff;box-shadow:0 2px 10px rgba(0,47,87,.06);font-size:clamp(13px,1vw,15px);font-weight:700}
+.avatar{width:clamp(34px,2.8vw,44px);height:clamp(34px,2.8vw,44px);border-radius:50%;background:var(--teal-bg);display:flex;align-items:center;justify-content:center;flex:none}
+.avatar svg{width:55%;height:55%}
+.member .status{white-space:nowrap;margin-left:auto;font-size:.85em;font-weight:700;padding:3px 12px;border-radius:999px;background:var(--teal-pale);color:var(--navy)}
+.member .status--new{background:#EEF4FB;border:1px solid #9DB8D9}
+.member .txt{display:flex;flex-direction:column;line-height:1.45}
+.member .txt small{font-family:Inter,sans-serif;font-size:11px;font-weight:600;color:var(--teal-dark);letter-spacing:.06em}
+.member .txt em{font-style:normal;align-self:flex-start;margin-top:4px;font-size:12px;padding:1px 10px;border-radius:999px;background:var(--teal-pale)}
+.member-card__foot .yen{width:22px;height:22px;flex:none;border-radius:50%;background:var(--yellow);color:var(--navy);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.member-card__foot{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 12px;border-radius:12px;background:#FFF7E6;font-size:clamp(12px,.95vw,15px);font-weight:700}
+.member-card__foot svg{width:22px;height:22px;flex:none}
+.hero__badges{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+.hero__badges .pill{display:inline-flex;align-items:center;font-size:15px;font-weight:700;border:1.5px solid var(--teal);border-radius:999px;padding:7px 20px;background:#fff}
+.hero__badges .badge-campaign{border:none;background:#FBE68E;padding:7px 22px}
+.hero h1{font-size:clamp(28px,2.9vw,44px);line-height:1.42;font-weight:700;letter-spacing:.06em}
+.hero h1 .ln,.hero__lead .ln{white-space:nowrap}
+.hero h1 .mark{background:var(--teal-pale);border-radius:6px;padding:0 .08em;margin:0 .04em}
+.hero__lead{margin-top:16px;font-size:15px;line-height:1.8;max-width:540px}
+.hero__cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:22px}
+.hero__cta .btn{min-height:54px;min-width:200px;font-size:16px}
+.hero__cta .btn--primary{background:linear-gradient(90deg,#3D9CA3,#2C8B92)}
+.hero__cta + .note{margin-top:10px}
+
+@media (min-width:961px) and (max-height:760px){
+  .hero{min-height:calc(100svh - 68px - 96px)}
+  .hero__inner{padding:18px 24px 40px max(24px,5.4vw)}
+  .hero h1{font-size:clamp(28px,2.6vw,38px)}
+  .hero__badges{margin-bottom:10px}
+  .hero__lead{margin-top:12px;font-size:14px;line-height:1.7}
+  .hero__cta{margin-top:16px}
+  .hero__cta .btn{min-height:48px}
+  .member-card{padding:16px;width:clamp(260px,23vw,360px)}
+  .member{padding:7px 10px;margin-bottom:6px}
+  .member-card__head{margin-bottom:10px}
+  .member-card__foot{white-space:nowrap;font-size:12px;gap:8px}
+}
+/* stats */
+.stats{background:#fff;border-bottom:1px solid var(--line)}
+.stats__grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{display:flex;align-items:center;justify-content:center;gap:14px;padding:18px 12px;text-align:left}
+.stat + .stat{border-left:1px solid var(--line)}
+.stat__icon{width:44px;height:44px;flex:none;color:var(--teal)}
+.stat__label{font-size:12px;color:var(--sub);line-height:1.4}
+.stat__value{font-size:18px;font-weight:700;line-height:1.3}
+.stat__value .num{font-family:Inter,sans-serif;font-size:30px;font-weight:700}
+
+/* problems */
+.problems{position:relative;overflow:hidden;background:linear-gradient(180deg,#F3F9FA 0%,#EEF6F7 100%)}
+.problems::before,.problems::after{content:"";position:absolute;border-radius:50%;background:rgba(61,156,163,.06);pointer-events:none}
+.problems::before{width:520px;height:520px;left:-260px;top:-360px}
+.problems::after{width:640px;height:640px;right:-320px;bottom:-480px}
+.problems .container{position:relative}
+.sec-head h2::after{content:"";display:block;width:56px;height:4px;border-radius:2px;background:var(--teal);margin:20px auto 0}
+.problems__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.problem{background:#fff;border-radius:24px;padding:20px 20px 30px;text-align:center;box-shadow:0 10px 30px rgba(0,47,87,.06)}
+.problem img{width:100%;height:auto;aspect-ratio:385/162;object-fit:contain;margin-bottom:18px}
+.problem p{font-weight:500;font-size:16px;line-height:1.75}
+.problems__close{margin-top:48px;text-align:center;font-size:19px;font-weight:500;line-height:2}
+.problems__close strong{display:inline-block;background:#FCE3AE;padding:0 10px;border-radius:6px;font-weight:700;line-height:1.7}
+/* about counseling */
+br.sp{display:none}
+.about__lead{max-width:760px;margin:0 auto 40px;text-align:center;font-size:16px;line-height:1.9}
+.about__lead strong{color:var(--navy);background:linear-gradient(transparent 60%,var(--teal-pale) 60%)}
+.ba{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:stretch}
+.ba__col{border-radius:24px;padding:32px 30px}
+.ba__col--before{background:#F2F4F6}
+.ba__col--after{background:var(--teal-bg);box-shadow:0 10px 30px rgba(61,156,163,.12)}
+.ba__tag{display:inline-block;font-family:Inter,sans-serif;font-size:13px;font-weight:700;letter-spacing:.12em;padding:4px 14px;border-radius:999px;margin-bottom:12px}
+.ba__col--before .ba__tag{background:#fff;color:#6B7A88}
+.ba__col--after .ba__tag{background:var(--teal);color:#fff}
+.ba__col h3{font-size:19px;line-height:1.5;margin-bottom:16px}
+.ba__col--before h3{color:#4F6478}
+.ba__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ba__list li{display:flex;gap:10px;align-items:flex-start;background:#fff;border-radius:12px;padding:12px 14px;font-size:15px;line-height:1.6}
+.ba__list svg{width:20px;height:20px;flex:none;margin-top:2px}
+.ba__col--before .ba__list li{color:#4F6478}
+.ba__mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:120px;text-align:center}
+.ba__mid .circle{width:72px;height:72px;border-radius:50%;background:#fff;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center}
+.ba__mid .circle svg{width:34px;height:34px}
+.ba__mid span{font-size:13px;font-weight:700;color:var(--teal-dark);line-height:1.5}
+.org-arrow{display:flex;flex-direction:column;align-items:center;gap:8px;margin:28px 0 20px}
+.org-arrow .circle{width:56px;height:56px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(61,156,163,.3)}
+.org-arrow .circle svg{width:28px;height:28px}
+.org-arrow span{font-size:14px;font-weight:700;color:var(--teal-dark)}
+.org{background:linear-gradient(135deg,#2F8C93,#3D9CA3);border-radius:24px;padding:32px;color:#fff}
+.org h3{font-size:20px;text-align:center;margin-bottom:20px}
+.org h3 small{display:block;font-size:13px;font-weight:500;opacity:.9;margin-top:2px}
+.org__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.org__item{background:#fff;color:var(--navy);border-radius:16px;padding:20px 18px;display:flex;flex-direction:column;gap:8px}
+.org__item .ic{width:44px;height:44px;border-radius:50%;background:var(--teal-bg);display:flex;align-items:center;justify-content:center}
+.org__item .ic svg{width:22px;height:22px}
+.org__item b{font-size:16px;line-height:1.5}
+.org__item p{font-size:13px;color:var(--sub);line-height:1.7}
+.about__how{margin:0 0 40px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.how{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 20px}
+.how b{display:block;font-size:16px;margin-bottom:4px}
+.how p{font-size:14px;color:var(--sub)}
+.how .n{font-family:Inter,sans-serif;font-size:12px;font-weight:700;color:var(--teal-dark);letter-spacing:.08em}
+.about__note{margin-top:20px;text-align:center}
+
+/* features */
+.features__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature{background:#fff;border:1px solid var(--line);border-radius:var(--radius-l);padding:32px 28px;display:flex;flex-direction:column;gap:16px}
+.feature__num{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:64px;height:64px;border-radius:var(--radius-m);background:var(--teal-bg);color:var(--teal-dark);font-family:Inter,sans-serif;font-weight:600;font-size:11px;line-height:1.1}
+.feature__num b{font-size:26px}
+.feature h3{font-size:20px;line-height:1.55;font-weight:700}
+.feature p{font-size:15px;color:var(--sub)}
+.feature__visual{margin-top:auto;background:var(--off);border-radius:var(--radius-m);padding:20px}
+.dots{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.dots span{aspect-ratio:1;border-radius:50%;border:1.5px solid var(--teal);background:#fff}
+.dots span.on{background:var(--teal)}
+.feature__visual .caption{margin-top:10px;font-size:13px;font-weight:500;text-align:center}
+.mini-list{display:flex;flex-direction:column;gap:10px;padding:16px 20px}
+.mini-list div{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:700;line-height:1.5}
+.mini-list .ic{width:36px;height:36px;flex:none;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}
+.mini-list svg{width:20px;height:20px}
+.shift{display:flex;align-items:center;gap:10px}
+.shift div{flex:1;text-align:center;background:#fff;border-radius:var(--radius-s);padding:12px 6px;font-size:13px;line-height:1.5}
+.shift div b{display:block;font-size:15px}
+.shift svg{width:22px;height:22px;flex:none}
+
+/* cta band */
+.cta-band{padding:0 0 96px}
+.cta-band__box{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:24px 32px;background:linear-gradient(180deg,#F1F8F9 0%,#E6F3F4 100%);border:1px solid #fff;border-radius:24px;padding:36px 40px;box-shadow:0 14px 40px rgba(0,47,87,.08)}
+.cta-band__box::before,.cta-band__box::after{content:"";position:absolute;border-radius:50%;background:rgba(61,156,163,.08);pointer-events:none}
+.cta-band__box::before{width:520px;height:520px;right:-120px;bottom:-400px}
+.cta-band__box::after{width:360px;height:360px;right:-160px;bottom:-200px}
+.cta-band__text{position:relative;display:flex;align-items:center;gap:24px;min-width:0}
+.cta-band__text .badge-campaign{flex:none;border:none;background:#FCE3AE;padding:9px 18px;font-size:15px}
+.cta-band__copy{padding-left:24px;border-left:1px solid #C9DFE1}
+.cta-band__copy h2{white-space:nowrap;font-size:22px;line-height:1.5;font-weight:700;color:var(--navy)}
+.cta-band__copy p{margin-top:4px;font-size:15px;color:var(--sub)}
+.cta-band__copy p .sep{display:inline-block;width:1px;height:1em;background:#C9DFE1;margin:0 10px;vertical-align:-2px}
+.cta-band .btn{position:relative;flex:none;min-height:64px;padding:0 36px;font-size:17px;background:linear-gradient(180deg,#3D9CA3,#2F8C93)}
+
+/* compare */
+.compare{overflow-x:auto;border-radius:var(--radius-l);box-shadow:var(--shadow);background:#fff}
+.compare table{width:100%;min-width:640px;border-collapse:collapse}
+.compare th,.compare td{padding:18px 24px;text-align:center;border-bottom:1px solid var(--line);font-size:15px}
+.compare tr:last-child th,.compare tr:last-child td{border-bottom:none}
+.compare thead th{font-size:16px;line-height:1.5;padding:22px 24px}
+.compare thead th small{display:block;font-size:12px;font-weight:500}
+.compare tbody th{text-align:left;font-weight:700;width:22%;background:var(--off)}
+.compare .is-spot{background:var(--teal-bg);font-weight:700}
+.compare thead .is-spot{background:var(--teal);color:#fff}
+.compare .is-other{color:var(--sub)}
+.compare-note{margin-top:20px;text-align:center;font-size:14px}
+
+/* payflow */
+.payflow{margin-top:40px;background:#fff;border-radius:24px;padding:36px 40px;box-shadow:var(--shadow)}
+.payflow__title{font-size:22px;font-weight:700;text-align:center}
+.payflow__title small{display:block;font-size:13px;font-weight:500;color:var(--sub);margin-top:2px}
+.payflow__title{position:relative;display:block}
+.payflow__title .spark{position:absolute;margin-left:8px;margin-top:-14px;width:30px;height:26px}
+.payflow__bar{display:grid;grid-template-columns:1fr 1fr;margin:24px 0 14px}
+.payflow__bar span{display:flex;align-items:center;justify-content:center;height:40px;font-size:14px;font-weight:700;padding:0 28px}
+.payflow__bar span:first-child{background:linear-gradient(90deg,#3D9CA3,#2F8C93);color:#fff;border-radius:999px 0 0 999px;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%);position:relative;z-index:1;margin-right:-10px}
+.payflow__bar span:last-child{background:linear-gradient(90deg,#FBE3B3,#F8D08A);color:var(--navy);border-radius:0 999px 999px 0;padding-left:36px}
+.payflow__stages{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch}
+.stage{position:relative;border-radius:16px;padding:22px 22px;display:flex;gap:16px;align-items:flex-start}
+.stage > div{flex:1;min-width:0}
+.stage__art{flex:none;width:96px;height:96px;align-self:flex-end}
+.stage--company{background:var(--teal-bg)}
+.stage--person{background:#FFF7E6}
+.stage__ic{width:52px;height:52px;flex:none;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}
+.stage__ic svg{width:26px;height:26px}
+.stage__when{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;margin-bottom:6px}
+.stage--company .stage__when{background:var(--teal);color:#fff}
+.stage--person .stage__when{background:var(--yellow);color:var(--navy)}
+.stage h3{font-size:17px;line-height:1.5}
+.stage p{font-size:14px;color:var(--sub);margin-top:4px}
+.payflow__arrow{display:flex;align-items:center;justify-content:center}
+.payflow__arrow svg{width:28px;height:28px}
+.payflow__note{margin-top:16px;text-align:center;font-size:13px;color:var(--sub)}
+
+/* scenes */
+.scenes__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.scene{display:flex;gap:20px;background:#fff;border-radius:var(--radius-l);padding:28px;box-shadow:var(--shadow)}
+.scene__icon{width:72px;height:72px;flex:none;border-radius:50%;background:var(--teal-bg);display:flex;align-items:center;justify-content:center}
+.scene__icon svg{width:34px;height:34px}
+.scene h3{font-size:18px;line-height:1.5;margin:8px 0 6px}
+.scene p{font-size:14px;color:var(--sub)}
+
+/* cases */
+.cases__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.case{min-width:0;background:#fff;border-radius:24px;padding:28px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:20px}
+.case__head{display:flex;align-items:center;gap:14px}
+.case__logo{width:56px;height:56px;flex:none;border-radius:16px;background:var(--teal-bg);display:flex;align-items:center;justify-content:center}
+.case__logo svg{width:28px;height:28px}
+.case__label{font-family:Inter,sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--teal-dark)}
+.case__name{font-size:18px;font-weight:700;line-height:1.4}
+.case__name small{display:block;font-size:13px;font-weight:500;color:var(--sub)}
+.case__facts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.case__facts div{background:var(--off);border-radius:12px;padding:12px 6px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.case__facts dt{font-size:12px;color:var(--sub)}
+.case__facts dd{margin:2px 0 0;font-size:14px;font-weight:700;line-height:1.4}
+.case__facts dd b{font-family:Inter,sans-serif;font-size:22px;color:var(--teal-dark);margin:0 1px}
+.case__facts dd b.jp{font-family:inherit;font-size:18px}
+.case__term{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;font-size:12px;font-weight:700}
+.case__term span{display:flex;align-items:center;justify-content:center;padding:7px 12px;text-align:center}
+.case__term .all{background:var(--teal);color:#fff}
+.case__term .co{background:var(--teal);color:#fff}
+.case__term .me{flex:1;background:#FBE3B3;color:var(--navy)}
+.case__bg h3{font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.case__bg h3::before{content:"";width:4px;height:16px;border-radius:2px;background:var(--teal)}
+.case__bg p{font-size:15px;color:var(--sub)}
+
+/* flow */
+.fastest{display:inline-block;font-weight:700;color:var(--navy);background:#FCE3AE;padding:2px 12px;border-radius:6px;margin-right:4px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;counter-reset:step}
+.step{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius-l);padding:28px 22px}
+.step:not(:last-child)::after{content:"";position:absolute;top:50%;right:-20px;width:12px;height:12px;border-top:2.5px solid var(--teal);border-right:2.5px solid var(--teal);transform:translateY(-50%) rotate(45deg)}
+.step__num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-family:Inter,sans-serif;font-weight:700;margin-bottom:12px}
+.step h3{font-size:17px;margin-bottom:6px}
+.step p{font-size:14px;color:var(--sub)}
+
+/* price */
+.price{max-width:720px;margin:0 auto;background:#fff;border:2px solid var(--teal);border-radius:24px;padding:40px;text-align:center;box-shadow:var(--shadow)}
+.price__rows{display:grid;grid-template-columns:1fr 1fr;margin:24px 0 8px}
+.price__rows > div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 16px}
+.price__rows > div + div{border-left:1px solid var(--line)}
+.price__label{font-size:14px;font-weight:500;color:var(--sub)}
+.price__zero{font-size:22px;font-weight:700;line-height:1}
+.price__zero b{font-family:Inter,sans-serif;font-size:72px;color:var(--teal-dark);letter-spacing:-.02em}
+.price__monthly{font-size:28px;font-weight:700}
+.price__tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:24px 0 28px}
+.price__tags span{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;padding:6px 14px;border-radius:999px;background:var(--off);border:1px solid var(--line)}
+.price__tags svg{width:14px;height:14px}
+.price-after{max-width:720px;margin:20px auto 0;text-align:center;font-size:14px;line-height:1.9}
+
+.price{max-width:860px}
+.price__monthly{font-size:22px;font-weight:700;line-height:1.4}
+.price__monthly small{display:block;font-size:13px;font-weight:500;color:var(--sub)}
+.price__block{margin-top:28px;text-align:left}
+.price__block h3{display:flex;align-items:center;gap:10px;font-size:16px;margin-bottom:12px}
+.price__block h3 .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;font-family:Inter,sans-serif;font-size:13px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.plan{border:1.5px solid var(--line);border-radius:14px;padding:16px 10px;text-align:center;background:var(--off)}
+.plan b{display:block;font-size:20px;line-height:1.3}
+.plan span{font-size:14px;color:var(--sub)}
+.term{display:flex;align-items:center;gap:16px;background:#FFF7E6;border-radius:14px;padding:16px 20px}
+.term__ic{width:44px;height:44px;flex:none;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}
+.term__ic svg{width:22px;height:22px}
+.term p{font-size:14px;color:var(--sub)}
+.term p b{display:block;font-size:16px;color:var(--navy)}
+.btn-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.price__apply-note{margin-top:10px;font-size:12px;color:var(--sub)}
+/* faq */
+.faq{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:var(--radius-m);overflow:hidden}
+.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:20px 24px;font-weight:700;font-size:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq .q{flex:none;width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;font-family:Inter,sans-serif;font-size:14px;display:flex;align-items:center;justify-content:center}
+.faq .chev{margin-left:auto;width:20px;height:20px;flex:none;transition:transform .2s}
+.faq details[open] .chev{transform:rotate(180deg)}
+.faq .a{padding:0 24px 22px 68px;font-size:15px;color:var(--sub)}
+.faq div.a p + .a-list,.faq div.a .a-list + p{margin-top:8px}
+.a-list{margin:0;padding-left:1.2em}
+.a-list li{margin:4px 0}
+
+/* final */
+.final{background:linear-gradient(180deg,var(--teal-bg) 0%,#fff 100%);text-align:center}
+.final h2{font-size:clamp(26px,3.4vw,36px);line-height:1.5;margin:20px 0 12px}
+.final p{color:var(--sub)}
+.final .btn-row{margin-top:28px}
+.final .note{margin-top:12px}
+
+/* footer */
+.footer{background:var(--navy);color:#fff;padding:32px 0;font-size:13px}
+.footer__inner{display:flex;align-items:center;justify-content:space-between;gap:16px 32px;flex-wrap:wrap}
+.footer a{color:#fff}
+.footer .disclaimer{color:var(--teal-pale)}
+
+/* sticky sp cta */
+.sp-cta{display:none}
+
+@media (max-width:1180px){
+  .cta-band__copy h2{white-space:normal}
+  .cta-band__box{flex-direction:column;align-items:stretch}
+  .cta-band .btn{align-self:flex-start}
+}
+@media (max-width:1100px){
+  .case__facts dd{font-size:13px}
+}
+@media (max-width:960px){
+  .ba{grid-template-columns:1fr}
+  .ba__mid{width:auto;flex-direction:row}
+  .ba__mid .circle{width:52px;height:52px;transform:rotate(90deg)}
+  .about__how{grid-template-columns:1fr}
+  .org__grid{grid-template-columns:1fr 1fr}
+  .nav-apply{display:none!important}
+  .cases__grid{grid-template-columns:1fr;max-width:560px;margin:0 auto}
+  .nav a:not(.btn){display:none}
+  .hero{flex-direction:column;align-items:stretch;min-height:0}
+  .hero__media{display:contents}
+  .hero__bg{display:block;order:0;height:clamp(260px,62vw,420px)}
+  .hero__wave{display:none}
+  .hero__bg{object-position:100% 100%}
+  .member-card{transform:none;position:relative;top:auto;right:auto;bottom:auto;width:auto;max-width:480px;margin:0 24px 40px;padding:16px;border-radius:18px;order:2}
+  .member .txt br{display:none}
+  .member-card__head{font-size:14px}
+  .member{padding:6px 8px;margin-bottom:6px;gap:8px;font-size:12px}
+  .member-card__foot{font-size:12px}
+  .avatar{width:28px;height:28px}
+  .member-card__head{margin-bottom:8px}
+  .member-card__foot{padding:6px 8px;gap:6px}
+  .member-card__foot svg{width:16px;height:16px}
+  .hero__inner{padding:28px 24px 40px}
+  .hero__content{max-width:none}
+  .hero h1{font-size:clamp(28px,6.4vw,44px)}
+  .hero__lead{font-size:15px}
+  .stats__grid{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3){border-left:none}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .problems__grid{grid-template-columns:repeat(2,1fr)}
+  .features__grid{grid-template-columns:1fr}
+  .scenes__grid{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr 1fr}
+  .step::after{display:none}
+}
+@media (max-width:600px){
+  .org{padding:24px 16px}
+  .org__grid{grid-template-columns:1fr}
+  br.sp{display:inline}
+  .about__lead br{display:none}
+  .about__lead{text-align:left;font-size:15px}
+  .case{padding:24px 20px}
+  .case__facts dd{font-size:14px}
+  .case__facts dd b{font-size:20px}
+  .case__facts{gap:6px}
+  .case__facts div{padding:10px 6px}
+  .case__facts dd{font-size:13px}
+  .case__term{height:auto;border-radius:12px;flex-direction:column}
+  .case__term span{padding:6px 12px;white-space:normal}
+  .payflow{padding:28px 20px}
+  .payflow__stages{grid-template-columns:1fr}
+  .stage{padding:18px}
+  .stage__ic{display:none}
+  .stage__art{width:64px;height:64px}
+  .payflow__bar{display:none}
+  .payflow__stages{margin-top:20px}
+  .payflow__arrow{transform:rotate(90deg)}
+  .payflow__bar{grid-template-columns:1fr 1fr}
+  .cta-band__text{flex-direction:column;align-items:flex-start;gap:14px}
+  .cta-band__copy{padding-left:0;border-left:none}
+  .cta-band .btn{align-self:stretch}
+  .section{padding:64px 0}
+  .header__inner{height:60px}
+  .brand{font-size:18px}
+  .header .btn{display:none}
+  .hero__cta .btn{width:100%;min-width:0}
+  .stat{flex-direction:column;text-align:center;gap:6px;padding:20px 8px}
+  .stat__value{font-size:15px}
+  .stat__value .num{font-size:24px}
+  .problems__grid{grid-template-columns:1fr 1fr;gap:10px}
+  .problem{padding:12px 10px 18px;border-radius:18px}
+  .problem img{margin-bottom:10px}
+  .problem p{font-size:13px}
+  .problem p br{display:none}
+  .problems__close{font-size:16px}
+  .cta-band__box{padding:28px 22px}
+  .cta-band__copy h2{font-size:19px}
+  .cta-band__copy p{font-size:13px}
+  .flow{grid-template-columns:1fr}
+  .price{padding:32px 20px}
+  .plans{grid-template-columns:repeat(3,1fr);gap:8px}
+  .plan{padding:14px 6px}
+  .plan b{font-size:18px}
+  .term{align-items:flex-start}
+  .price__rows{grid-template-columns:1fr}
+  .price__rows > div + div{border-left:none;border-top:1px solid var(--line);padding-top:16px;margin-top:8px}
+  .faq .a{padding-left:24px}
+  body{padding-bottom:76px}
+  .sp-cta{display:block;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--line)}
+  .sp-cta .btn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="header">
+  <div class="header__inner">
+    <a href="#" class="logo" aria-label="スポットメンタルケア">
+      <span class="brand">スポット<span>メンタルケア</span></span>
+    </a>
+    <nav class="nav" aria-label="ページ内ナビゲーション">
+      <a href="#feature">特徴</a>
+      <a href="#case">ユースケース</a>
+      <a href="#flow">導入の流れ</a>
+      <a href="#price">料金</a>
+      <a href="#faq">よくある質問</a>
+      <a class="btn btn--outline btn--sm nav-apply" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=apply-header" data-cta="apply-header">申し込む</a>
+      <a class="btn btn--primary btn--sm" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=header">無料相談する</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="hero__media">
+    <img class="hero__bg" src="/spot-mentalcare/images/hero.jpg" alt="" width="1774" height="887">
+    <svg class="hero__wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 58 C 260 22, 520 26, 760 52 S 1220 86, 1440 38 L1440 90 L0 90 Z" fill="#DCEFF0" opacity=".55"/><path d="M0 74 C 320 46, 620 52, 880 70 S 1270 86, 1440 64 L1440 90 L0 90 Z" fill="#fff"/></svg>
+    <div class="member-card" aria-label="スポットメンタルケアのしくみ">
+      <p class="member-card__head">スポットメンタルケアのしくみ</p>
+      <div class="member"><span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/></svg></span><span class="txt"><small>STEP 1</small>会社・団体が支えたい人を指定<em>1名から</em></span></div>
+      <div class="member"><span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="txt"><small>STEP 2</small>本人が公認心理師と<br>オンラインで相談</span></div>
+      <div class="member"><span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span class="txt"><small>STEP 3</small>相談内容は会社に<br>共有されません</span></div>
+      <div class="member-card__foot"><span class="yen">¥</span>費用は会社・団体が負担（期間は自由）</div>
+    </div>
+  </div>
+  <div class="hero__inner">
+    <div class="hero__content">
+      <div class="hero__badges">
+        <span class="badge-campaign">今なら導入費用<b>0</b>円<sup>※</sup></span>
+      </div>
+      <h1><span class="ln">全社導入の前に、</span><br><span class="ln">まず<span class="mark">「この人」</span>を支える</span><br><span class="ln">スポットメンタルケア</span></h1>
+      <p class="hero__lead"><span class="ln">気になるメンバーを1名から指定して、</span><br><span class="ln">公認心理師のオンラインカウンセリングを</span><br><span class="ln">会社・事務所・団体の負担で届けられます。</span><br><span class="ln">全社への導入も、大がかりな準備もいりません。</span></p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=fv">まずは無料相談する
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+        <a class="btn btn--outline" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=apply-fv" data-cta="apply-fv">条件を入れて申し込む
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      </div>
+      <p class="note">※導入費用0円は「リリース記念キャンペーン」の特典です。2027年3月31日までのお申し込みが対象です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Stats ===== -->
+<section class="stats" aria-label="実績">
+  <div class="container stats__grid">
+    <div class="stat">
+      <svg class="stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="7" r="3"/><circle cx="5" cy="9" r="2.3"/><circle cx="19" cy="9" r="2.3"/><path d="M7 20c0-3 2.2-5 5-5s5 2 5 5M1.5 19c0-2.3 1.6-4 3.8-4M22.5 19c0-2.3-1.6-4-3.8-4"/></svg>
+      <div><p class="stat__label">公認心理師のみ</p><p class="stat__value"><span class="num">130</span>名以上</p></div>
+    </div>
+    <div class="stat">
+      <svg class="stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M15 14.6c3 .1 6 1.7 6 4.9"/></svg>
+      <div><p class="stat__label">運営サービス登録者数</p><p class="stat__value"><span class="num">1.5</span>万名以上</p></div>
+    </div>
+    <div class="stat">
+      <svg class="stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></svg>
+      <div><p class="stat__label">日本サブスクリプション<br>ビジネス大賞2025</p><p class="stat__value">ブロンズ受賞</p></div>
+    </div>
+    <div class="stat">
+      <svg class="stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M8 2l4 4 4-4"/></svg>
+      <div><p class="stat__label">TBS系</p><p class="stat__value">「THE TIME,」で紹介</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Problems ===== -->
+<section class="section problems">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label">PROBLEM</span>
+      <h2>こうした場面はありませんか？</h2>
+    </div>
+    <div class="problems__grid">
+      <div class="problem">
+        <img src="/spot-mentalcare/images/problem-1.jpg" alt="メンバーの様子を気にかける女性" width="385" height="162" loading="lazy">
+        <p>最近、あるメンバーの<br>様子が気になっている</p>
+      </div>
+      <div class="problem">
+        <img src="/spot-mentalcare/images/problem-2.jpg" alt="本人から打ち明けられる場面" width="385" height="162" loading="lazy">
+        <p>本人から「少ししんどい」と<br>打ち明けられた</p>
+      </div>
+      <div class="problem">
+        <img src="/spot-mentalcare/images/problem-3.jpg" alt="辞めてしまいそうなメンバーへの対応を考える場面" width="385" height="162" loading="lazy">
+        <p>辞めそうなメンバーに、<br>早めに手を打ちたい</p>
+      </div>
+      <div class="problem">
+        <img src="/spot-mentalcare/images/problem-4.jpg" alt="全社向けサービスに悩む女性" width="385" height="162" loading="lazy">
+        <p>全社向けのサービスは、<br>まだ大きすぎる</p>
+      </div>
+    </div>
+    <p class="problems__close">全員に必要なわけではない。でも、<strong>この人には「今」必要。</strong><br>スポットメンタルケアは、そんな場面のためのサービスです。</p>
+  </div>
+</section>
+
+<!-- ===== About counseling ===== -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label">ABOUT</span>
+      <h2>そもそも、<br class="sp">カウンセリングって？</h2>
+    </div>
+    <p class="about__lead">スポットメンタルケアのカウンセリングは、国家資格を持つ公認心理師が、<br>オンラインで1対1でお話をうかがう時間です。<strong>アドバイスを押しつけたり、診断したりするのではなく、</strong><br>本人が自分の気持ちを整理し、次の一歩を見つけるまで伴走します。</p>
+    <div class="about__how">
+      <div class="how"><span class="n">01</span><b>じっくり聴く</b><p>まずは否定せず、話したいことを話したいペースでうかがいます。</p></div>
+      <div class="how"><span class="n">02</span><b>一緒に整理する</b><p>もやもやの正体や、本当に困っていることを言葉にしていきます。</p></div>
+      <div class="how"><span class="n">03</span><b>次の一歩を考える</b><p>本人が納得できる、無理のない次の行動を一緒に見つけます。</p></div>
+    </div>
+    <div class="ba">
+      <div class="ba__col ba__col--before">
+        <span class="ba__tag">BEFORE</span>
+        <h3>カウンセリングの前は</h3>
+        <ul class="ba__list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#9AA7B3" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 15c1.2-1.3 2.5-2 4-2s2.8.7 4 2M9 9.5h.01M15 9.5h.01"/></svg>頭の中で同じ悩みがぐるぐる回っている</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#9AA7B3" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 15c1.2-1.3 2.5-2 4-2s2.8.7 4 2M9 9.5h.01M15 9.5h.01"/></svg>誰に、何を話せばいいのか分からない</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#9AA7B3" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 15c1.2-1.3 2.5-2 4-2s2.8.7 4 2M9 9.5h.01M15 9.5h.01"/></svg>仕事に集中できず、ひとりで抱え込んでいる</li>
+        </ul>
+      </div>
+      <div class="ba__mid">
+        <span class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <span>公認心理師と<br>話してみると</span>
+      </div>
+      <div class="ba__col ba__col--after">
+        <span class="ba__tag">AFTER</span>
+        <h3>話したあとは</h3>
+        <ul class="ba__list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 13.5c1.2 1.4 2.5 2 4 2s2.8-.6 4-2M9 9.5h.01M15 9.5h.01"/></svg>気持ちが言葉になり、悩みが整理できる</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 13.5c1.2 1.4 2.5 2 4 2s2.8-.6 4-2M9 9.5h.01M15 9.5h.01"/></svg>否定されずに話せる場所がある</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 13.5c1.2 1.4 2.5 2 4 2s2.8-.6 4-2M9 9.5h.01M15 9.5h.01"/></svg>次にどう動くかが、自分で見えてくる</li>
+        </ul>
+      </div>
+    </div>
+    <div class="org-arrow" aria-hidden="true">
+      <span class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
+      <span>本人が整うと、職場や組織にも</span>
+    </div>
+    <div class="org">
+      <h3>職場・組織にとっての効果<small>一人を支えることが、チーム全体の安心につながります</small></h3>
+      <div class="org__grid">
+        <div class="org__item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg></span><b>働き続けやすくなる</b><p>ひとりで抱え込まずに済むことで、離職の予防につながります。</p></div>
+        <div class="org__item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></span><b>早めに手を打てる</b><p>不調が深刻になる前に、専門家とつながる機会をつくれます。</p></div>
+        <div class="org__item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6L12 20l-7.5-7.4A5 5 0 1 1 12 6a5 5 0 1 1 7.5 6.6z"/></svg></span><b>信頼関係が深まる</b><p>「組織が気にかけてくれている」という安心感が生まれます。</p></div>
+        <div class="org__item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M15 14.6c3 .1 6 1.7 6 4.9"/></svg></span><b>周りの負担が軽くなる</b><p>上司や同僚が抱えていたフォローを、専門家と分担できます。</p></div>
+      </div>
+    </div>
+    <p class="note about__note">※感じ方や変化には個人差があります。カウンセリングは医療行為ではなく、診断や治療は行いません。</p>
+  </div>
+</section>
+
+<!-- ===== Features ===== -->
+<section class="section" id="feature">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label">FEATURE</span>
+      <h2>スポットメンタルケアの特徴</h2>
+    </div>
+    <div class="features__grid">
+      <article class="feature">
+        <span class="feature__num">Point<b>01</b></span>
+        <h3>1名から、<br>必要な人に、必要な期間だけ</h3>
+        <p>対象の方を会社が指定する月額制です。全社員分の契約は不要で、人の追加や終了も状況に合わせてご相談いただけます。</p>
+        <div class="feature__visual">
+          <div class="dots" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <p class="caption">全員ではなく、必要な方だけを指定</p>
+        </div>
+      </article>
+      <article class="feature">
+        <span class="feature__num">Point<b>02</b></span>
+        <h3>会社が費用を出しても、<br>本人が安心して話せる</h3>
+        <p>在籍するのは全員が国家資格を持つ公認心理師です。法律上の守秘義務があるため、相談した内容が会社に共有されることはありません。</p>
+        <div class="feature__visual mini-list">
+          <div><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></svg></span>国家資格の公認心理師のみ</div>
+          <div><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M15 14.6c3 .1 6 1.7 6 4.9"/></svg></span>130名以上から相性で選べる</div>
+          <div><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>相談内容は会社に届かない</div>
+        </div>
+      </article>
+      <article class="feature">
+        <span class="feature__num">Point<b>03</b></span>
+        <h3>会社負担の期間は自由。<br>終わっても本人が続けられる</h3>
+        <p>会社負担は継続することも、期間を区切ることもできます。区切った場合も、本人が希望すれば個人プランで同じ心理師と続けられます。</p>
+        <div class="feature__visual shift">
+          <div>はじめは<b>会社が負担</b></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <div>希望すれば<b>個人で継続</b></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA band ===== -->
+<section class="cta-band">
+  <div class="container">
+    <div class="cta-band__box">
+      <div class="cta-band__text">
+        <span class="badge-campaign">今なら導入費用<b>0</b>円<sup>※</sup></span>
+        <div class="cta-band__copy">
+          <h2>自社のケースで使えるか、まずはご相談ください</h2>
+          <p>オンライン30分<span class="sep" aria-hidden="true"></span>まだ検討段階でも大丈夫です</p>
+        </div>
+      </div>
+      <a class="btn btn--primary" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=band">まずは無料相談する
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Compare ===== -->
+<section class="section section--off">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label">COMPARISON</span>
+      <h2>全社導入との違い</h2>
+    </div>
+    <div class="compare">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col" style="background:var(--off)"><span class="sr-only"></span></th>
+            <th scope="col" class="is-spot">スポットメンタルケア<small>必要な人だけ</small></th>
+            <th scope="col" class="is-other">Kimochi for Business<small>全社導入</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">対象</th><td class="is-spot">会社が指定した方</td><td class="is-other">従業員全員</td></tr>
+          <tr><th scope="row">始めるまで</th><td class="is-spot">対象の方をお知らせいただくだけ</td><td class="is-other">社内周知・全体説明</td></tr>
+          <tr><th scope="row">費用</th><td class="is-spot">利用する人数ぶんの月額</td><td class="is-other">従業員数に応じた月額</td></tr>
+          <tr><th scope="row">負担期間のあと</th><td class="is-spot">本人の希望で個人利用へ乗り換え可能</td><td class="is-other">契約期間中は全員が利用</td></tr>
+          <tr><th scope="row">向いている場面</th><td class="is-spot">特定の人を、今すぐ支えたい</td><td class="is-other">組織全体の予防・底上げ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="payflow">
+      <p class="payflow__title">費用負担の流れ<svg class="spark" viewBox="0 0 30 26" fill="none" stroke="#EFB03D" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 10L3 3M14 8l1-7M21 12l7-4"/></svg><small>会社が負担する期間は自由に決められます。期間を区切った場合は、その後本人が続けるかを選べます</small></p>
+      <div class="payflow__bar"><span>会社が決めた期間：会社の費用負担</span><span>期間終了後：本人が継続するかを選択</span></div>
+      <div class="payflow__stages">
+        <div class="stage stage--company">
+          <span class="stage__ic"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/></svg></span>
+          <div>
+            <span class="stage__when">導入〜会社が決めた期間</span>
+            <h3>会社・事務所・団体が負担</h3>
+            <p>本人の費用負担なしで、公認心理師のカウンセリングを受けられます。</p>
+          </div>
+          <svg class="stage__art" viewBox="0 0 96 96" fill="none" aria-hidden="true"><ellipse cx="48" cy="90" rx="40" ry="4" fill="#CFE6E8"/><rect x="30" y="18" width="36" height="72" rx="2" fill="#fff" stroke="#3D9CA3" stroke-width="2"/><g fill="#BFE0E3"><rect x="36" y="25" width="6" height="7" rx="1"/><rect x="45" y="25" width="6" height="7" rx="1"/><rect x="54" y="25" width="6" height="7" rx="1"/><rect x="36" y="36" width="6" height="7" rx="1"/><rect x="45" y="36" width="6" height="7" rx="1"/><rect x="54" y="36" width="6" height="7" rx="1"/><rect x="36" y="47" width="6" height="7" rx="1"/><rect x="45" y="47" width="6" height="7" rx="1"/><rect x="54" y="47" width="6" height="7" rx="1"/><rect x="36" y="58" width="6" height="7" rx="1"/><rect x="45" y="58" width="6" height="7" rx="1"/><rect x="54" y="58" width="6" height="7" rx="1"/><rect x="36" y="69" width="6" height="7" rx="1"/><rect x="45" y="69" width="6" height="7" rx="1"/><rect x="54" y="69" width="6" height="7" rx="1"/></g><rect x="42" y="78" width="12" height="12" fill="#3D9CA3"/><circle cx="18" cy="70" r="11" fill="#7DBF8E"/><rect x="17" y="72" width="2" height="18" fill="#6C8B74"/><circle cx="80" cy="74" r="8" fill="#9CCFA8"/><rect x="79" y="76" width="2" height="14" fill="#6C8B74"/></svg>
+        </div>
+        <div class="payflow__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="stage stage--person">
+          <span class="stage__ic"><svg viewBox="0 0 24 24" fill="none" stroke="#C98A12" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>
+          <div>
+            <span class="stage__when">期間終了後</span>
+            <h3>本人が希望すれば、個人で継続</h3>
+            <p>個人プランに乗り換えて、同じ心理師とそのまま続けられます。終了することもできます。</p>
+          </div>
+          <svg class="stage__art" viewBox="0 0 96 96" fill="none" aria-hidden="true"><ellipse cx="48" cy="88" rx="42" ry="4" fill="#F3DDB4"/><path d="M58 22l4-8M66 26l7-5M68 34h8" stroke="#3D9CA3" stroke-width="2.5" stroke-linecap="round"/><rect x="20" y="40" width="46" height="32" rx="3" fill="#fff" stroke="#3D9CA3" stroke-width="2"/><rect x="25" y="45" width="36" height="22" rx="1" fill="#DCEFF0"/><path d="M12 76h62l-4 6H16z" fill="#fff" stroke="#3D9CA3" stroke-width="2" stroke-linejoin="round"/><rect x="76" y="66" width="12" height="16" rx="2" fill="#fff" stroke="#C98A12" stroke-width="2"/><path d="M88 70c4 0 4 7 0 7" stroke="#C98A12" stroke-width="2"/></svg>
+        </div>
+      </div>
+      <p class="payflow__note">会社・団体のご契約は最低3ヶ月からで、負担する期間は3ヶ月以上で自由に設定できます。期間を区切らず、<strong style="color:var(--navy)">会社負担のまま継続することもできます。</strong>負担する期間は無料相談で一緒に決められます。</p>
+    </div>
+    <p class="compare-note">スポットメンタルケアから始めて、あとから <a href="https://kimochi-mental.com/business">Kimochi for Business</a> へ切り替えることもできます。</p>
+  </div>
+</section>
+
+<!-- ===== Scenes ===== -->
+<section class="section">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label">SCENE</span>
+      <h2>こんな組織で活用されています</h2>
+    </div>
+    <div class="scenes__grid">
+      <article class="scene">
+        <div class="scene__icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg></div>
+        <div>
+          <span class="tag">芸能・ライバー事務所</span>
+          <h3>人前に立つタレントの心をケア</h3>
+          <p>最初の数ヶ月は事務所が負担し、その後は本人の希望で個人利用へ。マネージャーに話しにくい悩みの受け皿に。</p>
+        </div>
+      </article>
+      <article class="scene">
+        <div class="scene__icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.2 2.2 0 0 0-2.9-.1z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.9A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></svg></div>
+        <div>
+          <span class="tag">スタートアップ・少人数の会社</span>
+          <h3>キーパーソンを早めに支える</h3>
+          <p>一人の不調が事業に直結する規模だからこそ。全社制度より先に、まず中心メンバーから。</p>
+        </div>
+      </article>
+      <article class="scene">
+        <div class="scene__icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></div>
+        <div>
+          <span class="tag">休職・復職のタイミング</span>
+          <h3>戻ってきた人に社外の伴走者を</h3>
+          <p>社内面談とは別に、利害関係のない専門家と話せる時間を。主治医の許可を得たうえで利用できます。</p>
+        </div>
+      </article>
+      <article class="scene">
+        <div class="scene__icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="6" r="3"/><path d="M12 9v4M6 17v-2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/><circle cx="6" cy="19.5" r="1.8"/><circle cx="12" cy="19.5" r="1.8"/><circle cx="18" cy="19.5" r="1.8"/></svg></div>
+        <div>
+          <span class="tag">管理職・新任リーダー</span>
+          <h3>弱音を吐きにくい立場の人に</h3>
+          <p>部下を支える側の人ほど、相談先がありません。昇格や異動の節目に、話せる相手を用意できます。</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Cases ===== -->
+<section class="section section--off" id="case">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label">USE CASE</span>
+      <h2>こんな使い方ができます</h2>
+      <p>対象人数と負担期間を組み合わせて、組織に合った支え方ができます。</p>
+    </div>
+    <div class="cases__grid">
+      <article class="case">
+        <div class="case__head">
+          <span class="case__logo"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/></svg></span>
+          <div><span class="case__label">USE CASE 01</span><p class="case__name">少人数のIT企業<small>従業員30名・開発チーム中心</small></p></div>
+        </div>
+        <dl class="case__facts">
+          <div><dt>対象メンバー</dt><dd><b>10</b>名</dd></div>
+          <div><dt>会社負担</dt><dd><b>6</b>ヶ月</dd></div>
+        </dl>
+        <div class="case__term" aria-label="最初の6ヶ月は会社が負担し、その後は本人の希望で個人利用">
+          <span class="co">最初の6ヶ月：会社負担</span><span class="me">その後：本人の希望で継続</span>
+        </div>
+        <div class="case__bg">
+          <h3>こんな場面で</h3>
+          <p>リリース前で負荷が集中している開発リーダーや、最近元気がないと感じるメンバーに。全社の制度を整える前に、まず支えたい人から始める使い方です。半年かけて落ち着いて向き合える時間をつくります。</p>
+        </div>
+      </article>
+      <article class="case">
+        <div class="case__head">
+          <span class="case__logo"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"/></svg></span>
+          <div><span class="case__label">USE CASE 02</span><p class="case__name">ライバー・タレント事務所<small>所属タレント約40名</small></p></div>
+        </div>
+        <dl class="case__facts">
+          <div><dt>対象タレント</dt><dd><b>8</b>名</dd></div>
+          <div><dt>事務所負担</dt><dd><b>3</b>ヶ月</dd></div>
+        </dl>
+        <div class="case__term" aria-label="最初の3ヶ月は事務所が負担し、その後は本人の希望で個人利用">
+          <span class="co">最初の3ヶ月：事務所負担</span><span class="me">その後：本人の希望で継続</span>
+        </div>
+        <div class="case__bg">
+          <h3>こんな場面で</h3>
+          <p>配信や活動で人前に立ち続けるタレントに。マネージャーには話しにくい悩みを、まずは事務所の負担で専門家に相談できる場をつくります。3ヶ月後は本人が続けるかを選べます。</p>
+        </div>
+      </article>
+      <article class="case">
+        <div class="case__head">
+          <span class="case__logo"><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6L12 20l-7.5-7.4A5 5 0 1 1 12 6a5 5 0 1 1 7.5 6.6z"/></svg></span>
+          <div><span class="case__label">USE CASE 03</span><p class="case__name">介護・福祉事業所<small>職員約60名・複数拠点</small></p></div>
+        </div>
+        <dl class="case__facts">
+          <div><dt>対象リーダー</dt><dd><b>3</b>名</dd></div>
+          <div><dt>会社負担</dt><dd><b class="jp">継続</b></dd></div>
+        </dl>
+        <div class="case__term" aria-label="期間を決めず、継続して会社が負担">
+          <span class="all">期間を決めず、継続して会社負担</span>
+        </div>
+        <div class="case__bg">
+          <h3>こんな場面で</h3>
+          <p>利用者さんや後輩を支え続けるうちに、支える側のリーダーがしんどくなってしまった。そんな「支える人を支える」ための使い方です。気持ちを整える時間を、会社が継続して用意します。</p>
+        </div>
+      </article>
+    </div>
+    <p class="note" style="text-align:center;margin-top:20px">※ご利用イメージです。実際の内容はご状況に合わせてご提案します。</p>
+  </div>
+</section>
+
+<!-- ===== Flow ===== -->
+<section class="section section--pale" id="flow">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label">FLOW</span>
+      <h2>導入の流れ</h2>
+      <p><span class="fastest">最短1日</span>でご利用を開始いただけます。</p>
+    </div>
+    <div class="flow">
+      <div class="step"><span class="step__num">1</span><h3>無料相談</h3><p>状況や対象の方のイメージをうかがい、合う形をご提案します。</p></div>
+      <div class="step"><span class="step__num">2</span><h3>対象の方を指定</h3><p>ご契約後、利用する方をお知らせください。ご本人に利用のご案内をお送りします。</p></div>
+      <div class="step"><span class="step__num">3</span><h3>本人が心理師を選ぶ</h3><p>ご本人が相性の良い心理師を選び、好きな時間にオンラインで相談します。</p></div>
+      <div class="step"><span class="step__num">4</span><h3>一定期間後に見直し</h3><p>しばらくご利用いただいた後に、対象の方や負担期間を一緒に振り返り、より良い運用をご提案します。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Price ===== -->
+<section class="section" id="price">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label">PRICE</span>
+      <h2>料金</h2>
+    </div>
+    <div class="price">
+      <span class="tag">スポットメンタルケア｜10名までを目安</span>
+      <div class="price__rows">
+        <div>
+          <span class="price__label">導入費用</span>
+          <span class="price__zero"><b>0</b>円<sup>※</sup></span>
+        </div>
+        <div>
+          <span class="price__label">月額（1名あたり）</span>
+          <span class="price__monthly">プランにより変動<small>下の3プランから選べます</small></span>
+        </div>
+      </div>
+      <p class="note">※導入費用0円は「リリース記念キャンペーン」の特典です。2027年3月31日までのお申し込みが対象です。</p>
+      <div class="price__block">
+        <h3><span class="num">1</span>カウンセリングのプランを選べます</h3>
+        <div class="plans">
+          <div class="plan"><b>月1回</b><span>〜60分</span></div>
+          <div class="plan"><b>月2回</b><span>〜60分</span></div>
+          <div class="plan"><b>月4回</b><span>〜60分</span></div>
+        </div>
+      </div>
+      <div class="price__block">
+        <h3><span class="num">2</span>会社が負担する期間も選べます</h3>
+        <div class="term">
+          <span class="term__ic"><svg viewBox="0 0 24 24" fill="none" stroke="#C98A12" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+          <p><b>会社負担は3ヶ月から。期間限定でも、継続でもOK</b>「最初の3ヶ月だけ会社が負担し、その後は本人の希望で個人利用へ」という形も、期間を決めずに会社負担で継続する形も選べます。<br>※会社・団体のご契約は、最低3ヶ月からです。</p>
+        </div>
+      </div>
+      <div class="price__tags">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>オンラインカウンセリング込み</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>心理師は本人が選べる</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>1名から利用可</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="#3D9CA3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>会社のご契約は最低3ヶ月</span>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--primary" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=price">お見積りを相談する
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+        <a class="btn btn--outline" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=apply-price" data-cta="apply-price">導入を申し込む<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+    <p class="price-after">ご利用は10名までを目安としています。11名以上の場合は、基本的に <a href="https://kimochi-mental.com/business">Kimochi for Business</a> をご案内していますが、ご状況に応じてスポットメンタルケアでの対応も可能です。お気軽にご相談ください。</p>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section section--off" id="faq">
+  <div class="container">
+    <div class="sec-head">
+      <span class="label">FAQ</span>
+      <h2>よくある質問</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary><span class="q">Q</span>本当に1名だけでも利用できますか？<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="a">はい、1名からご利用いただけます。途中で対象の方を追加することも可能です。</p>
+      </details>
+      <details>
+        <summary><span class="q">Q</span>会社の最低契約期間はありますか？<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="a">会社・団体のご契約は、最低3ヶ月からです。3ヶ月以降は、期間を区切って終了することも、そのまま会社負担で続けることもできます。</p>
+      </details>
+      <details>
+        <summary><span class="q">Q</span>相談した内容は、会社に共有されますか？<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="a">共有されません。公認心理師には守秘義務があり、会社が費用を負担している場合でも、相談内容を会社にお伝えすることはありません。</p>
+      </details>
+      <details>
+        <summary><span class="q">Q</span>本人にどう案内すればよいか不安です。<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="a">無料相談の中で、ご本人への声のかけ方や案内の文面も一緒に考えます。押しつけにならない伝え方をご提案します。</p>
+      </details>
+      <details>
+        <summary><span class="q">Q</span>相談できない内容はありますか？<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="a">
+          <p>次のような場合は、本サービスではご相談をお受けできません。</p>
+          <ul class="a-list">
+            <li>希死念慮（死にたい気持ち）、自傷行為または他害行為を現に行っている方、またはそのおそれが高い方</li>
+            <li>犯罪行為に関する相談を主な目的とする方</li>
+            <li>警察・弁護士など専門機関の対応が必要な犯罪被害のご相談</li>
+            <li>18歳未満の方（18歳・19歳の方は保護者の同意が必要です）</li>
+          </ul>
+          <p>このような場合は、医療機関や公的な相談窓口、警察・弁護士などの適切な相談先をご案内します。また、医療が必要な状態と考えられる場合は、カウンセリングの中止や医療機関の受診をおすすめすることがあります。</p>
+        </div>
+      </details>
+      <details>
+        <summary><span class="q">Q</span>通院中の人でも利用できますか？<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="a">カウンセリングは医療行為ではないため、診断やお薬の処方は行いません。通院中の方も、主治医の許可を得たうえでご利用いただけます。医療機関の受診が必要と考えられる場合は、受診をおすすめすることがあります。</p>
+      </details>
+      <details>
+        <summary><span class="q">Q</span>会社負担の期間が終わったらどうなりますか？<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="a">そこで終了することも、ご本人の希望で個人プランに切り替えて続けることもできます。同じ心理師との関係をそのまま引き継げます。なお、期間を区切らず会社負担のまま継続することも可能です。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Final CTA ===== -->
+<section class="section final">
+  <div class="container">
+    <span class="badge-campaign">今なら導入費用<b>0</b>円<sup>※</sup></span>
+    <h2>まずは、気になっている<br>「あの人」のことから。</h2>
+    <p>対象の方が決まっていなくても大丈夫です。<br>状況をうかがいながら、合う支え方を一緒に考えます。</p>
+    <div class="btn-row">
+    <a class="btn btn--primary" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=final">まずは無料相談する
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    <a class="btn btn--outline" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=apply-final" data-cta="apply-final">導入を申し込む<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </div>
+    <p class="note">※導入費用0円は「リリース記念キャンペーン」の特典です。2027年3月31日までのお申し込みが対象です。</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <span class="brand brand--white">スポット<span>メンタルケア</span></span>
+    <span>運営：株式会社remental</span>
+    <a href="https://kimochi-mental.com/business">全社導入をご検討の方は Kimochi for Business</a>
+    <span>© remental Inc.</span>
+  </div>
+</footer>
+
+<!-- SP追従CTA -->
+<div class="sp-cta">
+  <a class="btn btn--primary" href="https://www.jicoo.com/t/remental/e/spot-mentalcare?ref=sticky">まずは無料相談する</a>
+</div>
+
+</body>
+</html>

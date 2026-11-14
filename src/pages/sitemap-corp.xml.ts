@@ -17,6 +17,7 @@ export const GET: APIRoute = async () => {
 		{ loc: `${CORP.origin}/contact/`, lastmod: null },
 		{ loc: `${CORP.origin}/privacy/`, lastmod: null },
 		{ loc: `${CORP.origin}/site-policy/`, lastmod: null },
+		{ loc: `${CORP.origin}/spot-mentalcare/`, lastmod: null },
 		...news.map((n) => ({ loc: `${CORP.origin}/news/${encodeURIComponent(n.id)}/`, lastmod: iso(n.data.updatedAt) })),
 	];
 	const body = `<?xml version="1.0" encoding="UTF-8"?>
