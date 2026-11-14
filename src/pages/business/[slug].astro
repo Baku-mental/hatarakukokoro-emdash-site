@@ -15,6 +15,8 @@ import PostCard from "../../components/PostCard.astro";
 import WpGroup from "../../components/WpGroup.astro";
 import AuthorBox from "../../components/AuthorBox.astro";
 import SideBanner from "../../components/SideBanner.astro";
+import RailCta from "../../components/RailCta.astro";
+import CtaDock from "../../components/CtaDock.astro";
 import PostBlock from "../../components/PostBlock.astro";
 import PopularPosts from "../../components/PopularPosts.astro";
 import { POPULAR_SLUGS } from "../../site-config";
@@ -359,10 +361,14 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 
 					<PopularPosts posts={popularPosts} class="popular--rail" />
 
+					<RailCta />
+
 				</div>
 			</div>
 		</div>
 	</article>
+
+	<CtaDock />
 
 	{
 		otherPostsWithTags.length > 0 && (
@@ -638,10 +644,16 @@ const updateDate = showUpdated ? formatDate(updatedAt, "long") : null;
 
 		/* 右の列はページと一緒にスクロールする（列の中だけのスクロールはしない） */
 		.post-rail {
-			display: grid;
-			grid-template-columns: minmax(0, 1fr);
+			display: flex;
+			flex-direction: column;
 			gap: var(--spacing-8);
 			max-width: none;
+			/* 本文と同じ高さまで伸ばす（一番下の申し込みカードが読み進めても残るように） */
+			align-self: stretch;
+		}
+
+		.post-rail > :global(*) {
+			min-width: 0;
 		}
 
 		.toc {

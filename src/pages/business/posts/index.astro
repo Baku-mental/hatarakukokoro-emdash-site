@@ -4,6 +4,7 @@ import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import Base from "../../../layouts/Base.astro";
 import PostCard from "../../../components/PostCard.astro";
 import Pagination from "../../../components/Pagination.astro";
+import CtaBand from "../../../components/CtaBand.astro";
 
 // Sort in the database rather than in JS — lets the DB use its index on
 // published_at and avoids a full-table scan on the client.
@@ -80,6 +81,7 @@ const postsWithTags = posts.map((post) => ({
 			}
 		</div>
 	</section>
+	<CtaBand />
 </Base>
 
 <style>

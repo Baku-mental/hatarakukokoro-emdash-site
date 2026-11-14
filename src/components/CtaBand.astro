@@ -1,0 +1,76 @@
+---
+/** ページ下の「無料の組織診断」の帯（トップと同じ見た目）。記事一覧・カテゴリのページで使う */
+import { LINKS } from "../site-config";
+---
+
+<section class="cta-band" aria-labelledby="list-cta">
+	<div class="frame cta-band__inner">
+		<h2 id="list-cta" class="cta-band__title">無料の組織診断</h2>
+		<p class="cta-band__text">
+			設問に答えるだけで、組織の状態と部署ごとの傾向がわかります。導入の検討前に、まず自社の状態を見るところから使えます。
+		</p>
+		<div class="cta-band__actions">
+			<a href={LINKS.diagnosis} class="btn cta-band__btn" target="_blank" rel="noopener">
+				無料ではじめる
+			</a>
+			<a href={LINKS.download} class="cta-band__sub" target="_blank" rel="noopener">
+				ココロチェックの資料を見る
+			</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.cta-band {
+		margin-top: clamp(3rem, 2rem + 3vw, 5rem);
+		padding-block: clamp(2.5rem, 1.75rem + 3vw, 4rem);
+		background: var(--color-navy);
+		color: #ffffff;
+	}
+
+	.cta-band__inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.cta-band__title {
+		font-size: clamp(1.35rem, 1.1rem + 1vw, 1.75rem);
+		color: #ffffff;
+	}
+
+	.cta-band__text {
+		margin-top: var(--spacing-4);
+		max-width: 36em;
+		color: #dbe6ee;
+	}
+
+	.cta-band__actions {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--spacing-4);
+		margin-top: var(--spacing-6);
+	}
+
+	.cta-band__btn {
+		background: var(--color-teal);
+		color: #ffffff;
+	}
+
+	.cta-band__btn:hover {
+		background: var(--color-teal-dark);
+	}
+
+	.cta-band__sub {
+		color: #dbe6ee;
+		font-size: var(--font-size-sm, 0.875rem);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	.cta-band__sub:hover {
+		color: #ffffff;
+	}
+</style>

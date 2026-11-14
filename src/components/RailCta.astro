@@ -1,0 +1,72 @@
+---
+/** パソコンの右の列の一番下に置く、小さな申し込みカード。読み進めても画面に残る（sticky） */
+import { LINKS } from "../site-config";
+---
+
+<div class="rail-cta-wrap">
+<aside class="rail-cta" aria-label="無料の組織診断">
+	<p class="rail-cta__eyebrow">人事・総務の方へ</p>
+	<p class="rail-cta__title">職場の状態を、まず無料で確かめる</p>
+	<p class="rail-cta__text">設問に答えるだけで、組織の状態と部署ごとの傾向がわかります。</p>
+	<a href={LINKS.diagnosis} class="btn rail-cta__btn" target="_blank" rel="noopener">無料の組織診断</a>
+	<a href={LINKS.download} class="rail-cta__sub" target="_blank" rel="noopener">サービス資料を見る</a>
+</aside>
+</div>
+
+<style>
+	/* 右の列の残りの高さいっぱいに広がり、その中でカードが画面に残る */
+	.rail-cta-wrap {
+		flex: 1;
+	}
+
+	.rail-cta {
+		position: sticky;
+		top: var(--spacing-6);
+		padding: var(--spacing-6);
+		border: 1px solid var(--color-teal-pale);
+		border-radius: 12px;
+		background: var(--color-teal-bg);
+	}
+
+	.rail-cta__eyebrow {
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: var(--color-teal-dark);
+	}
+
+	.rail-cta__title {
+		margin-top: var(--spacing-2);
+		font-weight: 700;
+		line-height: 1.5;
+		color: var(--color-navy);
+	}
+
+	.rail-cta__text {
+		margin-top: var(--spacing-2);
+		font-size: 0.875rem;
+		line-height: 1.7;
+	}
+
+	.rail-cta__btn {
+		display: block;
+		width: 100%;
+		margin-top: var(--spacing-4);
+		text-align: center;
+		background: var(--color-teal);
+		color: #ffffff;
+	}
+
+	.rail-cta__btn:hover {
+		background: var(--color-teal-dark);
+	}
+
+	.rail-cta__sub {
+		display: block;
+		margin-top: var(--spacing-3);
+		font-size: 0.85rem;
+		text-align: center;
+		color: var(--color-navy);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+</style>
