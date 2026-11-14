@@ -14,9 +14,39 @@ export const CORP = {
 		kokoshe: "https://kimochi-care.net/kokoshe/", // ココシェのページ（2026-11-14 Rioto 指定）
 		recruit: "https://meety.net/matches/rtEeUtEmzvKt", // カジュアル面談（旧サイトと同じ）
 		kazokuru: "https://kazokuru.com/", // フッター（2026-11-14 Rioto 依頼）
-		privacy: "/privacy/", // 【要確認】旧サイトのプライバシーポリシーは下書きのまま
+		privacy: "/privacy/",
 	},
 } as const;
+
+// 検索エンジン・AI 向けの会社情報（schema.org Organization）。トップと全ページの構造化データに使う
+export const ORG = {
+	"@type": "Organization",
+	"@id": "https://remental.co.jp/#organization",
+	name: "株式会社remental",
+	alternateName: ["remental", "remental, inc."],
+	url: "https://remental.co.jp/",
+	logo: { "@type": "ImageObject", url: "https://remental.co.jp/icon-512.png", width: 512, height: 512 },
+	description:
+		"公認心理師の専門性とテクノロジーで、こころを整える仕組みを個人から社会へ届ける会社。オンラインカウンセリング「Kimochi」、法人向けメンタルウェルネス「Kimochi for Business」、セルフケアアプリ「ココシェ」を運営。",
+	foundingDate: "2022-01",
+	founder: { "@type": "Person", name: "佐藤 利音" },
+	address: { "@type": "PostalAddress", addressRegion: "東京都", addressLocality: "文京区", addressCountry: "JP" },
+	contactPoint: { "@type": "ContactPoint", contactType: "customer support", url: "https://remental.co.jp/contact/", availableLanguage: "ja" },
+	brand: [
+		{ "@type": "Brand", name: "Kimochi", url: "https://kimochi-mental.com/" },
+		{ "@type": "Brand", name: "Kimochi for Business", url: "https://kimochi-mental.com/business/" },
+		{ "@type": "Brand", name: "ココシェ", url: "https://kimochi-care.net/kokoshe/" },
+		{ "@type": "Brand", name: "はたらくこころ研究所", url: "https://remental.co.jp/business/" },
+		{ "@type": "Brand", name: "かぞくる", url: "https://kazokuru.com/" },
+	],
+	sameAs: ["https://x.com/kimochi_care", "https://www.instagram.com/kimochi_care/", "https://www.facebook.com/Kimochicare"],
+} as const;
+
+export const crumbs = (items: [string, string][]) => ({
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	itemListElement: items.map(([name, path], i) => ({ "@type": "ListItem", position: i + 1, name, item: `https://remental.co.jp${path}` })),
+});
 
 // お知らせの種類 → ラベルの色
 export const NEWS_PILL: Record<string, string> = {

@@ -2,7 +2,7 @@
 // 会社サイトのお知らせ一覧（/news/）。中身は管理画面の「お知らせ（会社サイト）」
 import { getEmDashCollection } from "emdash";
 import Corp from "../../layouts/Corp.astro";
-import { NEWS_PILL } from "../../corp-config";
+import { NEWS_PILL, crumbs } from "../../corp-config";
 
 if (!Astro.url.pathname.endsWith("/")) return Astro.redirect("/news/", 301);
 let news: any[] = [];
@@ -17,7 +17,7 @@ const dot = (d?: Date | null) =>
 	d ? d.toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit" }).replaceAll("/", ".") : "";
 ---
 
-<Corp title="お知らせ" description="株式会社rementalからのお知らせ、メディア掲載、リリースの一覧です。">
+<Corp title="お知らせ" description="株式会社rementalからのお知らせ、メディア掲載、リリースの一覧です。" type="website" jsonld={[crumbs([["ホーム", "/"], ["お知らせ", "/news/"]])]}>
 	<section class="cp-head"><div class="wrap"><p class="cp-label">NEWS</p><h1>お知らせ</h1></div></section>
 	<main class="cp-main">
 		<div class="wrap"><div class="cp-box">

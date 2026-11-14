@@ -3,7 +3,7 @@
 // （本番の remental.co.jp/ は Cloudflare のルートで切り替えるまで WordPress のまま）
 import { getEmDashCollection } from "emdash";
 import Corp from "../layouts/Corp.astro";
-import { CORP, NEWS_PILL, LEGACY_NEWS } from "../corp-config";
+import { CORP, NEWS_PILL, LEGACY_NEWS, ORG } from "../corp-config";
 
 // 旧 WordPress の番号つき URL（/?p=653、/?page_id=437、/?cat=1、/?feed=rss2）を新しいページへ
 const q = Astro.url.searchParams;
@@ -25,7 +25,10 @@ const dot = (d?: Date | null) =>
 	d ? d.toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit" }).replaceAll("/", ".") : "";
 ---
 
-<Corp>
+<Corp jsonld={[
+	{ "@context": "https://schema.org", ...ORG },
+	{ "@context": "https://schema.org", "@type": "WebSite", "@id": "https://remental.co.jp/#website", url: "https://remental.co.jp/", name: "株式会社remental", inLanguage: "ja", publisher: { "@id": ORG["@id"] } },
+]}>
 <!-- HERO -->
 <section class="hero" aria-label="ファーストビュー">
 <div class="hero-bg rm-p" style="--dx:-12px;--sf:0.35px">

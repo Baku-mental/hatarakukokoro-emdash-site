@@ -1,0 +1,17 @@
+# 株式会社remental
+
+> 公認心理師の専門性とテクノロジーで、こころを整える仕組みを個人から社会へ届ける会社です。ビジョンは「人類のこころが持つ可能性を、最大化する。」、ミッションは「メンタルヘルスによる機会損失をゼロにする。」。2022年1月設立、東京都文京区、代表取締役 佐藤 利音。
+
+## 事業
+- [Kimochi](https://kimochi-mental.com/): 公認心理師だけが在籍する、個人向けのオンラインカウンセリング（月額制）。日本サブスクリプションビジネス大賞2025 ブロンズ賞
+- [Kimochi for Business](https://kimochi-mental.com/business/): 法人・自治体向けのメンタルウェルネスサービス。ストレスチェック、公認心理師による研修、従業員向けカウンセリング
+- [ココシェ](https://kimochi-care.net/kokoshe/): 声に出して話すだけで気持ちを記録できる AI ジャーナリングアプリ（臨床心理士・公認心理師監修）
+- [はたらくこころ研究所](https://remental.co.jp/business/): 人事・管理職向けの職場のメンタルヘルス情報メディア（ストレスチェック、休職・復職、ハラスメント対策、ラインケアなど）
+- [かぞくる](https://kazokuru.com/): 家族・子育て・夫婦のこころのケア
+
+## 会社情報
+- [会社概要・代表メッセージ](https://remental.co.jp/#company)
+- [お知らせ・メディア掲載](https://remental.co.jp/news/)
+- [お問い合わせ](https://remental.co.jp/contact/)
+- [プライバシーポリシー](https://remental.co.jp/privacy/)
+- [サイトポリシー](https://remental.co.jp/site-policy/)

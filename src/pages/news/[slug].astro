@@ -3,7 +3,7 @@
 import { getEmDashEntry, decodeSlug } from "emdash";
 import { PortableText } from "emdash/ui";
 import Corp from "../../layouts/Corp.astro";
-import { NEWS_PILL } from "../../corp-config";
+import { NEWS_PILL, ORG, crumbs } from "../../corp-config";
 
 const slug = decodeSlug(Astro.params.slug);
 if (!slug) return Astro.rewrite("/404");
@@ -24,7 +24,22 @@ const desc = d.excerpt || `${d.title}｜株式会社remental のお知らせ`;
 const img = d.featured_image?.meta?.storageKey ? `/_emdash/api/media/file/${d.featured_image.meta.storageKey}` : undefined;
 ---
 
-<Corp title={d.title} description={desc} image={img}>
+<Corp title={d.title} description={desc} image={img} jsonld={[
+	{
+		"@context": "https://schema.org",
+		"@type": "NewsArticle",
+		headline: d.title,
+		description: desc,
+		datePublished: d.publishedAt?.toISOString?.(),
+		dateModified: (d.updatedAt ?? d.publishedAt)?.toISOString?.(),
+		image: [new URL(img ?? "/corp/images/og.jpg", "https://remental.co.jp").toString()],
+		mainEntityOfPage: `https://remental.co.jp/news/${encodeURIComponent(slug)}/`,
+		author: { "@id": ORG["@id"], "@type": "Organization", name: ORG.name, url: ORG.url },
+		publisher: { "@id": ORG["@id"], "@type": "Organization", name: ORG.name, logo: ORG.logo },
+		inLanguage: "ja",
+	},
+	crumbs([["ホーム", "/"], ["お知らせ", "/news/"], [d.title, `/news/${encodeURIComponent(slug)}/`]]),
+]}>
 	<section class="cp-head"><div class="wrap"><p class="cp-label">NEWS</p><p style="margin:10px 0 0;font-size:clamp(22px,2.6vw,32px);letter-spacing:.1em">お知らせ</p></div></section>
 	<main class="cp-main">
 		<div class="wrap"><div class="cp-box">

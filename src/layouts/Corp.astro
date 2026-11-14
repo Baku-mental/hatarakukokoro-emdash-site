@@ -9,8 +9,10 @@ interface Props {
 	description?: string;
 	image?: string; // OG 画像（/corp/images/... か絶対 URL）
 	noindex?: boolean;
+	jsonld?: Record<string, unknown>[]; // 構造化データ（検索・AI 向け）
+	type?: "website" | "article";
 }
-const { title, description = CORP.description, image = "/corp/images/hero_sky.jpg", noindex = false } = Astro.props;
+const { title, description = CORP.description, image = "/corp/images/og.jpg", noindex = false, jsonld = [], type } = Astro.props;
 const fullTitle = title ? `${title}｜株式会社remental` : CORP.title;
 // 本番（remental.co.jp）以外（試験用の workers.dev）は検索エンジンに載せない。canonical は本番の住所
 const isProduction = Astro.url.hostname === new URL(CORP.origin).hostname;
@@ -30,13 +32,24 @@ const year = new Date().getFullYear();
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
 {(noindex || !isProduction) && <meta name="robots" content="noindex, nofollow" />}
-<meta property="og:type" content={isTop ? "website" : "article"} />
+<meta property="og:type" content={type ?? (isTop ? "website" : "article")} />
+<meta property="og:locale" content="ja_JP" />
 <meta property="og:site_name" content="株式会社remental" />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="copyright" content="© remental, inc." />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#002F57" />
+{jsonld.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
 {isTop && <link rel="preload" as="image" href="/corp/images/hero_sky.jpg" />}
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -95,10 +108,11 @@ const year = new Date().getFullYear();
 <a href="/contact/">お問い合わせ</a>
 <a href="/business/">はたらくこころ研究所</a>
 <a href={CORP.links.kazokuru} target="_blank" rel="noopener">かぞくる</a>
-{/* プライバシーポリシーはページができたら戻す（2026-11-14 Rioto: いったん外す） */}
+<a href="/privacy/">プライバシーポリシー</a>
+<a href="/site-policy/">サイトポリシー</a>
 </nav>
 </div>
-<p style="margin: 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.12); font-family: 'Space Grotesk', sans-serif; font-size: 12px">© {year} remental, inc.</p>
+<p style="margin: 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.12); font-family: 'Space Grotesk', sans-serif; font-size: 12px">© {year} remental, inc. All rights reserved.</p>
 </div>
 </footer>
 <script is:inline>

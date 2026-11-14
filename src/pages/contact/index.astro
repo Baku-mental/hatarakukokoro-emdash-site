@@ -1,17 +1,18 @@
 ---
 // 会社サイトのお問い合わせ（/contact/）。フォームは旧サイトと同じ Google フォーム
 import Corp from "../../layouts/Corp.astro";
-import { CORP } from "../../corp-config";
+import { CORP, crumbs } from "../../corp-config";
 
 if (!Astro.url.pathname.endsWith("/")) return Astro.redirect("/contact/", 301);
 ---
 
-<Corp title="お問い合わせ" description="株式会社rementalへのお問い合わせ。法人・自治体さまの導入相談、事業提携、メディア取材などを受け付けています。">
+<Corp title="お問い合わせ" description="株式会社rementalへのお問い合わせ。法人・自治体さまの導入相談、事業提携、メディア取材などを受け付けています。" type="website" jsonld={[crumbs([["ホーム", "/"], ["お問い合わせ", "/contact/"]])]}>
 	<section class="cp-head"><div class="wrap"><p class="cp-label">CONTACT</p><h1>お問い合わせ</h1></div></section>
 	<main class="cp-main">
 		<div class="wrap"><div class="cp-box">
 			<p class="cp-crumb"><a href="/">ホーム</a> / お問い合わせ</p>
 			<div class="cp-note">
+				<p style="margin:0 0 12px">お送りいただいた個人情報は、<a href="/privacy/">プライバシーポリシー</a>に沿って、お問い合わせへの回答のためにのみ利用します。</p>
 				<p style="margin:0 0 12px">法人・自治体さまの導入相談、事業提携、メディア取材などのお問い合わせは、下のフォームからお送りください。</p>
 				<p style="margin:0">現在、採用（インターン採用を含む）はリファラルのみで行っております。人材紹介や採用代行などの人材関連のお問い合わせはご遠慮いただけますようお願い申し上げます。なお、これらのお願いにもかかわらず、執拗な営業活動や不適切な勧誘が確認された場合、必要に応じて適切な対応を取らせていただくことがございます。</p>
 			</div>
